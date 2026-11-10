@@ -21,6 +21,9 @@ with sync_playwright() as p:
     for s in T["spellNeg"]:
         h = pg.evaluate("s=>analyze(s).sp.map(x=>x.text+'>'+x.rep)", s)
         if h: fail += 1; print("맞춤법 오탐 ✗", s, "→", h)
+    for s, want in T.get("spellPos", []):
+        h = pg.evaluate("s=>{document.querySelector('#optSpell').checked=true;return analyze(s).sp.map(x=>x.rep)}", s)
+        if want not in h: fail += 1; print("맞춤법 미탐 ✗", s, "→", h)
     for s, bad in T.get("badOpts", []):
         o = pg.evaluate("s=>analyze(s).hits.flatMap(x=>x.opts)", s)
         if bad in o: fail += 1; print("어색한 대치어 ✗", s, "→", o)
@@ -35,6 +38,6 @@ with sync_playwright() as p:
         if not any(want in x for x in h): fail += 1; print("광고 미탐 ✗", s[:30], "→", h)
     if errs: fail += 1; print("JS 오류", errs)
     b.close()
-total = len(T["neg"]) + len(T["pos"]) + len(T["spellNeg"]) + len(T.get("badOpts", [])) + len(T.get("goodOpts", [])) + len(T.get("docNeg", [])) + len(T.get("docPos", []))
+total = len(T["neg"]) + len(T["pos"]) + len(T["spellNeg"]) + len(T.get("badOpts", [])) + len(T.get("spellPos", [])) + len(T.get("goodOpts", [])) + len(T.get("docNeg", [])) + len(T.get("docPos", []))
 print(f"{total - fail}/{total} 통과")
 sys.exit(1 if fail else 0)
