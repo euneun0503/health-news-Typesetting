@@ -27,8 +27,14 @@ with sync_playwright() as p:
     for s, good in T.get("goodOpts", []):
         o = pg.evaluate("s=>analyze(s).hits.flatMap(x=>x.opts)", s)
         if good not in o: fail += 1; print("대치어 누락 ✗", s, "→", o)
+    for s in T.get("docNeg", []):
+        h = pg.evaluate("s=>analyze(s).hits.map(x=>x.text)", s)
+        if h: fail += 1; print("기사 오탐 ✗", s[:30], "→", h)
+    for s, want in T.get("docPos", []):
+        h = pg.evaluate("s=>analyze(s).hits.map(x=>x.text)", s)
+        if not any(want in x for x in h): fail += 1; print("광고 미탐 ✗", s[:30], "→", h)
     if errs: fail += 1; print("JS 오류", errs)
     b.close()
-total = len(T["neg"]) + len(T["pos"]) + len(T["spellNeg"]) + len(T.get("badOpts", [])) + len(T.get("goodOpts", []))
+total = len(T["neg"]) + len(T["pos"]) + len(T["spellNeg"]) + len(T.get("badOpts", [])) + len(T.get("goodOpts", [])) + len(T.get("docNeg", [])) + len(T.get("docPos", []))
 print(f"{total - fail}/{total} 통과")
 sys.exit(1 if fail else 0)

@@ -1061,6 +1061,12 @@ const GNEG=/((보장|장담|약속|단정|확신|단언|담보|의미|뜻)(이|�
 /* 경계·비판 문맥: 광고가 아니라 해당 표현을 의심하거나 주의시키는 문장 (예: "치료 후기를 검증해볼 필요가 있다", "최저비용 검색에 의존하기보다는") */
 const CAUT=/^.{0,24}?((을|를|은|는|이|가|만)?\s?(검증|의심|조심|경계|맹신|따져\s?보|가려\s?내|걸러\s?내)|에\s?(만\s?)?(의존|기대|현혹|속지|속아|속는|휘둘리)|보다는|보다\s?(먼저|중요)|만\s?(보고|믿고|믿지|따지|좇)|(을|를)?\s?피하(세요|는\s?것|시)|에\s?주의|을?\s?주의(하|해|가)|는\s?(위험|함정|오해))/;
 const CAUTB=/(가짜|허위|조작된?|거짓|과장된?|광고성|대가성|검증되지\s?않은|무분별한|맹목적인?|섣부른)\s?$/;
+/* 글 성격 판단: 광고 비판·소비자 경고 기사/정보글 신호 */
+const CRITCUE=/(현혹(되지|돼선|되면|될\s?수)|주의(해야|하세요|가\s?필요|할\s?필요)|소비자(들)?(의|는|가|에게)|피해(를|가|사례|구제)|유도(한다|하는|했|해\s?왔)|허위|과장\s?광고|불법\s?(광고|의료)|의료법\s?위반|적발|지적(했|한다|이)|경계(해야|할)|속지\s?(말|않)|따져\s?봐야|전문가들?은|보건\s?당국|보건소|[가-힣]{2,3}\s?기자|업계에\s?따르면|에\s?따르면|무분별한|상술|미끼)/g;
+function docKind(t){const n=(t.match(CRITCUE)||[]).length;return {critical:n>=3,score:n};}
+/* 광고 행태를 묘사·인용하는 문장 */
+const DESCR=/(광고(를|가|는|에서|에는|하며|하는|해|문구)|문구(를|가|로|처럼)|홍보(하|를|가)|내세(우|워|운)|유도(한다|하는|했|해)|현혹|미끼|식의|이라는|라는\s?(말|문구|광고|표현)|같은\s?(문구|표현|광고)|방식으로)/;
+function inQuote(t,a,b){const re=/[“"‘'「『]([^“”"‘’'「」『』\n]{1,120})[”"’'」』]/g;let m;while((m=re.exec(t))){if(a>=m.index&&b<=m.index+m[0].length)return true;}return false;}
 /* 일상생활 문맥: 시술 통증이 아니라 치료 후 생활 불편이 줄어든 내용 (예: "달라붙는 바지도 통증 없이") */
 const DAILY=/(바지|옷|청바지|레깅스|스타킹|신발|구두|하이힐|속옷|자전거|계단|등산|산책|걷기|운동|출퇴근|운전|의자|양반다리|쪼그려|잠자리|일상|생활|식사|음식)[가-힣]{0,3}\s?([가-힣]+\s?){0,3}$/;
 const sentEnd=(t,i)=>{const m=/[.!?。\n]/.exec(t.slice(i));return m?i+m.index:t.length;};
@@ -1204,6 +1210,11 @@ function analyze(t){
   let over=null; if(r.dyn){const d=r.dyn(s,b,a);if(d==='skip')continue;if(d&&typeof d==='object')over=d;}
   all.push({start:st,end:en,text:s,rule:r,why:(over&&over.why)||r.why,sev:(over&&over.sev)||'mid'});
  }});
+ /* 글 전체 판단: 광고를 비판·경고하는 기사·정보글이면 인용된 광고 문구와 광고 행태를 묘사한 문장은 제외 */
+ const doc=docKind(t);let cited=[];
+ if(doc.critical){all=all.filter(h=>{const ss=sentStart(t,h.start),se=sentEnd(t,h.end),sen=t.slice(ss,se);
+   const q=inQuote(t,h.start,h.end);
+   if(q||DESCR.test(sen)){cited.push(h);return false;}return true;});}
  all.sort((x,y)=>x.start-y.start||(y.end-y.start)-(x.end-x.start));
  const hits=[];let last=-1;for(const h of all)if(h.start>=last){h.opts=h.rule.opts(h.text,t.slice(h.end,h.end+20));h.choice=h.opts.length&&h.sev!=='low'?0:-1;hits.push(h);last=h.end;}
  const sents=sentences(t);hits.forEach(h=>{const i=sents.findIndex(([s,e])=>h.start>=s&&h.start<e);h.sn=i+1;h.sr=sents[i]||[0,t.length];});
@@ -1214,7 +1225,7 @@ function analyze(t){
   if(PROC.test(t)&&!SIDE.test(t))g.push({id:'side',on:true,type:'safety',cat:'부작용·개인차 안내 누락',law:L[7],why:'시술·수술 광고에 부작용이나 개인차 안내가 없습니다.',tip:'교정문 끝에 안내 문구를 추가합니다.'});
   if(/할인|이벤트가|특가|%\s?off/i.test(t)&&!/(\d{1,2}\s?[\/.월]\s?\d{1,2}|기간|까지|대상|정상가)/.test(t))g.push({id:'price',type:'lure',cat:'할인 조건 불명확',law:L[13],why:'할인 금액·대상·기간·할인 전 가격이 불명확하면 위반입니다.',tip:'기간, 대상, 정상가와 할인가를 함께 밝히세요.'});
  }
- return {hits,sp,g,sents};
+ return {hits,sp,g,sents,doc,cited};
 }
 let S={t:'',hits:[],sp:[],g:[],sents:[]};
 const repOf=h=>h.choice<0?h.text:h.opts[h.choice];
@@ -1245,7 +1256,7 @@ function show(){
  S.t=$('#src').value;Object.assign(S,analyze(S.t));
  const n=S.hits.length+S.g.length;$('#total').textContent=n;$('#total').classList.toggle('zero',!n);$('#spTotal').textContent=S.sp.length;
  const cnt={};S.hits.forEach(h=>cnt[h.rule.type]=(cnt[h.rule.type]||0)+1);S.g.forEach(x=>cnt[x.type]=(cnt[x.type]||0)+1);
- $('#chips').innerHTML=n?Object.keys(TYPES).filter(k=>cnt[k]).map(k=>`<span class="chip" style="${hv(k)}">${TYPES[k].name} ${cnt[k]}</span>`).join(''):'<span class="chip" style="--h:#d3f9d8">자주 지적되는 표현이 없습니다</span>';
+ $('#chips').innerHTML=(S.doc&&S.doc.critical?`<div class="citebox" style="flex-basis:100%;background:#eef4ff;border:1px solid #c5d6f5;border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:13px"><b>광고를 비판·경고하는 기사·정보글로 판단했습니다.</b> 인용된 광고 문구와 광고 행태를 설명하는 문장 ${S.cited.length}건은 위반에서 제외했습니다.${S.cited.length?`<details style="margin-top:4px"><summary>제외한 표현 보기</summary>${S.cited.map(h=>`<span class="chip" style="--h:#f1f3f5">${esc(h.text)} · ${esc(h.rule.cat)}</span>`).join(' ')}</details>`:''} 직접 광고로 쓰는 글이라면 원문에서 인용부호와 설명 문장을 빼고 다시 검사하세요.</div>`:'')+(n?Object.keys(TYPES).filter(k=>cnt[k]).map(k=>`<span class="chip" style="${hv(k)}">${TYPES[k].name} ${cnt[k]}</span>`).join(''):'<span class="chip" style="--h:#d3f9d8">자주 지적되는 표현이 없습니다</span>');
  $('#legend').innerHTML=Object.entries(TYPES).map(([k,v])=>`<span style="${hv(k)}">${v.name}</span>`).join('')+'<span class="sp">맞춤법</span>';
  draw();
  let html=S.hits.map((h,i)=>{const r=h.rule,[ss,se]=h.sr;const sent=S.t.slice(ss,se).trim();const off=S.t.slice(ss,se).indexOf(sent);
