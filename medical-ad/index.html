@@ -131,7 +131,7 @@ a{color:var(--lure)}
   <div class="legend" id="legend"></div>
   <div class="split">
    <div class="box"><div class="box-h">원문 <span class="sub">형광펜 부분을 누르면 설명으로 이동</span></div><div class="box-b text" id="orig"></div></div>
-   <div class="box"><div class="box-h">교정문 <span class="row"><button class="btn sm" id="copy">교정문 복사</button><a class="btn sm" id="nara" href="https://nara-speller.co.kr/speller/" target="_blank" rel="noopener">나라 맞춤법 검사기로 확인</a></span></div><div class="box-b text" id="fixed"></div></div>
+   <div class="box"><div class="box-h">교정문 <span class="row"><button class="btn sm" id="copy">교정문 복사</button><a class="btn sm" id="nara" href="https://nara-speller.co.kr/speller/" target="_blank" rel="noopener">복사하고 나라 맞춤법 검사기 열기</a></span></div><div class="box-b text" id="fixed"></div></div>
   </div>
   <div class="btns"><button class="btn" id="back">원문 수정하기</button><button class="btn" id="reuse">교정문으로 다시 검사</button><button class="btn" id="newone">새로 입력</button></div>
   <div id="info"></div>
@@ -1379,7 +1379,7 @@ $('#reuse').onclick=()=>{src.value=corrected();count();show();toast('교정문�
 $('#newone').onclick=()=>{src.value='';count();$('#step2').hidden=true;$('#step1').hidden=false;};
 async function copyText(t,msg){try{await navigator.clipboard.writeText(t);toast(msg);return true;}catch(e){toast('복사가 막혀 있습니다. 교정문을 드래그해 복사하세요');return false;}}
 $('#copy').onclick=()=>copyText(corrected(),'교정문을 복사했습니다');
-$('#nara').onclick=()=>{copyText(corrected(),'교정문을 복사했습니다. 열린 검사기에 붙여넣으세요');};
+$('#nara').onclick=()=>{copyText(corrected(),'교정문을 복사했습니다. 새 창의 입력칸을 클릭하고 Ctrl+V(맥은 Cmd+V)로 붙여넣으세요');const t=$('#toast');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),6000);};
 document.addEventListener('click',e=>{
  const nb=e.target.closest('#nav button');if(nb){go(nb.dataset.v);return;}
  const s=e.target.closest('[data-sample]');if(s){src.value=SAMPLES[+s.dataset.sample];count();return;}
