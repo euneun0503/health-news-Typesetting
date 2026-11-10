@@ -106,7 +106,7 @@ a{color:var(--lure)}
   <button data-v="book">위반 사례집</button>
   <button data-v="law">관련 법령</button>
   <button data-v="media">매체·심의</button>
-  <button data-v="sign">간판·명칭</button>
+  <button data-v="sign">명칭 표기</button>
   <button data-v="spec">전문병원 기준</button>
   <button data-v="list">자가 점검표</button>
  </nav>
@@ -191,7 +191,8 @@ a{color:var(--lure)}
 <!-- ===== 간판·명칭 ===== -->
 <section id="v-sign" class="view">
  <div class="box"><div class="box-b">
-  <h2>병원 명칭·간판 표기 규칙</h2>
+  <h2>의료기관 명칭 표기 규칙</h2>
+  <p class="sub">간판 명칭은 개설 신고·허가된 명칭 그대로 쓰면 되므로 따로 점검하지 않습니다. 아래 표는 광고·홈페이지 문구에 명칭을 쓸 때 참고하세요.</p>
   <div class="tbl"><table>
    <tr><th>항목</th><th>규칙</th><th>근거</th></tr>
    <tr><td>종류명칭</td><td>고유명칭 뒤에 종류명칭(의원·치과의원·한의원·병원·치과병원·한방병원·요양병원·정신병원·종합병원)을 붙인다. 의원급이 '병원'을 쓰거나 종류명칭을 흐리게·생략하면 위반.</td><td>의료법 제42조, 시행규칙 제40조</td></tr>
@@ -203,18 +204,6 @@ a{color:var(--lure)}
    <tr><td>외국어</td><td>명칭은 한글로 표시하고 외국어를 함께 표시할 수 있다.</td><td>시행규칙 제40조 제7호</td></tr>
    <tr><td>처분</td><td>1차 시정명령, 2차 업무정지 15일(보도 기준). 전문의로 오인하게 하면 거짓 광고로 형사처벌 가능.</td><td>행정처분 규칙</td></tr>
   </table></div>
- </div></div>
- <div class="box"><div class="box-h">간판 문구 점검기</div><div class="box-b">
-  <div class="grid2">
-   <div class="field"><label>의료기관 종류</label><select id="sgKind"><option>의원</option><option>치과의원</option><option>한의원</option><option>병원</option><option>치과병원</option><option>한방병원</option><option>요양병원</option><option>종합병원</option></select></div>
-   <div class="field"><label>간판 전체 문구</label><input type="text" id="sgText" value="스마일피부과의원 진료과목 피부과 성형외과 비만 교통사고"></div>
-   <div class="field"><label>개설자 전문과목(없으면 비움)</label><input type="text" id="sgSpec" placeholder="예: 피부과"></div>
-   <div class="field"><label>고유명칭 글자 높이(cm)</label><input type="number" id="sgNameH" value="60"></div>
-   <div class="field"><label>진료과목 글자 높이(cm)</label><input type="number" id="sgDeptH" value="40"></div>
-   <div class="field"><label>기타</label><label style="color:var(--ink)"><input type="checkbox" id="sgLogo"> 로고·심볼 표기</label><label style="color:var(--ink)"><input type="checkbox" id="sgSpecDesig"> 보건복지부 지정 전문병원</label></div>
-  </div>
-  <div class="btns"><button class="btn primary" id="sgRun">간판 점검</button></div>
-  <div id="sgOut"></div>
  </div></div>
 </section>
 
@@ -363,7 +352,7 @@ window.MEDIA = [
  {name:"소셜커머스·쿠폰",review:"매체 규모에 따라 심의",note:"수수료를 받는 공동구매·시술권 판매는 환자 유인(대법원 2018도20928).",keys:["소셜커머스"]},
  {name:"포털 배너·키워드 검색광고",review:"사전심의 필수",note:"배너와 연결 랜딩페이지를 함께 심의. 키워드에 '전문병원'을 넣어도 단속 대상.",keys:["배너","랜딩페이지","키워드광고"]},
  {name:"의료기관 자체 홈페이지",review:"원칙적으로 심의 대상 아님",note:"심의는 없어도 제56조 금지 내용은 그대로 적용. 장비·인증·경력 정보는 최신 상태로 유지(대법원 2017도45).",keys:["홈페이지"]},
- {name:"간판(명칭표시판)",review:"명칭 표시 규정 적용",note:"시행규칙 제40조~제42조. '간판·명칭' 탭 참고.",keys:["간판"]},
+ {name:"간판(명칭표시판)",review:"명칭 표시 규정 적용",note:"시행규칙 제40조~제42조. '명칭 표기' 탭 참고.",keys:["간판"]},
  {name:"원내 게시물·액자",review:"광고 아님(전파성 낮음)",note:"대법원은 원내 유리액자 약력서를 광고로 보지 않았습니다. 같은 내용을 온라인에 올리면 광고입니다.",keys:["원내 게시물","원내 상담"]},
  {name:"전화·문자 홍보",review:"광고·유인 판단",note:"불특정 다수에게 교통편의를 내세운 전화 홍보는 환자 유인(면허정지 2개월).",keys:["전화"]}
 ];
@@ -1316,25 +1305,6 @@ $('#lq').oninput=drawLaws;
 function drawMedia(){$('#mediaTbl').innerHTML='<tr><th>매체</th><th>사전심의</th><th>핵심 규칙·판례</th><th>사례</th></tr>'+MEDIA.map((m,i)=>{const n=allCases().filter(c=>(c.media||[]).some(x=>m.keys.includes(x))).length;
  return `<tr><td><b>${esc(m.name)}</b></td><td class="${/금지/.test(m.review)?'fail':/필수/.test(m.review)?'':'na'}">${esc(m.review)}</td><td>${esc(m.note)}</td><td>${n?`<a href="#" data-media="${i}">${n}건 보기</a>`:'<span class="sub">-</span>'}</td></tr>`;}).join('');}
 
-/* ===== 간판 ===== */
-function signCheck(){const kind=$('#sgKind').value,t=$('#sgText').value.trim(),spec=$('#sgSpec').value.trim(),nh=+$('#sgNameH').value,dh=+$('#sgDeptH').value;const R=[];
- const kinds=['종합병원','요양병원','정신병원','치과병원','한방병원','치과의원','한의원','병원','의원'];
- const used=kinds.find(k=>t.includes(k));
- R.push(used?[used===kind||(kind==='의원'&&used==='의원')?'pass':'fail','종류명칭',used===kind?`종류명칭 '${kind}' 표기`:`등록 종류는 '${kind}'인데 간판에 '${used}' 표기`]:['fail','종류명칭','종류명칭(의원·병원 등)이 보이지 않습니다.']);
- if(/의원$/.test(kind)&&/병원/.test(t)&&!/전문병원/.test(t))R.push(['fail','종류 혼동','의원급인데 "병원"을 표기했습니다.']);
- const depts=['내과','외과','정형외과','신경외과','성형외과','피부과','안과','이비인후과','비뇨의학과','산부인과','소아청소년과','정신건강의학과','재활의학과','마취통증의학과','영상의학과','가정의학과','신경과','흉부외과','치과','한방'];
- const contentWords=['비만','교통사고','척추','탈모','다이어트','통증','관절','임플란트','교정','미백','리프팅','보톡스','필러','도수','아토피','여드름','검진','수면','모발이식'];
- const cw=contentWords.filter(w=>t.includes(w));R.push(cw.length?['fail','표시 가능 사항',`진료과목이 아닌 진료내용 표기: ${cw.join(', ')}`]:['pass','표시 가능 사항','진료내용 단어가 없습니다.']);
- const nm=(t.match(/^[^\s]+/)||[''])[0];const inName=depts.filter(d=>nm.includes(d));
- if(inName.length&&!inName.some(d=>spec&&d.includes(spec)))R.push(['fail','명칭 속 전문과목',`명칭에 '${inName.join(', ')}'이(가) 들어 있지만 개설자 전문과목(${spec||'없음'})과 다릅니다. 전문의인 과목만 명칭에 넣을 수 있습니다.`]);
- const listed=depts.filter(d=>t.replace(nm,'').includes(d));
- if(listed.length){if(!/진료과목/.test(t))R.push(['fail','"진료과목" 표기','진료과목을 함께 쓸 때는 "진료과목" 글자를 표시해야 합니다.']);
-  const nonSpec=listed.filter(d=>!(spec&&d===spec));
-  if(nonSpec.length)R.push([dh<=nh/2?'pass':'fail','진료과목 글자 크기',`${nonSpec.join(', ')}: ${dh}cm / 고유명칭 ${nh}cm → ${dh<=nh/2?'1/2 이내':'1/2 초과(위반)'}`]);}
- if(/전문/.test(t)&&!$('#sgSpecDesig').checked)R.push(['fail','전문 명칭','"전문"이 들어 있지만 지정 전문병원이 아닙니다.']);
- if($('#sgLogo').checked)R.push(['na','로고·심볼','보건소 안내상 명칭표시판의 로고·심볼 표기는 위반 사례로 소개됩니다. 관할 보건소에 확인하세요.']);
- $('#sgOut').innerHTML='<div class="tbl"><table><tr><th>결과</th><th>항목</th><th>내용</th></tr>'+R.map(([s,k,v])=>`<tr><td class="${s}">${s==='pass'?'적합':s==='fail'?'위반 소지':'확인'}</td><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')+'</table></div>';}
-$('#sgRun').onclick=signCheck;
 
 /* ===== 전문병원 기준 ===== */
 function drawSpec(){const f=SPECIALTY.fields[+$('#spField').value];$('#spKind').textContent=`${f.kind} 분야`;$('#spOut').innerHTML='';
@@ -1386,7 +1356,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('change',e=>{const c=e.target.closest('[data-sp]');if(c){S.sp[+c.dataset.sp].on=c.checked;draw();}});
 
-initBook();drawNews();drawLaws();drawMedia();initSpec();drawChk();count();signCheck();
+initBook();drawNews();drawLaws();drawMedia();initSpec();drawChk();count();
 </script>
 </body>
 </html>
