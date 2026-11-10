@@ -1064,7 +1064,9 @@ const CAUTB=/(가짜|허위|조작된?|거짓|과장된?|광고성|대가성|검
 /* 의료 관련성: 과장·비교·효과 단정은 의료기관·의료행위·진료 결과에 대한 문장일 때만 위반 (예: "최고의 신발"은 제외) */
 const MED=/(병원|의원|치과|한의원|클리닉|센터|의료|의사|의료진|원장|전문의|교수|간호|(내|외|피부|성형|안|치|정형외|비뇨의학|비뇨기|산부인|이비인후|신경외|재활의학|가정의학|마취통증의학|소아청소년|영상의학|흉부외|한방|정신건강의학)과|수술|시술|치료|진료|검사|검진|진단|장비|기술|요법|주사|처방|약|레이저|임플란트|교정|성형|마취|상담|예약|효과|결과|회복|부작용|환자|질환|질병|증상|통증|관절|척추|디스크|피부|리프팅|보톡스|필러|라식|라섹|시력|탈모|모발|비만|다이어트|이식|봉합|내시경|가격|비용|할인|이벤트|혜택|케어|프로그램|노하우|실력|경력|만족|안티에이징|미용|건강|재발|완치|개선|정맥류|혈관|실손|보험|복귀|선택지)/;
 const NONMED=/(?<![가-힣])(신발|운동화|구두|깔창|옷|바지|가방|음식|요리|맛집|영화|드라마|책|노래|음악|여행|커피|와인|자동차|휴대폰|스마트폰|가전제품|아파트|선물|날씨|게임|선수|경기)(?=[이가은는을를의도에과와로만일]|\s|$|[.,!?'’”])/;
-function medRel(t,st,en){const a=sentStart(t,st),b=sentEnd(t,en),sen=t.slice(a,b);if(MED.test(sen))return true;if(NONMED.test(sen))return false;const pa=sentStart(t,Math.max(0,a-1)),nb=sentEnd(t,Math.min(t.length,b+1));const pv=t.slice(pa,a),nx=t.slice(b,nb);if(!/[가-힣A-Za-z]/.test(pv+nx))return true;return MED.test(pv)||MED.test(nx);}
+const SELFAD=/(본원|저희|우리\s?(병원|의원|치과|한의원|클리닉)|당\s?(병원|의원|원)|예약|상담\s?(문의|신청|전화|예약)|이벤트|할인|전화|☎|카톡|오시는\s?길|내원\s?(시|하시)|방문\s?(시|하시))/;
+const MEDCORE=/(병원|의원|치과|한의원|클리닉|의료진|원장|전문의|수술|시술|치료|진료|장비|요법|주사|레이저|임플란트|교정|성형|리프팅|보톡스|필러|라식|라섹|내시경|검진)/;
+function medRel(t,st,en){const a=sentStart(t,st),b=sentEnd(t,en),sen=t.slice(a,b);if(NONMED.test(' '+t.slice(en,en+8).replace(/^[\s'‘“"]+/,'').split(/\s/)[0]))return false;if(MED.test(sen))return true;if(NONMED.test(sen))return false;const pa=sentStart(t,Math.max(0,a-1)),nb=sentEnd(t,Math.min(t.length,b+1));const pv=t.slice(pa,a),nx=t.slice(b,nb);if(!/[가-힣A-Za-z]/.test(pv+nx))return true;return MED.test(pv)||MED.test(nx);}
 /* 글 성격 판단: 광고 비판·소비자 경고 기사/정보글 신호 */
 const CRITCUE=/(현혹(되지|돼선|되면|될\s?수)|주의(해야|하세요|가\s?필요|할\s?필요)|소비자(들)?(의|는|가|에게)|피해(를|가|사례|구제)|유도(한다|하는|했|해\s?왔)|허위|과장\s?광고|불법\s?(광고|의료)|의료법\s?위반|적발|지적(했|한다|이)|경계(해야|할)|속지\s?(말|않)|따져\s?봐야|전문가들?은|보건\s?당국|보건소|[가-힣]{2,3}\s?기자|업계에\s?따르면|에\s?따르면|무분별한|상술|미끼)/g;
 function docKind(t){const n=(t.match(CRITCUE)||[]).length;return {critical:n>=3,score:n};}
@@ -1208,7 +1210,7 @@ function analyze(t){
   if(r.ws&&/[가-힣]$/.test(b)&&!(r.wsOK&&r.wsOK.test(b)))continue;
   if(r.skipA&&r.skipA.test(a))continue; if(r.skipB&&r.skipB.test(b))continue;
   if(r.neg&&(NEG.test(a.split(/(하여|해서|하고|하며|으며|이며|지만|는데|,)/)[0])||SNEG.test(t.slice(en,sentEnd(t,en)).split(/(하여|해서|하고|하며|으며|이며|지만|는데|,)/)[0].slice(0,40))||GNEG.test(t.slice(en,sentEnd(t,en)))))continue;
-  {const rest=t.slice(en,sentEnd(t,en)),pre=t.slice(Math.max(0,sentStart(t,st)),st);if(CAUT.test(rest)||CAUTB.test(pre))continue;if(r.ctx&&r.ctx(s,pre,rest)==='skip')continue;if((r.type==='exag'||r.type==='compare'||r.cat==='효과 단정')&&!medRel(t,st,en))continue;}
+  {const rest=t.slice(en,sentEnd(t,en)),pre=t.slice(Math.max(0,sentStart(t,st)),st);if(CAUT.test(rest)||CAUTB.test(pre))continue;if(r.ctx&&r.ctx(s,pre,rest)==='skip')continue;if((r.type==='exag'||r.type==='compare'||r.cat==='효과 단정')&&(!medRel(t,st,en)||(!SELFAD.test(t)&&t.length>300&&!MEDCORE.test(t.slice(sentStart(t,st),sentEnd(t,en))))))continue;}
   if(r.need&&!r.need.test(b+s+a.slice(0,16)))continue;
   if(r.dynA&&r.dynA(s,b,a)==='skip')continue;
   let over=null; if(r.dyn){const d=r.dyn(s,b,a);if(d==='skip')continue;if(d&&typeof d==='object')over=d;}
