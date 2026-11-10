@@ -1066,12 +1066,12 @@ const sentStart=(t,i)=>{const h=t.slice(0,i);let k=-1;for(const c of '.!?。\n')
 const OUTCOME=/(효과|개선|좋아|낫|완치|치료|해결|결과|변화|성공|만족|예뻐|젊어|빠지|사라|회복|달라|안전|생착|유지|보장|교정|탄력|날씬|감량|재발)/;
 const RULES=[
  {type:'exag',cat:'근거 없는 최상급 표현',law:L[8],re:/((국내|업계|지역|강남|세계|대한민국|전국|아시아)\s?)?(최고|최상|최대|최첨단|최초|최저\s?가?|최다)(의|급|수준|로|인|비용)?/g,
-  ws:true,wsOK:/(역대|단연|자타공인|명실상부)$/,skipA:/^\s?(\d|한|령|치로|내원|방문|진료|상담|진단|검사|1회|혈압|체온|한도)/,skipB:/(혈압|체온|기온)\s?$/,
+  ws:true,wsOK:/(역대|단연|자타공인|명실상부)$/,skipA:/^\s?(\d|한|령|치로|내원|방문|진료|상담|진단|검사|1회|혈압|체온|한도|(의\s?)?(화두|관심사|관심|관심거리|고민|걱정|이슈|과제|숙제|키워드|트렌드|명절|행사|축제|변수|원인|위험\s?요인|적(은|이|으로)|피해|수혜|난제|화제|쟁점|목표|기온|풍속|강수))/,skipB:/(혈압|체온|기온)\s?$/,
   why:'객관적으로 입증할 수 없는 최상급 표현은 과장 광고입니다. 복지부 유권해석도 "최고·최대·국내 최초"를 대표 사례로 듭니다.',tip:'삭제하거나 사실에 근거한 설명으로 바꾸세요.',opts:m=>/(최고|최상|최첨단)(의|인)$/.test(m)?['','체계적인']:['']},
  {type:'compare',cat:'우월성 표현',law:L[4],re:/(유일(한|하게)?|단\s?하나뿐인|오직\s?(저희|우리|본원)(만|뿐)|no\.?\s?1|넘버\s?원|만족도\s?1위|지역\s?1위|업계\s?1위|1등(?!급))/gi,ws:true,
   why:'다른 의료기관보다 우월하다는 인상을 주는 표현은 비교 광고로 금지됩니다.',tip:'자체 진료 방식을 사실 그대로 설명하세요.',opts:()=>['']},
  {type:'exag',cat:'현혹 표현',law:L[8],re:/(명품|기적(의|같은|적인)?|마법(같은|의)?|완벽(한|하게|히)?|드라마틱(한|하게)?|끝판왕|종결자|신의\s?손|특급|획기적(인|으로)?)/g,ws:true,
-  skipA:/^\s?(소독|멸균|위생|예약|준비|사후\s?관리|호텔)/,why:'효과를 부풀리거나 현혹하는 감성적 과장 표현으로, 심의기구의 대표 금지어입니다.',tip:'삭제하거나 진료 과정을 구체적으로 서술하세요.',opts:m=>/^완벽(한)?$/.test(m)?['','꼼꼼한']:/^완벽(하게|히)$/.test(m)?['','꼼꼼하게']:/^드라마틱(한)?$/.test(m)?['','자연스러운']:/^드라마틱하게$/.test(m)?['','자연스럽게']:['']},
+  skipA:/^\s?(소독|멸균|위생|예약|준비|사후\s?관리|호텔)/,why:'효과를 부풀리거나 현혹하는 감성적 과장 표현으로, 심의기구의 대표 금지어입니다.',tip:'삭제하거나 진료 과정을 구체적으로 서술하세요.',opts:(m,a='')=>/^완벽(한)?$/.test(m)?(/^\s?(부합|맞|일치|적합|대응|반영|조율|조정|설계|분석|측정|재현)/.test(a)||/^\s?맞춤/.test(a)?['','세밀한','정밀한']:['','꼼꼼한']):/^완벽(하게|히)$/.test(m)?(/^\s?(부합|맞|일치|적합|대응|반영|조율|조정|설계|분석|측정|재현)/.test(a)?['','세밀하게','정밀하게']:['','꼼꼼하게']):/^드라마틱(한)?$/.test(m)?['','자연스러운']:/^드라마틱하게$/.test(m)?['','자연스럽게']:['']},
  {type:'effect',cat:'효과 지속 단정',law:L[8],re:/(영구적(인|으로)?|평생\s?(수술\s?|시술\s?)?(유지|지속|효과|보장|보증)(됩니다|되는|돼요|합니다|하는)?|\d+\s?년\s?이상\s?(유지|지속)|반영구적\s?효과|재발\s?(없는|없이|zero|제로)|재발률\s?0\s?%?)/gi,
   neg:true,why:'효과가 영구적이거나 재발하지 않는다고 단정하면 치료 효과를 오인하게 합니다(대법원 2017도16338 "평생 수술 보증" 유죄).',tip:'개인차가 있다는 점을 밝히세요.',
   opts:m=>/보증|보장/.test(m)?['','사후 관리 안내가 있는']:/재발/.test(m)?['재발 관리에 신경 쓰는','']:/(됩니다|돼요|합니다)$/.test(m)?['개인에 따라 유지 기간이 다릅니다']:/(되는|하는)$/.test(m)?['개인에 따라 유지 기간이 다른']:['개인차가 있는','']},
@@ -1191,7 +1191,7 @@ function analyze(t){
   all.push({start:st,end:en,text:s,rule:r,why:(over&&over.why)||r.why,sev:(over&&over.sev)||'mid'});
  }});
  all.sort((x,y)=>x.start-y.start||(y.end-y.start)-(x.end-x.start));
- const hits=[];let last=-1;for(const h of all)if(h.start>=last){h.opts=h.rule.opts(h.text);h.choice=h.opts.length&&h.sev!=='low'?0:-1;hits.push(h);last=h.end;}
+ const hits=[];let last=-1;for(const h of all)if(h.start>=last){h.opts=h.rule.opts(h.text,t.slice(h.end,h.end+20));h.choice=h.opts.length&&h.sev!=='low'?0:-1;hits.push(h);last=h.end;}
  const sents=sentences(t);hits.forEach(h=>{const i=sents.findIndex(([s,e])=>h.start>=s&&h.start<e);h.sn=i+1;h.sr=sents[i]||[0,t.length];});
  // 맞춤법
  const sp=[];if($('#optSpell').checked){SPELL.slice().sort((x,y)=>y[0].length-x[0].length).forEach(([w,r,why])=>{const spacing=/띄어쓰기/.test(why);let i=t.indexOf(w);while(i>=0){const e=i+w.length;const pv=t[i-1]||'',nx=t.slice(e,e+2);if((!spacing&&/[가-힣]/.test(pv))||(/수$/.test(w)&&/^록/.test(nx))){i=t.indexOf(w,e);continue;}if(!hits.some(h=>i<h.end&&e>h.start)&&!sp.some(x=>i<x.end&&e>x.start))sp.push({start:i,end:e,text:w,rep:r,why,on:true});i=t.indexOf(w,e);}});}
