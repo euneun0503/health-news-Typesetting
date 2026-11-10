@@ -21,5 +21,8 @@ def embed(html, name):
 html = open(INDEX, encoding="utf-8").read()
 for n in ("reference.js", "cases.js"):
     html = embed(html, n)
+import datetime
+now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).strftime("%m-%d %H:%M")
+html = re.sub(r'<span id="ver">[^<]*</span>', f'<span id="ver">업데이트 {now}</span>', html, count=1)
 open(INDEX, "w", encoding="utf-8").write(html)
 print("embedded reference.js, cases.js")
