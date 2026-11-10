@@ -1056,7 +1056,11 @@ const josa=(w,a,b)=>{const c=w.charCodeAt(w.length-1);return w+(c>=0xAC00&&c<=0x
  neg  : 뒤에 부정·완화 표현이 오면 위반 아님(예: "부작용이 없는 것은 아닙니다") */
 const NEG=/^.{0,14}?(것은\s?아니|것이\s?아니|지는?\s?않|지\s?않|않습니다|아닙니다|어렵|힘듭|힘들|수\s?없|않을\s?수|지\s?확인|는지|지\s?여부|지\s?점검|다고\s?(할|말할)\s?수\s?없)/;
 const SNEG=/(지\s?않습니다|지\s?않아요|지\s?않으며|하지\s?않|받지\s?않|게시하지|운영하지|금지(합니다|하고)|하지\s?마(세요|십시오)|않도록)/;
+/* 경계·비판 문맥: 광고가 아니라 해당 표현을 의심하거나 주의시키는 문장 (예: "치료 후기를 검증해볼 필요가 있다", "최저비용 검색에 의존하기보다는") */
+const CAUT=/^.{0,24}?((을|를|은|는|이|가|만)?\s?(검증|의심|조심|경계|맹신|따져\s?보|가려\s?내|걸러\s?내)|에\s?(만\s?)?(의존|기대|현혹|속지|속아|속는|휘둘리)|보다는|보다\s?(먼저|중요)|만\s?(보고|믿고|믿지|따지|좇)|(을|를)?\s?피하(세요|는\s?것|시)|에\s?주의|을?\s?주의(하|해|가)|는\s?(위험|함정|오해))/;
+const CAUTB=/(가짜|허위|조작된?|거짓|과장된?|광고성|대가성|검증되지\s?않은|무분별한|맹목적인?|섣부른)\s?$/;
 const sentEnd=(t,i)=>{const m=/[.!?。\n]/.exec(t.slice(i));return m?i+m.index:t.length;};
+const sentStart=(t,i)=>{const h=t.slice(0,i);let k=-1;for(const c of '.!?。\n'){k=Math.max(k,h.lastIndexOf(c));}return k+1;};
 const OUTCOME=/(효과|개선|좋아|낫|완치|치료|해결|결과|변화|성공|만족|예뻐|젊어|빠지|사라|회복|달라|안전|생착|유지|보장|교정|탄력|날씬|감량|재발)/;
 const RULES=[
  {type:'exag',cat:'근거 없는 최상급 표현',law:L[8],re:/((국내|업계|지역|강남|세계|대한민국|전국|아시아)\s?)?(최고|최상|최대|최첨단|최초|최저\s?가?|최다)(의|급|수준|로|인|비용)?/g,
@@ -1178,6 +1182,7 @@ function analyze(t){
   if(r.ws&&/[가-힣]$/.test(b)&&!(r.wsOK&&r.wsOK.test(b)))continue;
   if(r.skipA&&r.skipA.test(a))continue; if(r.skipB&&r.skipB.test(b))continue;
   if(r.neg&&(NEG.test(a)||SNEG.test(t.slice(en,sentEnd(t,en)).slice(0,40))))continue;
+  {const rest=t.slice(en,sentEnd(t,en)),pre=t.slice(Math.max(0,sentStart(t,st)),st);if(CAUT.test(rest)||CAUTB.test(pre))continue;}
   if(r.need&&!r.need.test(b+s+a.slice(0,16)))continue;
   if(r.dynA&&r.dynA(s,b,a)==='skip')continue;
   let over=null; if(r.dyn){const d=r.dyn(s,b,a);if(d==='skip')continue;if(d&&typeof d==='object')over=d;}
