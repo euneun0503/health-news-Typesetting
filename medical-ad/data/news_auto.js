@@ -10,6 +10,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "환자 800명 알선해 17억 ‘페이백’… 서울 강남 병원 브로커 덜미",
+"url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUmRKbk1kMXZzUUNVeWdfRm5uVlQ0T0NTTnE0S2JncXNacmpQTG1BTFNEZzIxU1ZwNFByRkxPM0t3Y21WdU5JRFRDeVM4TlptTjRLTXJaVGdlcTB5bmRXMEZ0S0Rjd1VZVFdkUnFscEp6YTg2S21oYlVrUHQwemV3NzNJMHJVTjlhY0E2UnJ1YWo?oc=5",
+"press": "조선일보",
+"date": "2026-11-10",
+"types": [
+"lure"
+]
+},
+{
 "title": "복지부, 전문병원 지정 마크 제작·배포",
 "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNb2VmUzIxZ044N3Q4VDhIMmZGVEliRk9KSjV5ZE1MTVlSTmI2ekJ1R2xBMEZHb0xFTVpONnVFdjAtTDJwQVYyN0ctdVB4WjdnZmoweXVsbGxKTWtJRHNwc09wbzJBQnRjaXdaaWJ5SF9DalBRSEJ4cjFBQkVYWUZKQ3hKNTRjaGdsM09hcUlaQ2tnZ1VlLS1LOEQ4dHBSVnZSYmpnRUlCeXlXMkZ1alFHWmhrLWF3d2dKMnY3a0gwb1A1dmJt?oc=5",
 "press": "후생신보",
@@ -205,6 +214,16 @@ window.NEWS_AUTO = [
 "date": "2026-09-21",
 "types": [
 "effect"
+]
+},
+{
+"title": "남인순 의원 \"피부과 전문의 사칭·불법허위 광고, 제재는 단 4% 불과\"",
+"url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1ya0F0WVo2NnkyOVc2Qk5TekNBR2xlTnVRZFk2d3RSVUlobW53a2dJSVpRN21YMjJNRWRycGx3VXNFRi1aM0dFdk92V0FybkRhVHEtY3c4dS13cC03NGVmTFlQMGFwX2ZwZDJv?oc=5",
+"press": "히트뉴스",
+"date": "2026-09-21",
+"types": [
+"exag",
+"title"
 ]
 },
 {
@@ -637,6 +656,15 @@ window.NEWS_AUTO = [
 "date": "2026-05-27",
 "types": [
 "exag"
+]
+},
+{
+"title": "간판 ‘진료과목’도 전문의만…복지부, 내년 시행 추진",
+"url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBUY25TOThvZXotT1BITHBMTzdfRHplb3RJU3h6ZFNEY2toWFZkeXdXa0RKLWNhTEZ1Q245V1V1Y0pNMUxDX2FCQWVrdktUS1JRYXVUamZTaDhzWlZreUNDV2RoWjhyUDFDX0FHdmdoc9IBc0FVX3lxTE5SeDZIdEFWZlA4NkxIVnhJMWhjeW1hTE5NQ1VmSllfc3pQQjhtV2R4VGlZZEdmeXJpS3VMa1NNbnR3UFlrQTNQZHpiWmc5UUdaV2EyWW9aa1ZSUU51azg0ak9vWDFoNlNuRmVvNzFBZWdkN1k?oc=5",
+"press": "청년의사",
+"date": "2026-04-17",
+"types": [
+"title"
 ]
 },
 {
@@ -1967,6 +1995,13 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "Q&A로 보는 의료광고 시 주요 체크 리스트",
+"url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE84WHZacDlIU2UtMFRGcVVaSDhZUTFTWEIycEhBbG1qNGNvOEtzaTFFMWI2U1VCakpWVDFFWWNHa3oxYjdEUVhkNFBZclppdWZMd0xxS3RwWHU4TC1wMnBfck0tbWpxZw?oc=5",
+"press": "치과신문",
+"date": "2020-07-13",
+"types": []
+},
+{
 "title": "치과 불법의료광고 사법기관 고발 강력 추진",
 "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9kdlB5TDJmeU9CX1VBQWRJVXF5SFIzaHYxUzNGTXF6elhaLTJkRVR1MmpXNFpKTTNOZ1RMVFJZVVpMTjJ5UnhYRVZCUUVyX2xyc05QYjI0RWlDUWVESjhpLXh1RnFsSTc3?oc=5",
 "press": "치의신보",
@@ -2687,6 +2722,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "'교통사고 전문병원' 표방 한의원 '행정처분'",
+"url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1NaWdTazhjSXd4VzlyVXBYakhXS3gwVXhvcUlEaDBvMFJnQlVqOUViNHpJWjlKX1RPNjhNOElOOUNRMVpqenExdmY1SWYzcW1oX1hUdlZESWptSS13b3FndFBsdUZySFdiTDVWZGNIdlZJUQ?oc=5",
+"press": "의협신문",
+"date": "2016-11-24",
+"types": [
+"title"
+]
+},
+{
 "title": "“5시 이전 79만원?” 의료광고 격이 떨어진다",
 "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5ROU1HSzRrOGJtem1XUEY1bnhpNTNTNnJ3aVlzWV9RVWlJVjByQjM5aWI2Q3lGc1BkVnNZOS1tRWlMQ3RyOC1oVmszLTJkVkhFcDk5a0FTY1g4NFA4OTNFdVJHR3RNWFk?oc=5",
 "press": "치의신보",
@@ -2756,6 +2800,13 @@ window.NEWS_AUTO = [
 "types": [
 "title"
 ]
+},
+{
+"title": "불법 의료광고 근절위해 민·관 '협력'",
+"url": "https://news.google.com/rss/articles/CBMickFVX3lxTE5EN3VPQ2JyYTlFU29iS19Yc2x5Mk1BdFV2S192cnVNbnRsQmNYbE43bEVhbU9NSXFHN0JwWkUweE5hRnJvWlh0cmlQcTIzYUJaLUdyQk10YnpNbWpHSk1JeHQ1N1dOR0k2SWI1YnU5d2Judw?oc=5",
+"press": "의협신문",
+"date": "2016-01-25",
+"types": []
 },
 {
 "title": "사전심의 폐기로 길 잃은 의료광고…어디로?",
@@ -2838,6 +2889,20 @@ window.NEWS_AUTO = [
 "types": [
 "title"
 ]
+},
+{
+"title": "편강한의원, 무허가 약광고? 극장 등에 '약장사 논란'",
+"url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE95aHlHWWtpOEJHMUJBRW9kQ2psVVJjVzA5OGZucGFoS2VVTzRNWC1xQS12NkNjZjMycEpNSXpsazZ0MlVDcUlnNEp6MTBFNHBKa1FZWGd2MTdRbjNKdjN2VjNlTjA5cXdZdGo3TnlRTTNkdHFFelFsbUQtONIBgAFBVV95cUxQNDNVeEp0VmxHNVR5T0RRWWFDWGQ1X2diQ001T3ZnS3N1S2NvU0tpaHB0S1lzXzB4OWVGdnE1eDNtR2g3MVRkNHY4alMydW1Vbl9Db05aemxzbklZeW45R2g2bTRLR0VKQTlpd0JRTG9nNGVRWVJNOWhhWDh4VDJRMQ?oc=5",
+"press": "뉴데일리",
+"date": "2014-10-06",
+"types": []
+},
+{
+"title": "불법 의료광고 3회 적발 즉시 '행정고발'",
+"url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9XZUg0ZlM2d0F1ZHJJaWJoN0pRSFVLWWcwNVpRQzJ0V09yZ1pONnpMUndLNUJydXpvTGRwb1I3U1lyWnkyejBUQ1dRemJnSlo4d0FacWZRSS1DcHRTTTFoSzNpSmw1TDRGQ0xpR3BVdXY?oc=5",
+"press": "의협신문",
+"date": "2014-10-02",
+"types": []
 },
 {
 "title": "[오늘의 현장] 대책없는 중국 성형외과 허위·과장 광고",
