@@ -609,6 +609,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "‘내돈내산’인 줄 알았는데…성형외과 3곳, ‘뒷광고’로 공정위 제재",
+"url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE55dzI2T1FNMzhLSFVYNVRqWmFsOXJoWWVnZEN3amMxNlNIYnNKeTFxQ29qS2p3Q3ZvQk5paDl6US1CSElidTVxN2VLLTlyUXUxU2VLblJzTHfSAVRBVV95cUxNeW1sRFBEbmFGamg5V3FBWHlucmtzeDZITzJSYmtSZ0cwWExleVJnTG1lcDdaNFJMczJnZzBhOHVwVEpXTDNCM3ZBbDZEVmdqeGtlNzk?oc=5",
+"press": "세계일보",
+"date": "2026-07-12",
+"types": [
+"effect"
+]
+},
+{
 "title": "수술 후기인 줄 알았는데…공정위, 성형외과 ‘뒷광고’ 제재",
 "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA1TDVVWnhlLV9vSGRRQkZPVVEwVnREbjNPOTlQbVJaOF94TFNNRUNOb3doWW5EbFpLUzBTaEstbzcxSWdGSTF1T0ZwcEpnM3RmT0dpN0NB?oc=5",
 "press": "지디넷코리아",
@@ -929,6 +938,13 @@ window.NEWS_AUTO = [
 "title": "“불법 의료광고와 초저수가 덤핑 치과, 그 해결책은?”",
 "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1VVDlWY2RsZzM5UURwcElkNTZJT2ZFdXZUWU1KWVZDZ2RwanEwZG9wZnNVcW5GQnBVSjlKbVh1dVhqbHgzRTZVemYwUjhmd0NBY0p0NWh4V0JfbU9zaEk5NQ?oc=5",
 "press": "치과신문",
+"date": "2025-10-01",
+"types": []
+},
+{
+"title": "[칼럼] SNS 의료광고, 보호인가 검열인가",
+"url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1wUXVNRjVBZ1kwbFJtR2tqZGpIV1VwRjAteHhOX2pGZ1hKZ3dUUGlnNnNzdkRJU0RZZkJzUFJORUMzTVExSlBIMTMxYmpWTGVFT1I1UTBWdEtxTEFvd3p6UnJSZTRjQVB4T0FRM1NINNIBc0FVX3lxTFBVSVdETUhXeWJvdFZBaktqREpEeEMzbENKU3NpQVEzQzJGWmVRcF82VWxfcFRDbGwzcC1iVG1peDdVdTV2cmtCRW1XVEhOX3Y3U2wtY0lRZGFfM0poUHJPQkpzT3BnU0V1LWx3WExxZ3EwSzg?oc=5",
+"press": "청년의사",
 "date": "2025-10-01",
 "types": []
 },
@@ -1585,6 +1601,15 @@ window.NEWS_AUTO = [
 "press": "치의신보",
 "date": "2024-01-02",
 "types": []
+},
+{
+"title": "효성병원·뿌리병원…충북 병원 6개소, 5기 1차년도 전문병원 지정",
+"url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9fX1EyZGxyVF9WbkVSQVdrMy14SDF2dVF2X2dmWDNGX2doQ1Z3Sk4tcjVMNjNoRms5UkdRbEl4WTcxY25TazFqMjZpNk14VjN4NnlkZW1ZRkZ0REphQzh0dzBfX1QxMlFpaGRBSEZrR2YzWFl2aEdHb9IBeEFVX3lxTE9fX1EyZGxyVF9WbkVSQVdrMy14SDF2dVF2X2dmWDNGX2doQ1Z3Sk4tcjVMNjNoRms5UkdRbEl4WTcxY25TazFqMjZpNk14VjN4NnlkZW1ZRkZ0REphQzh0dzBfX1QxMlFpaGRBSEZrR2YzWFl2aEdHbw?oc=5",
+"press": "뉴시스",
+"date": "2023-12-29",
+"types": [
+"title"
+]
 },
 {
 "title": "치협 의료광고심의위, 불법의료광고 치과 ‘철퇴’",
@@ -2268,6 +2293,13 @@ window.NEWS_AUTO = [
 "title": "보건복지부·의협 의광심, 불법 의료광고 집중 점검",
 "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBKV1JxOHBFanNJbndvbm5HaU1FbDFJWDRoSjBXZXV2cHBHU2tSb1pXTXZHbnN6alJMRkxOZUc2aGR4b0NmYklRM0ZXVVo3UXZtLTVVdjdJQlZKalVCYlpPdnZTYWVDTjhfYmY4aQ?oc=5",
 "press": "의협신문",
+"date": "2020-01-17",
+"types": []
+},
+{
+"title": "'성형하면 보톡스 공짜' 등 불법 의료광고 집중점검",
+"url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1YQmxDVXoyVGtQVTI2bjJnSlR2V3Z1cTlhaGZvNWRiTzNzdzUyU3Z0RFRWUWVJZGpnSnJiNDhjUDlqNVBhX28yRWdvYnRRTzNyNGhIazN6TVBKekoy?oc=5",
+"press": "데일리팜",
 "date": "2020-01-17",
 "types": []
 },
@@ -3413,6 +3445,15 @@ window.NEWS_AUTO = [
 "date": "2013-01-31",
 "types": [
 "title"
+]
+},
+{
+"title": "아이디병원, 과장광고로 공정위에 '철퇴'",
+"url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5hVTV5end6NnZRUllLenpRMlB2OFBrWTQ1S1JNWWtQc2lENnN1THVqM0lhVDRwVjZIeGluRkxsSUhFdU1STkpuTzduclZ3ZTlEUG8talh6NW1tTzNsakNEbDlyakswSHd1NWc?oc=5",
+"press": "컨슈머치",
+"date": "2013-01-31",
+"types": [
+"exag"
 ]
 },
 {
