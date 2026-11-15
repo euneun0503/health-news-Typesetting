@@ -1,6 +1,24 @@
 /* 자동 생성: collector/collect_news.py — 직접 수정하지 마세요 */
 window.NEWS_AUTO = [
 {
+"title": "가비, 치아 비방 광고에 \"조롱 괜찮지만 의사가 그러면 안 돼\"",
+"url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1lblBneUI2MWVQUElFT1BJOFdfcGpfYTU0cDRydVpXODVsbDY4ZXdBRGNPckJtRWJnbGZnLWlaOFh6Mk12aDFleVpjcWk1dmtRbzVYY3RsSDdPSEtnRUwtSA?oc=5",
+"press": "iMBC 연예",
+"date": "2026-11-14",
+"types": [
+"compare"
+]
+},
+{
+"title": "성광의료재단 이사장(차움의원·차움한의원 개설자) 불법 의료광고, 환자 유인혐의로 고발, 차움의원 차움한의원 업무정처분",
+"url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOcTJWczNKZFJsYlFJNktrdTB0WXg0OGxBWnVwTk9JbnN0Zk1OU2ZzNVQ1ZlFEbUpxQ3JNRnBWMzdBTGtoeXpuNnEtY0xxSTNuM0xfOUp3a0s1dEpGUWd6LXpyNGdtS3ZqTW5SRGQ0SUx2RjBMNVk0UGI5b21OaDc0c19jQQ?oc=5",
+"press": "서울Pn",
+"date": "2026-11-14",
+"types": [
+"lure"
+]
+},
+{
 "title": "강남구치과의사회 확대이사회, 불법의료광고 등 치과계 현안 논의",
 "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5nYmFMaExZelE5ZF9SZmt5YkVSTmxQMURsTTBHRlVZSmxfUEx5UG9OTmJYbW9KdE9SY1BocHA3TGQwMDhqakk2RHVPOUhHQnVmdTJFQ1BsaElEWnFDSHZ5MUtUUnF2dw?oc=5",
 "press": "치과신문",
@@ -183,6 +201,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "\"대형병원 당일진료 가능\"…보험사 헬스케어 서비스 과장광고 논란",
+"url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9yNWNwS1hFOXl6YzQ0NEVyUkp0UC1DYVVXZXA3LWg3S19aNkFfYWNDdTd1akVxeUFUT3RleUEzX3l6SjlnSDQzV1FEY3pHV3dBeTBaaFA0ZnFBZzRHUl9uR3B4bE5qcGJjbHlCZXcwc9IBc0FVX3lxTFBFMUowRElzSHJoTDZhWmNmUEZwQzl0NHBXTkpDRVNHMkxKRkZrcklNNVQ4OVhoc1BIVWI5YnJHS1dHVmVsbmVNRlVtNXZvdzRJWUtVcC1rZmZuRXU4MWJkVlZvb2wtVm1sbVlDZV84YUVrVVU?oc=5",
+"press": "청년의사",
+"date": "2026-10-08",
+"types": [
+"exag"
+]
+},
+{
 "title": "[단독] ‘임산부 왁싱’도 전문병원? 간판만 믿고 갔다가...‘전문병원’ 행세 적발만 56건",
 "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNbnE1ZTlTcXVnaG0xdkhaY3pnV1AwNlc4bHcxWWhvdUl4ajAwNGtVOHI3bHIxUGtmU0hramR5aW1wa3NFN3J1aEFoOGpXTWZLM1o4UDhDWF85SkNIelYtNnlnS1loQWhFZ2g0aU5ySGhtX1RTZEpHTEw4TzVKU2NOVjV6WWtkU1hvT2VobThsMlVBb2V3RnVj0gGrAUFVX3lxTE1FRmw2VEhvYzFlZS1WMGZhZ3I2cmRMWmVWdVcyT3BoTHBUM0tVWUcybGNjTVRuemExR3ZxYnJMM0phN2hESjV6NUR2dmd2R1FoWlJMZjB1bzdwZ2xuNmpCVU82RGszV0hqWE5wMHVPN0NDRG5BYUZrZmkzczBIR2FrRzhubDduVGUyY1VQMDV5cTlqSDluVFJDMnU4R1dpOXV3TXhtUGxEODhaTQ?oc=5",
 "press": "Chosunbiz",
@@ -312,6 +339,13 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "인천 불법 의료광고 민원 406건… 제재는 단 5건",
+"url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBaM2o5MnlmOHhoaHhXUk9TXzhCM2hNWXBXYkw1b1NablZXaWJTd3p6NTlDTElCNXljUUtzRU05Q2thM0dCQ3lsVlR5aEpPajZ5Z2c?oc=5",
+"press": "경인일보",
+"date": "2026-09-15",
+"types": []
+},
+{
 "title": "[법률칼럼] 의료광고 관련 규제(2)",
 "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE81TFozeENMZUpiMHRwRVQ5T083R2pKLTdLVTBiVXJxYVc0M3FpTndVblU3ZzJHTkRrZ3ozd1VTcmQ3X0sxZm9EeFJfZ2tlcWpNSXQ5SmdLMXZiZ2JPRUNobTJDbzVzdw?oc=5",
 "press": "치과신문",
@@ -330,6 +364,13 @@ window.NEWS_AUTO = [
 "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE44TWtqZEZ2bFZHcUZFQkVrMHdlYl8taDdWRXdhV19hNjYwUVY1dEw1V0E1aHlmTWNHLWVZN1lheV83TWZzWS00VzdTODFaSEFOTHfSAVNBVV95cUxNLUV5SmFSR1FKa0hNRjBrWlhsb3JIdHdBRjhZYUN3bkJObHR6OTh2XzJUNWxsLWY1YWFHM3BPcXNUeVlqNjZqVGJFc244NDd4SjlOOA?oc=5",
 "press": "서울경제",
 "date": "2026-09-09",
+"types": []
+},
+{
+"title": "블루엠텍, 블루팜코리아서 병의원 엘리베이터 광고 서비스",
+"url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5qYnlpcmIyTmdfbnlGQXZXNGthX2k1elBIRHd0ZGFKLTdNcUoyTnZQVjh4cnNYOVZDQmFsb2o5SVNwWl9GbXc1QUdaWWl6VnEtSENJd0tn?oc=5",
+"press": "데일리팜",
+"date": "2026-09-08",
 "types": []
 },
 {
@@ -618,6 +659,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "수술비 깎아주고 뒷광고…공정위, 뷰·에이비·디에이 성형외과 제재",
+"url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBObXNZMkNOTS1DNWU1R0ZIaU1HV0M0THJkdEJ4aFRSZmUzNFNXMW1UOTNPS1NtVEcyNFhwdEc3WGxwZmZPMERJMEdmdm1TaWtFeWhCWW5hNlVVMGFtQlcxUTU3NWZOeHpp0gFrQVVfeXFMUHh3SFpxVU1SQzJwRUxUeTBEc01pOGtCeEJiVVA2bFFpdnFIMjRoNHZELXZlZ2dPX1dEWVpEYXFEaW5IVm80RkhGbVA4N2QyanFfU0l0UHdseUVKa1RqMUtFZ0oybmVvbUdOOTA?oc=5",
+"press": "경제투데이",
+"date": "2026-07-12",
+"types": [
+"effect"
+]
+},
+{
 "title": "수술 후기인 줄 알았는데…공정위, 성형외과 ‘뒷광고’ 제재",
 "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA1TDVVWnhlLV9vSGRRQkZPVVEwVnREbjNPOTlQbVJaOF94TFNNRUNOb3doWW5EbFpLUzBTaEstbzcxSWdGSTF1T0ZwcEpnM3RmT0dpN0NB?oc=5",
 "press": "지디넷코리아",
@@ -664,6 +714,13 @@ window.NEWS_AUTO = [
 "title": "AI 가짜 의사 내세워 \"젊어진다\" 광고‥81억 원어치 팔렸다",
 "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE15NzhxaUZGV09lY25peWxwVDBlSXdQMVNia0F5MHNFay1QYWZWTnJ1QmhuakdqanJ4aXdfSGlNOEVZMm1QZ1FTYUNqTHRTb2NHZ0drZVVFVEUzTjJ1a1NHSE84Y24zekt1cWwyYWp0a3VjOUdfbWpOctIBeEFVX3lxTFBxbVdfbkhOZWgydkRoRy14Mi0wdEtQYnhDSnNoNVlxVlJlSVlzbmgzbUJUTkV0WnYzRE92VlRGNUpxTHBXdmNfNk52WDRnejhuOWlQLTVIcXJQd1Q0eEh6aENHVW8teUkzb3IzckN5bkFXajV2eXFRMg?oc=5",
 "press": "MBC 뉴스",
+"date": "2026-06-10",
+"types": []
+},
+{
+"title": "치과 리뷰·광고·노무 ‘All in 원장’…진료 밖 피로 ‘과중’",
+"url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9pSkNJcWRBM0NUTVVTTnQ0ZjdoT3ZTZ1Bjd1FOVnRCM3ZxR1pLdmVvZERjaEhvTXlQZXRnWHY0cUM5ZlpqVFYtMGxrd2pXbjBEWVo2aURfNWRXRW9DM3ZyeTRucEEtQQ?oc=5",
+"press": "치의신보",
 "date": "2026-06-10",
 "types": []
 },
@@ -1164,6 +1221,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "'암전문 한방병원·여성질환전문 한의원'…인증 전문병원 아닌데 한의계 '전문' 문구 남발 심각",
+"url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE5PLTVPdDlSd1dOWm5GdEhQSWV2YXQxMkQyUk1GNFJRQ1JmZlZiRTlrdzVENkNaUmJBWDRlQVFHNUhyRzRjcDZCUy1VWkF5MHVKSGhtNXMwNA?oc=5",
+"press": "MEDI:GATE NEWS",
+"date": "2025-03-20",
+"types": [
+"title"
+]
+},
+{
 "title": "불법 의료 광고·외국인 환자 유치, 성형외과 원장 벌금형",
 "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE91NEpaRWJrYkxqemdRTEYyU1U2dzRKZTd5TUJvRlpjRE5uWFljYUpXRUUwTTRzOW9DbnpwdjQtUjExX1NKckhMbVljRzVGRVg2SDFSOGlhSTdQd1I3cTJ5ZTdlamVNeExoV1c2ZQ?oc=5",
 "press": "팜뉴스",
@@ -1630,6 +1696,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "수년간 신문·유튜브에 '뇌전증, 틱장애 완치' 광고하던 한의원…불법의료광고로 형사처벌",
+"url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9pck9VNFZPdEhQM1dyejJhMjVjaTNJaGx4MGRfbnRWdjd5OVo1dkRPNk1CQ1JiMlNpLXlibnhqYzMzd3JPN3RkNkVLd3F1YnUtZWc?oc=5",
+"press": "MEDI:GATE NEWS",
+"date": "2023-12-20",
+"types": [
+"effect"
+]
+},
+{
 "title": "치협 ‘치과의료광고심의위원회’... “2월 10일까지 불법 의료광고 집중 단속!”",
 "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBiSXVjbGt1OENpWk1ETzAwc2JpeV8yQ1pmc0xlZGp3MjFveTlxRFNGVXVuaE83VXA0MDRBcHAxU0p3OFhnMHNIUy1ZbE50MkhXX3ZKX2VRZHJDQXpDVF9IdHVHR0JwX3M2SFVaT2N3?oc=5",
 "press": "덴탈아카이브",
@@ -1690,6 +1765,16 @@ window.NEWS_AUTO = [
 "press": "뉴스핌",
 "date": "2023-12-11",
 "types": []
+},
+{
+"title": "복지부, 거짓 치료경험담 등 불법 의료광고 집중 모니터링",
+"url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBTYUtKaUlDUXVJcXpwMHd0VGN5eWxWR1BabjZCeUFKb3BWcUtWbURUWFlDZHo1ZkV4YV9Pczcyd1ppU0lvMzY0Wjl1cWNkRXRwdEg2TDJNUlNTX3dCNWs5UG5KSnQzR3NvTzRwX0F3?oc=5",
+"press": "뉴스더보이스헬스케어",
+"date": "2023-12-11",
+"types": [
+"effect",
+"exag"
+]
 },
 {
 "title": "“강남언니 이용후기 의료광고 아니다”…공정위, 신산업 규제 개선",
@@ -2748,6 +2833,13 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "불법 의료광고 적발 404건 중 한방은 3.2%에 불과, 한방은 열외인가",
+"url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1zMW5UR0Q0bDlDSmpuLThYZ3FCTi1xQTQtSmdVSDRMRE8wSENkbUhpM2NiRlcya3BpMDRCV1NNUXhIQ1NvY01wWll5Z3F6eDVPOGc?oc=5",
+"press": "MEDI:GATE NEWS",
+"date": "2018-07-25",
+"types": []
+},
+{
 "title": "임플란트, 교정, 스케일링 전문병원 광고는 불법",
 "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9PNEFzQ3JZVnRfZktTNE1oRHFqSFR0cW5vdS1BVFptUHJiSVZwWDN3TEZEcjUycmpFcXFldFhobmtRQnI3SzNIdVU3YXZlbTdjYkFlcEc0X0ZWYk8wdkRwbzBWTUpKeVp0?oc=5",
 "press": "치의신보",
@@ -3078,6 +3170,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "'내과·부인과 전문병원'이라고 광고하던 한의원, 결국 행정처분",
+"url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE11NjR5NkZxTWxPU2ZuWUpTM2RSR0tKZWhjV0xwUjhYU0F3NTZCTC1JdmFEWFpqcGl0cTdjVkoxeDFHNXJvWkNxQnZCV1QtYU0zU0l6U2JuU19YbDZuaGktWUxtSEZTd1o0ZV9PUzNn0gFyQVVfeXFMTUN0U2plNk5YdW8zUy1HUFRybG04RDNNdGxvem1yV25WeTJsM3RvQW5Ud1AyUmYxcTZ6dHdxWFBiUTZjb0NGU2NoZG1aQmFMdHF6c0NjVmZDMWNTNGJKSTlDSXpYbWtYLXJRUjN1am1VM05R?oc=5",
+"press": "청년의사",
+"date": "2016-10-24",
+"types": [
+"title"
+]
+},
+{
 "title": "“5시 이전 79만원?” 의료광고 격이 떨어진다",
 "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5ROU1HSzRrOGJtem1XUEY1bnhpNTNTNnJ3aVlzWV9RVWlJVjByQjM5aWI2Q3lGc1BkVnNZOS1tRWlMQ3RyOC1oVmszLTJkVkhFcDk5a0FTY1g4NFA4OTNFdVJHR3RNWFk?oc=5",
 "press": "치의신보",
@@ -3137,6 +3238,22 @@ window.NEWS_AUTO = [
 "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE82ckxzcFFrQkdIa1BHaDFBRDVUeWI2Yy1DbmlLUUt5ejgwZ0tBZkI4WTlkbl9DbDZ4Q21FVUN2NlJRWUllUFY5aGhtcmtIdmFuZW5VYjdfRVZTQTk5ZWIyZ1g4RWVMd1hyZWxObV9IYUNMQQ?oc=5",
 "press": "의협신문",
 "date": "2016-07-02",
+"types": []
+},
+{
+"title": "전문병원 지정도 공유하는 네트워크병원?",
+"url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBKVUpTQk4wUk9qSnFDSDA3R05qem94OU1TRFE0aVdadWNGdDNBbkNzMFRkR2xfZTNodjJLNEF6Q0ZuWFp2VFFfQlFHeVVSWlZoem9KUFhOS2xFZjlVQUVwYldyZlpvOWcwRm15NnRB0gFyQVVfeXFMTmxGREFrbVJKNU11U0VJYlA3X1NDMjV0X2doUnplMjliTmdwNWtyaTMzX2V3dEYtR2tFZlJraE9lWWx2NXVnMkh4TkxKQlpUWHBtSXdic0pJTzQza3lETG55S0RfQ0FTMVY1VkJxb0tnVzl3?oc=5",
+"press": "청년의사",
+"date": "2016-06-08",
+"types": [
+"title"
+]
+},
+{
+"title": "의·정 손잡고 '인터넷 불법의료광고' 청소 나서",
+"url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBLQTdSd3U1dGNEQlRSNHBPbEgzWndfVmRUcldST2JRS1RYbHBFZzF5YnBsT2QxbFNJMWgwRDEtM1FnMzl3a2p4VzZHdzB1Y29zUXJiazNpVGw3Q0tTb09LV1lvQ3F4S3Z5VEU1UE1PR2lpdw?oc=5",
+"press": "의협신문",
+"date": "2016-06-04",
 "types": []
 },
 {
@@ -3514,6 +3631,15 @@ window.NEWS_AUTO = [
 "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9JMmk0SlpjOWlZeV9wVEw4ZGdtVWxSZExRdjdLVVJ6aGxYS1JtUzc1RWNiM29RbFloU3lkRDNvek9FbGc4OVBoeXNFemJxUFpTZ0RwLUdDZjNtYUpYU1U5emVHQXFrTDFzV0o5cGNNX250UkMzQ3VnZURZRk9iM0U?oc=5",
 "press": "헬스조선",
 "date": "2007-06-29",
+"types": [
+"title"
+]
+},
+{
+"title": "의료광고 사전심의 시행",
+"url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9mMWpqOW9SVmNGWk5sdy1mNExNZWxuRXFRZzZaeHo4TTFCa01GUHFQQXkxRlZyak0tTHc4cklwVWxmbFdrU0Zla0lUMHBGX3NSWE5WaWJrTE5SejVvNDdueUNDbjBDQkFIUlE?oc=5",
+"press": "메디칼업저버",
+"date": "2007-04-09",
 "types": [
 "title"
 ]
