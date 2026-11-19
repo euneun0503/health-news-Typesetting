@@ -1,6 +1,15 @@
 /* 자동 생성: collector/collect_news.py — 직접 수정하지 마세요 */
 window.NEWS_AUTO = [
 {
+"title": "치협 “SNS 의료광고 사전심의대상 명확한 기준 필요”",
+"url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9QVWVlV25GdnZPOERHUklldDk2cll4RG1ZeEt4UWZvM09sTDJvbmhHZW9Sb1VEN21GUkpVV1hwY3BRQWNpdm56b1Y5YlZDUDZ2NXJBaXFiVzh5MVVraXlEWlBTVW9IWTNp?oc=5",
+"press": "치의신보",
+"date": "2026-11-18",
+"types": [
+"title"
+]
+},
+{
 "title": "의료기관 실손의보 허위·과장광고 금지 과잉치료 차단 기대",
 "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBnOUd0YThNV0szWEloSjBfdUlPbnF5eXdGNXFPTmtFSFpnZUp5MFFTTWtIbl9Wc2RUM2FkZ05QeER5SjRoTlplenVwYlY1a3dhYmVEWkNLcVJ4cjFnczhZVE5PRHVydTJiTENR?oc=5",
 "press": "보험신보",
@@ -1166,6 +1175,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "무분별한 의료광고, '심의 사각지대' 방치‥관리 체계에 구멍",
+"url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9JRGtFV2xOYWpVT3U5WEJCMWd6enpEZ21BWThORlJDb0tpbmRBMm92NE9KYjVBZnNqRzR4QUQ4YlBvSXNEQ3Z0ekRDWTBXdEFYS3hZQ3BKZ1lvTjFONm1wYU9ISlZPaWd1WThn?oc=5",
+"press": "메디파나뉴스",
+"date": "2025-06-27",
+"types": [
+"title"
+]
+},
+{
 "title": "위법 유발하는 의료기기 광고 규제…뒷광고는 어찌 막나",
 "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1yRFptSlZQUkl4SHpmdDZTZVhlU1d5XzNXdXR0ZDZaNFUyQ3F0SEtmUzdfZ0N4dzhaNW0wM2phSlR2RGZtQ004R052Zl9RMVZrOUJSWWE2WVlZUFp5ekF1dE1wNW1CUzFsam5z?oc=5",
 "press": "히트뉴스",
@@ -1424,6 +1442,15 @@ window.NEWS_AUTO = [
 "date": "2025-01-14",
 "types": [
 "compare"
+]
+},
+{
+"title": "오두환 의장, 대한의과대학창업협회서 병원 광고‧마케팅‧브랜딩 특강 펼쳐",
+"url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5GaWItcVlFOEYweXFPUVdIOThFaWd5TVJKdFBkUXlqemtvMG1reTRacTdnMnkwYlJ3VlRmTXBCcXVBOEh3bkloQ3RyVFBSaEVuc1lQVGZNVDRsQW1FWUwtMi14ZDNPdw?oc=5",
+"press": "이로운넷",
+"date": "2025-01-03",
+"types": [
+"exag"
 ]
 },
 {
@@ -1724,6 +1751,13 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "대구지부, 불법광고에 칼 뽑았다 ‘불법의료광고 규제위원회’ 구성",
+"url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9HT3lqZjUxWXJrY0NSM1R3X0syRXdyTWFxdzdpODhWWEkzZkRJTmsxTk55T0lKblpxbGlXRmN1RjIzYWxIaWJMSFRmQ2lZd0l1MHdHOHFzcmRJMGw2RjZVRjE1TXZhQQ?oc=5",
+"press": "치과신문",
+"date": "2024-03-07",
+"types": []
+},
+{
 "title": "지부서도 불법의료광고 적극 대응 확산",
 "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5JNWRKbHRMRVRSWFl6blZRSm5BTnhINXNRdHB5V0poVWw4eHJLOTJxRk9HQ3V6N2kybExhVFpNTF9iVTU1bVlsZ05KUkI2LXF4b0poNnJLdHk3Y1VJTS1WLTl1MmdNeWZK?oc=5",
 "press": "치의신보",
@@ -1929,6 +1963,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "경기도치과의사회, 치과의료 정책포럼 열어…불법·과장 광고 척결 촉구",
+"url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GeGRXN3hOSUN1MHlQWUlaNGhoLUw4YWlxSjBCdDhyWlFWOXdmZktmTGt1MVRiY3ptWFdVa3ZPLTVGSV84cUpremxWZWlUajZFWjJ3RWNPRlhaSlRSUE9ldVhsLTJSdmpUS0dZNmcwV2E?oc=5",
+"press": "인천일보",
+"date": "2023-09-25",
+"types": [
+"exag"
+]
+},
+{
 "title": "“치과광고 심의통과 됐다” 허위 홍보 말썽",
 "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE0xZFJuTjhwTXo1T21VNXQwdnZ5N05jZnVFdG1saGdlT1VzblVONF94cDNVT1B5QnZBdWpGR3QxaGc3alVZcjM4cmtmMmtoYkpaZGFGMGtpTmZxSGN6b2RzSUlSaw?oc=5",
 "press": "치의신보",
@@ -1967,6 +2010,15 @@ window.NEWS_AUTO = [
 "press": "세계일보",
 "date": "2023-07-26",
 "types": []
+},
+{
+"title": "“수술 잘됐다” 환자 가족인 척 후기 올린 의사 벌금형",
+"url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0xd0lwaTlSTTNHX19UZ292UUpySmdLLWNnblBhMkh1bXYwazVtSENMeUlwb2tyamtONzJLdV9BQmhFTUk2am5yZzRpXzkwZmN4bEdTMWVyV3RuNlE?oc=5",
+"press": "KBS 뉴스",
+"date": "2023-05-05",
+"types": [
+"effect"
+]
 },
 {
 "title": "헌재 위헌 결정…의료광고 정부 권한 강화?",
@@ -2038,6 +2090,22 @@ window.NEWS_AUTO = [
 "press": "세계일보",
 "date": "2022-09-28",
 "types": []
+},
+{
+"title": "SNS 통한 불법의료광고 활개…4년간 의료법 위반 397건",
+"url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1LSFExUUpOYU04b19zYXVZbzNScl9xcHNhRUUzWUM2WF9oR3RaQ0dIblZUbDBQSVgyUGx4TVRKenpkQUl2bGNuX1hNMjBuRFFUVWkyR2FR?oc=5",
+"press": "지디넷코리아",
+"date": "2022-09-28",
+"types": []
+},
+{
+"title": "MRI 등 비급여 할인광고 주의보..政 “의료법 위반소지 있어”",
+"url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFByX3V6cFg1R0RiVFpDazF0dmNMWVU5X2lkSy04ZDR2cWRTTUlJMTBveUgxY0VWckp4QkptbmhCS3h1d01RLTFBOUUwWW9GMEQ3UVlLak9qUEc3dm5jNUUtRVJEYjM1dlo0bHc?oc=5",
+"press": "의학신문",
+"date": "2022-09-13",
+"types": [
+"lure"
+]
 },
 {
 "title": "법률칼럼 병원 블로그에 삭센다 광고, 의료법 아닌 약사법 위반?",
@@ -2376,6 +2444,13 @@ window.NEWS_AUTO = [
 "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1kSkgzY2FuRzlaOGZFcmRtVlExYVNDanJJTll0NmtpYzJnTEh4R3psLS1PRFJOb3E3aHNDX1VhclNKVTlKVFdZb3V2eWdXd1FmRi1hSkVR?oc=5",
 "press": "지디넷코리아",
 "date": "2021-03-08",
+"types": []
+},
+{
+"title": "1000만 가입 앱 불법 치과 광고 범람",
+"url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VUHVOQkhJWk93a2Itd210ck1aSjZmNkpnYnFfX043ZlpXcTJnNTVRWTdIZ214aG1XNGlIRGVlcFNoRDA4QXJBdGZnVDJDc1ZGNU1qRlg1M1JnZ2RaQVJpWFNZT0F3cGFK?oc=5",
+"press": "치의신보",
+"date": "2021-02-17",
 "types": []
 },
 {
@@ -2731,6 +2806,15 @@ window.NEWS_AUTO = [
 "types": []
 },
 {
+"title": "유튜브 , 페이스북, 인스타그램 등 SNS 의료법 위반 의심 의료광고 범람..사전심의 강화 시급",
+"url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5sNU9yOUdtcm5JUjlXMmRBanJ3cVB4blR5Q0ZxZDlqS0dLTmJUR1A1OE5nMVA3QjVXYjMyd2FQS1dIN2JwX2ltZDluUjgxa2xhWnJRNENmc3prT0VWN3VyYkV2YTBMUWhhb01leUNITdIBc0FVX3lxTE1Od3lZUkVma28weUtGTVU4d0xGdW8ycEJXYmxwdjRUTE5POXlwcTJydjJsSFdGVDAyTWZoc0ZQQU9QN25ZOUlSbDFRVzZtdnE3OVJBSXd3OFpjb2pXZS1TSnJqWVF3bFdaX1R6T3ZsU3FzdWM?oc=5",
+"press": "가치소비뉴스 컨슈머와이드",
+"date": "2019-09-24",
+"types": [
+"title"
+]
+},
+{
 "title": "의료광고 사전 자율심의 ‘사각지대' 많아",
 "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9RX21xbDdYUlBjNXM2ZVNHRDVEem9hdW1RemZnNDlDc044TmFhdnh2bHVuV1BwQmhfYmFHNlJXcjZqVzFUQlVNQlZQaVoweDRMOWtkamx6LW9KTUtZZzdMeDFxRTIyZFk?oc=5",
 "press": "의약뉴스",
@@ -3055,6 +3139,13 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "\"의료인 개인블로그도 의료광고\" 복지부 유권해석",
+"url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBqSFZZVzhOSzlya3prNTRRSzlRMFpoekRSbFNQQktDVEIyb2hZSUlIeGNNVzZ3M0xqTVg4clZTa1FCVHE2a1JxbC12Y0UtbDBCR3JJendEaFBVSmJWdWVFUWlrX3Y3N05mbDZz?oc=5",
+"press": "메디파나뉴스",
+"date": "2018-11-15",
+"types": []
+},
+{
 "title": "불법 의료광고…‘일부러 규제 안 한다?’",
 "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE56dDdlb2twYlU1emFGaHAzN3BGYXBhOTRDZVJoaGJ1LVN6WmQ3aXdPZVpWLTV5V1JOMTZwN1dFSUU5TkpyeXFhU2h2RzFtb0ZYTW5IVWUwQlhrQdIBX0FVX3lxTE5FcjFScnVaeFMwNVB2ZlBhZWw4NkFTa0RqMWhmbDZjNEs3TVliSE1sam93dklMeV9vVmhiSFVQQWthWkN6VTdNMElwcGxyUnFaODhueFdfOGhsNnpxTkFV?oc=5",
 "press": "경향신문",
@@ -3302,6 +3393,15 @@ window.NEWS_AUTO = [
 "date": "2017-08-18",
 "types": [
 "exag"
+]
+},
+{
+"title": "가격할인·이벤트 등 불법 의료광고 무더기 적발",
+"url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE90T1Z2LXhTcnJzYjg4ck00aklSUFFSSEd2bm1xanZTaDczTUkydFdEcjlXZk1HUFR2V2pBZHM2dldJNlg4WE1FZkdIV2hCczR5TXJZWVdjS3ByM01NbU0tblZVNklOZw?oc=5",
+"press": "치과신문",
+"date": "2017-08-10",
+"types": [
+"lure"
 ]
 },
 {
