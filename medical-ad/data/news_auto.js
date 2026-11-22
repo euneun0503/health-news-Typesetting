@@ -810,6 +810,15 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "“내돈내산인줄 알았죠?”...공정위, ‘수술 후기 뒷광고’ 뷰 에이비 디에이 성형외과 3곳 적발",
+"url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBaOGc5ZXRmdDJhT25kNFpSOTc5QXdBM3pkX3pZdzdiNDBSV24wUXVHdHM0bGp1ZnU3cjFkY2U0dWZTaC1DSlpBQmtLVFpoZ2xWUERUMXFTbnoyZVczSGl5bThuNldab091bjJF0gFvQVVfeXFMT3NhUGRkcEhMVkxxSm5LWVh4UDM0ZV9NOEE5S0lGQmhjckJpZHJpXzhTMXZuUjBHcjRRV0UxcThNSFZKYXd5S0ZwY2praERUNE5NRmk5U2lrb0FjekIxc1VuZ0NRVWY5OEdyNG82RHFV?oc=5",
+"press": "더퍼블릭",
+"date": "2026-07-13",
+"types": [
+"effect"
+]
+},
+{
 "title": "성형외과 '뒷광고' 적발…공정위 “할인받은 사실 숨기면 기만 광고”",
 "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9yN29pU1NZN0xqYm5oRTMyOGV4c0FMdzhTTmwtYW1paU9OdVVOY2IwX2dWakl4elpnRnd3czJ4a2Z2MGFWWDR1b3FFYzQ1d0Z3MzM1VzhDQmduMkpHVUZpdWtyaUIyMXRqRmFkT2RLeGRlOTA?oc=5",
 "press": "마켓인",
@@ -1173,6 +1182,24 @@ window.NEWS_AUTO = [
 "title": "온라인에 재생의료 거짓·과대광고한 의료기관 63곳 적발",
 "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1XSWZkMV91b0pWNkFSdkpmaDF1aHptZXdlaXlKbHpFUXo1dUYtbWdKeW00dGY2M3hYYk54WGMyblNvRF9OU0MwbjZHZnBNdFdsVFp4VGNvUVZTaUXSAWBBVV95cUxPSjhkVm5LbnhIWHZqaEdHWEx5a0tSenNXd1FudUk2VTljUzNCMTFiOHI2djY3ZklkMEc5VF92OTBLTEtzTFgxVWJPVzE3LWdxVF9MamFFT1NYSFJ2WmczTUk?oc=5",
 "press": "연합뉴스",
+"date": "2026-05-27",
+"types": [
+"exag"
+]
+},
+{
+"title": "복지부, 재생의료 거짓·과대광고 246건 적발…63개 의료기관 조치 요청",
+"url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE9xVDBwcnNPd09XUm41X3VJTVNOZXNabnJ6azRqOEpIZEczaF84R1I2b0NodmhjR1FvWUNLMUIzZUtlNWhf?oc=5",
+"press": "후생신보",
+"date": "2026-05-27",
+"types": [
+"exag"
+]
+},
+{
+"title": "내가 맞은 ‘무릎관절주사’도?…‘첨단재생의료’ 거짓·과대광고 적발",
+"url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE80NHFTWUlKVGN6N1Q0NllwLWszT2xYSEVJM2kwNUt5cnRpdGxxanJjc1hETFRJd1p1Z0lGalEzU0R0VWdOMW50WjB3U2NCN1dnNlU4RXV0ODYtdw?oc=5",
+"press": "농민신문",
 "date": "2026-05-27",
 "types": [
 "exag"
@@ -3470,6 +3497,13 @@ window.NEWS_AUTO = [
 ]
 },
 {
+"title": "불법 의료광고 한 의료기관 278개 적발 : 정책",
+"url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9Qa1JiYkNBbVJ6d3cxR01jY2owM0JwaWlEMXpObkV4elZocTVCQ1c3ZzFtY3BLalpGVlRaeXY2ZTc0M1YyTnczdkx1c2MwTEJFY0E?oc=5",
+"press": "의약일보",
+"date": "2019-07-31",
+"types": []
+},
+{
 "title": "'의사가 허위·과대광고했다'는 식약처 발표, 알고보니 전부 한의사·치과의사",
 "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE4tVVZEUW8xSTNmY2lLME9TblVmczNOSFNoU1JVcHBwcEJLQW52TEN4T2VIdGQ5blAwaXIzMDhzVk1kUGRrS0dzaW81YkI4RDRSQWc?oc=5",
 "press": "MEDI:GATE NEWS",
@@ -3824,6 +3858,15 @@ window.NEWS_AUTO = [
 "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBGc2FyQURRRDN0UjZ1OHJ4ZWFXM0p3VE1uZ0h1cDlFVlJrYjZZZExQMlc5RzlxLUc1VTd4amVJSFhNTFBxOEpfWTJ0Rk5JbDRKd0djclIybmpKcXBQcUNpd3BER0ljYkk2ZGpYWFRyNNIBc0FVX3lxTE5GanV5aF9WQ242MnM1T1ljWjF4T1A4bUYzTVRCYTZrNTdDaERuaWhXSko4YXpQeTVsSG54bU9rYVgtcGlCRkNDVnpSOU45NERVQTBHRGQyZHNJSFBlTEJ1V19wcEg1a0ZpV0g5Q0plaV9fckk?oc=5",
 "press": "청년의사",
 "date": "2018-06-20",
+"types": [
+"title"
+]
+},
+{
+"title": "9월 28일부터 의료광고 사전 심의제도 '부활'",
+"url": "https://news.google.com/rss/articles/CBMickFVX3lxTFAyanFiSTYtQ0x1OVhaS2l6ZFlCVmZzaExEb1AxcVJJQ2ZIYjY2TFoxM3BZR2UzaTBnbGVKUDNRaHF3SWhyUVJBdEZ0MmUyRk9ZZUIwYkJLQS1wcG1adTN3LWhqdWo1aXZDRlVGMFdBaFFadw?oc=5",
+"press": "의협신문",
+"date": "2018-05-29",
 "types": [
 "title"
 ]
