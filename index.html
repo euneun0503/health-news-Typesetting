@@ -155,6 +155,9 @@
   .gallery-card .gdate{ font-family:var(--mono); font-size:11px; padding:6px 8px 8px; color:var(--ink-soft); display:flex; flex-direction:column; gap:3px; }
   .gallery-card .gdate strong{ color:var(--ink); font-size:11.5px; }
   .gallery-card .gdate span{ font-size:10px; }
+  .gdate i{ font-style:normal; font-weight:700; }
+  .gdate .gc-art{ color:#1a6fb5; }
+  .gdate .gc-ad{ color:#c26a00; }
   .gallery-detail{ margin-top:20px; background:var(--panel); border:1px solid var(--magenta); padding:18px; display:flex; gap:20px; flex-wrap:wrap; }
   .gallery-detail{ align-items:flex-start; }
   .gallery-detail>img{ width:180px; height:auto; flex:0 0 180px; align-self:flex-start; object-fit:contain; border:1px solid var(--line); background:#f3f5f6; }
@@ -212,6 +215,15 @@
   .thumb-wrap.draw-mode .thumb-region.active{ cursor:crosshair; }
   .draw-box{ position:absolute; border:2px dashed var(--magenta); background:rgba(200,56,111,0.15); pointer-events:none; box-sizing:border-box; }
   .draw-toolbar{ display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+  .imgx{ font-size:11px; margin:4px 0 6px; display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+  .imgx input{ width:70px; font-size:11px; padding:3px 5px; border:1px solid var(--line-strong); border-radius:4px; }
+  .imgx-chip{ background:#eef4fa; border:1px solid #c6d8ea; border-radius:10px; padding:1px 7px; font-family:var(--mono); }
+  .imgx-chip a{ color:#b14963; text-decoration:none; margin-left:3px; }
+  .inset-panel{ margin-top:8px; font-size:11.5px; }
+  .inset-bar{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:4px; }
+  .inset-row{ display:flex; gap:6px; align-items:center; padding:3px 0; font-family:var(--mono); font-size:11px; }
+  .inset-dot{ width:10px; height:10px; border:2px dashed #e08a00; display:inline-block; }
+  .inset-dot.ad{ border-color:#b14963; }
   .draw-btn{ font-size:11px; padding:5px 10px; border:1px solid var(--line-strong); background:#fff; cursor:pointer; border-radius:4px; }
   .draw-btn.save{ background:#0a7d4f; color:#fff; border-color:#0a7d4f; font-weight:700; }
   .region-dirty{ font-size:11px; color:#c0392b; font-weight:700; align-self:center; }
@@ -485,7 +497,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 16:30</div>
+    <div class="ver-stamp">버전 2026.11.26 17:10</div>
   </div>
   <div class="meta">
     본지 6단 · 1단(칼럼) 55mm<br>
@@ -1702,8 +1714,8 @@ const INSIDE_SAMPLE_DATA = [
     source: '업로드 PDF 1페이지 렌더링'
   };
 });
-const INSIDE_ANALYSIS = {"20260702C02HT2": {"title": "“밤잠 깨우는 ‘전립선비대증’… 방치하다간 ‘소변길’ 막힙니다”", "titleChars": 35, "titleNo": 30, "bodyChars": 5646, "bodyNo": 4307, "imageCount": 10, "sizes": ["209.55×132.08mm", "64.52×35.31mm", "19.30×27.18mm", "18.03×18.03mm", "100.46×100.46mm", "프로필 사진 4장", "QR코드 18×18mm"], "widthMm": 392, "heightMm": 531.44}, "20260702C03HT3": {"title": "“기침·가래가 멈추지 않으면 폐 이상 신호… COPD 의심해 봐야” <만성폐쇄성폐질환>", "titleChars": 48, "titleNo": 39, "bodyChars": 5995, "bodyNo": 4573, "imageCount": 4, "sizes": ["66.55×75.95mm", "209.80×116.20mm", "18.03×18.03mm", "137.79×95.12mm"], "widthMm": 392, "heightMm": 531.44}, "20260708C02HT2": {"title": "“불면증, 참고 견딜 병 아냐… 신약으로 맞춤 치료 길 열려”", "titleChars": 34, "titleNo": 25, "bodyChars": 5001, "bodyNo": 3814, "imageCount": 6, "sizes": ["68.58×42.55mm", "205.36×120.27mm", "19.05×18.96mm", "65.41×89.03mm", "65.66×55.88mm", "19.05×18.96mm"], "widthMm": 392, "heightMm": 531.44}, "20260708C03HT3": {"title": "“중증 난청, 보청기로는 역부족… ‘인공와우’가 유일한 대안” <인공 달팽이관>", "titleChars": 44, "titleNo": 36, "bodyChars": 3710, "bodyNo": 2830, "imageCount": 5, "sizes": ["176.78×250.57mm", "204.85×120.90mm", "130.94×69.88mm", "30.63×39.95mm", "105.41×48.64mm"], "widthMm": 392, "heightMm": 531.44}, "20260708C04HT4": {"title": "“만성 폐질환, 심장까지 위협한다… 숨 차거나 기침 길어지면 함께 관리해야”", "titleChars": 42, "titleNo": 33, "bodyChars": 3197, "bodyNo": 2439, "imageCount": 5, "sizes": ["361.31×157.35mm", "209.30×126.11mm", "59.69×37.85mm", "69.60×57.02mm", "19.05×19.05mm"], "widthMm": 392, "heightMm": 531.44}, "20260812C02HT2": {"title": "말 못할 고민 전립선비대증… ‘참당귀·황기’로 개선 가능성 확인", "titleChars": 35, "titleNo": 28, "bodyChars": 3512, "bodyNo": 2680, "imageCount": 5, "sizes": ["361.31×157.35mm", "209.30×116.84mm", "19.05×19.05mm", "142.11×59.94mm", "40.26×32.48mm"], "widthMm": 392, "heightMm": 531.44}, "20260812C03HT3": {"title": "고령자에 흔한 서맥성 부정맥, ‘무전극선 심박동기’로 합병증 줄인다", "titleChars": 37, "titleNo": 30, "bodyChars": 5068, "bodyNo": 3866, "imageCount": 4, "sizes": ["209.42×137.03mm", "137.67×68.07mm", "19.05×19.05mm", "65.28×83.82mm"], "widthMm": 392, "heightMm": 531.44}, "20260812C04HT4": {"title": "“폐섬유화증, 조기 관리 중요… 증상 완화 돕는 한방요법 주목”", "titleChars": 35, "titleNo": 27, "bodyChars": 3011, "bodyNo": 2297, "imageCount": 5, "sizes": ["361.31×157.35mm", "204.72×115.57mm", "142.24×70.99mm", "18.16×18.03mm", "121.67×49.91mm"], "widthMm": 392, "heightMm": 531.44}, "20260819C02HT2": {"title": "촌각 다투는 ‘뇌동맥류 파열’… 코일 색전술로 지체 없이 치료 <혈관 내 시술>", "titleChars": 44, "titleNo": 33, "bodyChars": 5524, "bodyNo": 4214, "imageCount": 5, "sizes": ["23.11×29.95mm", "137.67×59.18mm", "209.17×126.36mm", "18.03×17.94mm", "133.35×60.58mm"], "widthMm": 392, "heightMm": 531.44}, "20260819C03HT3": {"title": "피부 리프팅 시술, ‘정품 확인’ 필수… 효과·안전성 좌우한다", "titleChars": 34, "titleNo": 27, "bodyChars": 3555, "bodyNo": 2711, "imageCount": 4, "sizes": ["361.31×157.35mm", "212.22×126.49mm", "65.79×65.79mm", "65.66×50.55mm"], "widthMm": 392, "heightMm": 531.44}, "20260819C04HT4": {"title": "‘산부인과 로봇수술 2만례’ 달성한 차병원… “정밀·맞춤 치료 앞장”", "titleChars": 38, "titleNo": 31, "bodyChars": 1665, "bodyNo": 1270, "imageCount": 9, "sizes": ["25.15×22.75mm", "25.15×22.75mm", "24.13×22.75mm", "24.13×22.75mm", "24.13×22.75mm", "24.26×22.75mm", "139.06×48.89mm", "212.22×104.14mm", "361.31×195.45mm"], "widthMm": 392, "heightMm": 531.44}, "20260902D02HT2": {"title": "계절 바뀌자 ‘콜록콜록’… 기침·가래 지속되면 폐 건강 살펴야", "titleChars": 34, "titleNo": 27, "bodyChars": 2208, "bodyNo": 1684, "imageCount": 3, "sizes": ["361.31×228.60mm", "209.17×117.09mm", "64.39×41.27mm"], "widthMm": 392, "heightMm": 531.44}, "20260902D03HT3": {"title": "보행 장애·낙상 부르는 무지외반증… ‘최소 침습’으로 수술 부담 줄였다", "titleChars": 39, "titleNo": 31, "bodyChars": 5890, "bodyNo": 4492, "imageCount": 5, "sizes": ["209.55×122.68mm", "25.78×34.04mm", "66.17×71.88mm", "41.91×32.60mm", "62.61×48.64mm"], "widthMm": 392, "heightMm": 531.44}, "20260902D04HT4": {"title": "혈관 청소부 ‘HDL’, 대사증후군→심근경색 연결 막는다", "titleChars": 31, "titleNo": 26, "bodyChars": 4463, "bodyNo": 3414, "imageCount": 3, "sizes": ["361.31×157.35mm", "208.66×129.29mm", "139.70×87.63mm"], "widthMm": 392, "heightMm": 531.44}, "20260909D02HT2": {"title": "“유방암, 진단부터 수술·재건·회복까지… ‘원팀’으로 맞춤 치료”", "titleChars": 36, "titleNo": 31, "bodyChars": 2494, "bodyNo": 1902, "imageCount": 3, "sizes": ["361.31×228.60mm", "209.93×103.76mm", "142.24×51.56mm"], "widthMm": 392, "heightMm": 531.44}, "20260909D03HT3": {"title": "소비자가 직접 제품·가격 비교… ‘창고형 약국’이 바꾼 약 구매 풍경", "titleChars": 38, "titleNo": 29, "bodyChars": 3758, "bodyNo": 2867, "imageCount": 5, "sizes": ["176.78×293.62mm", "210.31×111.63mm", "104.39×67.31mm", "28.57×39.50mm", "40.89×50.04mm"], "widthMm": 392, "heightMm": 531.44}, "20260909D04HT4": {"title": "“고난도 인공관절 로봇수술, 결국 집도의 경험과 판단이 성패 가른다”", "titleChars": 38, "titleNo": 30, "bodyChars": 7358, "bodyNo": 5553, "imageCount": 6, "sizes": ["18.03×18.03mm", "209.30×129.03mm", "62.36×78.74mm", "132.14×78.99mm", "33.78×36.90mm", "단풍 사진"], "widthMm": 392, "heightMm": 531.44}, "20260917D02HT2": {"title": "전립선비대증 해법으로 떠오른 ‘참당귀·황기’… 배뇨 불편 개선 확인", "titleChars": 37, "titleNo": 30, "bodyChars": 3287, "bodyNo": 2533, "imageCount": 5, "sizes": ["26.03×35.05mm", "209.93×138.94mm", "106.68×65.53mm", "64.77×43.05mm", "176.78×250.57mm"], "widthMm": 392, "heightMm": 531.44}, "20260917D03HT3": {"title": "조기 진단 어렵고 재발 잦은 난소암… 치료 선택지 넓어진다", "titleChars": 32, "titleNo": 24, "bodyChars": 5378, "bodyNo": 4076, "imageCount": 5, "sizes": ["287.02×208.66mm", "137.54×67.44mm", "18.16×18.07mm", "69.78×72.14mm", "69.60×43.43mm"], "widthMm": 392, "heightMm": 531.44}, "20260917D04HT4": {"title": "한·양방 경계 허문 ‘통합의학’", "titleChars": 17, "titleNo": 14, "bodyChars": 2331, "bodyNo": 1749, "imageCount": 7, "sizes": ["118.24×53.97mm", "57.15×125.86mm", "57.28×104.27mm", "118.49×192.91mm", "57.40×120.78mm", "57.40×109.98mm", "361.31×157.35mm"], "widthMm": 392, "heightMm": 531.44}};
-const INSIDE_ARTICLES = {"20260702C02HT2": [{"order": 1, "title": "“밤잠 깨우는 ‘전립선비대증’… 방치하다간 ‘소변길’ 막힙니다”", "titleChars": 35, "titleNo": 30, "bodyChars": 2266, "bodyNo": 1728, "imageCount": 2, "sizes": ["209.38×132.00mm", "64.53×35.23mm"], "est": "ocr"}, {"order": 2, "title": "“암을 이겨낸 사람들은 무엇이 달랐을까”", "titleChars": 21, "titleNo": 18, "bodyChars": 1146, "bodyNo": 874, "imageCount": 3, "sizes": ["19.32×27.16mm", "18.04×18.02mm", "100.43×100.38mm"], "est": "ocr"}, {"order": 3, "title": "“생식 노화 연구에서 ‘건강 수명 연장’ 해법 찾는다”", "titleChars": 28, "titleNo": 23, "bodyChars": 1923, "bodyNo": 1467, "imageCount": 4, "sizes": ["프로필 사진 4장 · 각 약 30×30mm"], "est": "ocr"}, {"order": 4, "title": "밀당365 뉴스레터 800호 발행… 구독신청 받아요", "titleChars": 28, "titleNo": 22, "bodyChars": 311, "bodyNo": 238, "imageCount": 1, "sizes": ["QR코드 · 약 18×18mm"], "est": "ocr"}], "20260702C03HT3": [{"order": 1, "title": "“기침·가래가 멈추지 않으면 폐 이상 신호… COPD 의심해 봐야”", "titleChars": 37, "titleNo": 29, "bodyChars": 1784, "bodyNo": 1360, "imageCount": 2, "sizes": ["210.08×116.29mm", "137.80×95.02mm"], "est": "ocr"}, {"order": 2, "title": "방학 때도 못 쉬는 눈… “초등학생 근시, 질환으로 생각하세요”", "titleChars": 35, "titleNo": 27, "bodyChars": 1035, "bodyNo": 790, "imageCount": 1, "sizes": ["66.52×75.91mm"], "est": "ocr"}, {"order": 3, "title": "시원한 여름휴가… 日 나가노 치유의 숲을 걷다", "titleChars": 25, "titleNo": 19, "bodyChars": 3176, "bodyNo": 2423, "imageCount": 1, "sizes": ["18.04×18.02mm"], "est": "ocr"}], "20260708C02HT2": [{"order": 1, "title": "“불면증, 참고 견딜 병 아냐… 신약으로 맞춤 치료 길 열려”", "titleChars": 34, "titleNo": 25, "bodyChars": 2555, "bodyNo": 1949, "imageCount": 1, "sizes": ["205.06×120.02mm"], "est": "ocr"}, {"order": 2, "title": "자외선에 망가진 피부… 관리 늦으면 회복 어려워", "titleChars": 26, "titleNo": 20, "bodyChars": 1326, "bodyNo": 1011, "imageCount": 3, "sizes": ["68.61×42.46mm", "19.03×18.99mm", "65.34×88.95mm"], "est": "ocr"}, {"order": 3, "title": "유네스코 세계 유산 순례길을 걷다… 구마노 고도 걷기 4일", "titleChars": 32, "titleNo": 24, "bodyChars": 1120, "bodyNo": 854, "imageCount": 2, "sizes": ["65.68×55.88mm", "19.05×18.99mm"], "est": "ocr"}], "20260708C03HT3": [{"order": 1, "title": "“중증 난청, 보청기로는 역부족… ‘인공와우’가 유일한 대안”", "titleChars": 34, "titleNo": 28, "bodyChars": 2156, "bodyNo": 1645, "imageCount": 3, "sizes": ["176.72×250.32mm", "204.80×120.84mm", "130.75×70.02mm"], "est": "ocr"}, {"order": 2, "title": "족부 질환 비수술 치료의 세 가지 조건", "titleChars": 21, "titleNo": 15, "bodyChars": 1554, "bodyNo": 1185, "imageCount": 2, "sizes": ["30.70×40.03mm", "105.45×48.65mm"], "est": "ocr"}], "20260708C04HT4": [{"order": 1, "title": "“만성 폐질환, 심장까지 위협한다… 숨 차거나 기침 길어지면 함께 관리해야”", "titleChars": 42, "titleNo": 33, "bodyChars": 2279, "bodyNo": 1739, "imageCount": 3, "sizes": ["209.31×126.09mm", "59.62×37.79mm", "69.58×56.96mm"], "est": "ocr"}, {"order": 2, "title": "히말라야 설산·동화 같은 사원… 행복이 따로 없다", "titleChars": 27, "titleNo": 21, "bodyChars": 918, "bodyNo": 700, "imageCount": 2, "sizes": ["361.65×157.31mm", "19.08×19.03mm"], "est": "ocr"}], "20260812C02HT2": [{"order": 1, "title": "말 못할 고민 전립선비대증… ‘참당귀·황기’로 개선 가능성 확인", "titleChars": 35, "titleNo": 28, "bodyChars": 2869, "bodyNo": 2189, "imageCount": 3, "sizes": ["209.37×116.89mm", "142.16×59.93mm", "40.26×32.52mm"], "est": "ocr"}, {"order": 2, "title": "청명한 9월 시베리아, 자연과 내가 하나가 된다", "titleChars": 26, "titleNo": 20, "bodyChars": 643, "bodyNo": 491, "imageCount": 2, "sizes": ["361.65×157.31mm", "19.03×19.03mm"], "est": "ocr"}], "20260812C03HT3": [{"order": 1, "title": "고령자에 흔한 서맥성 부정맥, ‘무전극선 심박동기’로 합병증 줄인다", "titleChars": 37, "titleNo": 30, "bodyChars": 1990, "bodyNo": 1518, "imageCount": 1, "sizes": ["209.38×136.99mm"], "est": "ocr"}, {"order": 2, "title": "치료해도 허리 통증 지속되면 ‘고관절 질환’ 의심해야", "titleChars": 29, "titleNo": 23, "bodyChars": 2117, "bodyNo": 1615, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "일본의 온천과 숲, 단풍에 흠뻑 빠지다", "titleChars": 21, "titleNo": 16, "bodyChars": 961, "bodyNo": 733, "imageCount": 3, "sizes": ["137.87×68.14mm", "19.03×19.03mm", "65.32×83.80mm"], "est": "ocr"}], "20260812C04HT4": [{"order": 1, "title": "“폐섬유화증, 조기 관리 중요… 증상 완화 돕는 한방요법 주목”", "titleChars": 35, "titleNo": 27, "bodyChars": 2162, "bodyNo": 1649, "imageCount": 3, "sizes": ["204.52×115.36mm", "142.13×70.91mm", "121.59×49.85mm"], "est": "ocr"}, {"order": 2, "title": "카사블랑카의 로망… 모로코 여행 12일", "titleChars": 21, "titleNo": 17, "bodyChars": 849, "bodyNo": 648, "imageCount": 2, "sizes": ["361.65×157.31mm", "18.14×18.02mm"], "est": "ocr"}], "20260819C02HT2": [{"order": 1, "title": "촌각 다투는 ‘뇌동맥류 파열’… 코일 색전술로 지체 없이 치료", "titleChars": 34, "titleNo": 26, "bodyChars": 2477, "bodyNo": 1890, "imageCount": 1, "sizes": ["209.39×126.39mm"], "est": "ocr"}, {"order": 2, "title": "반복되는 염좌를 무시하면 안 되는 이유", "titleChars": 21, "titleNo": 16, "bodyChars": 2095, "bodyNo": 1598, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "단풍이 물든 일본 가을을 걷고 느끼다", "titleChars": 20, "titleNo": 15, "bodyChars": 952, "bodyNo": 726, "imageCount": 4, "sizes": ["23.14×30.02mm", "137.59×59.10mm", "18.01×17.97mm", "133.28×60.56mm"], "est": "ocr"}], "20260819C03HT3": [{"order": 1, "title": "피부 리프팅 시술, ‘정품 확인’ 필수… 효과·안전성 좌우한다", "titleChars": 34, "titleNo": 27, "bodyChars": 3555, "bodyNo": 2711, "imageCount": 4, "sizes": ["361.65×157.31mm", "212.11×126.43mm", "65.81×65.81mm", "65.68×50.57mm"], "est": "ocr"}], "20260819C04HT4": [{"order": 1, "title": "‘산부인과 로봇수술 2만례’ 달성한 차병원… “정밀·맞춤 치료 앞장”", "titleChars": 38, "titleNo": 31, "bodyChars": 1665, "bodyNo": 1270, "imageCount": 9, "sizes": ["25.15×22.78mm", "25.16×22.78mm", "24.11×22.74mm", "24.15×22.80mm", "24.11×22.76mm", "24.23×22.78mm", "139.08×48.88mm", "212.44×104.17mm", "361.65×195.31mm"], "est": "ocr"}], "20260902D02HT2": [{"order": 1, "title": "계절 바뀌자 ‘콜록콜록’… 기침·가래 지속되면 폐 건강 살펴야", "titleChars": 34, "titleNo": 27, "bodyChars": 2208, "bodyNo": 1684, "imageCount": 3, "sizes": ["361.65×228.31mm", "209.36×117.12mm", "64.51×41.17mm"], "est": "ocr"}], "20260902D03HT3": [{"order": 1, "title": "보행 장애·낙상 부르는 무지외반증… ‘최소 침습’으로 수술 부담 줄였다", "titleChars": 39, "titleNo": 31, "bodyChars": 2405, "bodyNo": 1834, "imageCount": 2, "sizes": ["209.45×122.52mm", "62.69×48.67mm"], "est": "ocr"}, {"order": 2, "title": "중장년 두뇌 건강 좌우하는 ‘뇌세포막’과 혈류", "titleChars": 25, "titleNo": 20, "bodyChars": 1454, "bodyNo": 1109, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "지긋지긋한 두통·어깨 통증… 원인은 턱관절?", "titleChars": 24, "titleNo": 20, "bodyChars": 2031, "bodyNo": 1549, "imageCount": 3, "sizes": ["25.82×34.00mm", "66.11×71.76mm", "41.89×32.64mm"], "est": "ocr"}], "20260902D04HT4": [{"order": 1, "title": "혈관 청소부 ‘HDL’, 대사증후군→심근경색 연결 막는다", "titleChars": 31, "titleNo": 26, "bodyChars": 3399, "bodyNo": 2593, "imageCount": 2, "sizes": ["208.68×129.21mm", "139.84×87.61mm"], "est": "ocr"}, {"order": 2, "title": "대사증후군 예방하는 ‘HDL’ 관리법", "titleChars": 20, "titleNo": 17, "bodyChars": 1064, "bodyNo": 821, "imageCount": 1, "sizes": ["361.65×157.31mm"], "est": "check"}], "20260909D02HT2": [{"order": 1, "title": "“유방암, 진단부터 수술·재건·회복까지… ‘원팀’으로 맞춤 치료”", "titleChars": 36, "titleNo": 31, "bodyChars": 2494, "bodyNo": 1902, "imageCount": 3, "sizes": ["361.65×228.31mm", "210.26×103.93mm", "142.12×51.44mm"], "est": "ocr"}], "20260909D03HT3": [{"order": 1, "title": "소비자가 직접 제품·가격 비교… ‘창고형 약국’이 바꾼 약 구매 풍경", "titleChars": 38, "titleNo": 29, "bodyChars": 2294, "bodyNo": 1750, "imageCount": 3, "sizes": ["176.72×293.31mm", "210.06×111.45mm", "40.89×49.95mm"], "est": "ocr"}, {"order": 2, "title": "“고령 대동맥류 환자도 ‘스텐트’ 치료 가능”", "titleChars": 25, "titleNo": 20, "bodyChars": 1464, "bodyNo": 1117, "imageCount": 2, "sizes": ["104.31×67.25mm", "28.60×39.46mm"], "est": "ocr"}], "20260909D04HT4": [{"order": 1, "title": "“고난도 인공관절 로봇수술, 결국 집도의 경험과 판단이 성패 가른다”", "titleChars": 38, "titleNo": 30, "bodyChars": 2817, "bodyNo": 2090, "imageCount": 1, "sizes": ["209.45×129.06mm"], "est": "check"}, {"order": 2, "title": "수술 전 꼭 확인하세요", "titleChars": 12, "titleNo": 10, "bodyChars": 374, "bodyNo": 285, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "일본의 가을… 나만의 단풍에 빠지다", "titleChars": 19, "titleNo": 15, "bodyChars": 1378, "bodyNo": 1051, "imageCount": 1, "sizes": ["도가쿠시 단풍 사진"], "est": "ocr"}, {"order": 4, "title": "예전 같지 않은 힘·움직임… ‘근력 저하’ 신호", "titleChars": 26, "titleNo": 20, "bodyChars": 2789, "bodyNo": 2127, "imageCount": 4, "sizes": ["18.05×18.02mm", "62.44×78.79mm", "131.87×78.85mm", "33.77×36.98mm"], "est": "ocr"}], "20260917D02HT2": [{"order": 1, "title": "전립선비대증 해법으로 떠오른 ‘참당귀·황기’… 배뇨 불편 개선 확인", "titleChars": 37, "titleNo": 30, "bodyChars": 2350, "bodyNo": 1818, "imageCount": 3, "sizes": ["209.96×138.90mm", "64.82×43.01mm", "176.70×250.32mm"], "est": "check"}, {"order": 2, "title": "건강한 걸음은 엄지에서 시작된다", "titleChars": 17, "titleNo": 14, "bodyChars": 937, "bodyNo": 715, "imageCount": 2, "sizes": ["26.00×34.99mm", "106.70×65.49mm"], "est": "ocr"}], "20260917D03HT3": [{"order": 1, "title": "조기 진단 어렵고 재발 잦은 난소암… 치료 선택지 넓어진다", "titleChars": 32, "titleNo": 24, "bodyChars": 1835, "bodyNo": 1373, "imageCount": 1, "sizes": ["286.58×208.24mm"], "est": "check"}, {"order": 2, "title": "쉬어도 풀리지 않는 피로… ‘기력 회복’이 필요한 때", "titleChars": 29, "titleNo": 22, "bodyChars": 2332, "bodyNo": 1779, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "느리게 걷는 일본 후지산·시즈오카 단풍 여행", "titleChars": 24, "titleNo": 19, "bodyChars": 1211, "bodyNo": 924, "imageCount": 4, "sizes": ["137.32×67.27mm", "18.14×18.04mm", "69.68×72.01mm", "69.49×43.33mm"], "est": "ocr"}], "20260917D04HT4": [{"order": 1, "title": "한·양방 경계 허문 ‘통합의학’", "titleChars": 17, "titleNo": 14, "bodyChars": 2331, "bodyNo": 1749, "imageCount": 2, "sizes": ["118.41×54.02mm", "361.65×157.31mm"], "est": "check"}]};
+const INSIDE_ANALYSIS = {"20260702C02HT2": {"title": "“밤잠 깨우는 ‘전립선비대증’… 방치하다간 ‘소변길’ 막힙니다”", "titleChars": 35, "titleNo": 30, "bodyChars": 5646, "bodyNo": 4307, "imageCount": 10, "sizes": ["209.55×132.08mm", "64.52×35.31mm", "19.30×27.18mm", "18.03×18.03mm", "100.46×100.46mm", "프로필 사진 4장", "QR코드 18×18mm"], "widthMm": 392, "heightMm": 531.44}, "20260702C03HT3": {"title": "“기침·가래가 멈추지 않으면 폐 이상 신호… COPD 의심해 봐야” <만성폐쇄성폐질환>", "titleChars": 48, "titleNo": 39, "bodyChars": 5995, "bodyNo": 4573, "imageCount": 4, "sizes": ["66.55×75.95mm", "209.80×116.20mm", "18.03×18.03mm", "137.79×95.12mm"], "widthMm": 392, "heightMm": 531.44}, "20260708C02HT2": {"title": "“불면증, 참고 견딜 병 아냐… 신약으로 맞춤 치료 길 열려”", "titleChars": 34, "titleNo": 25, "bodyChars": 5001, "bodyNo": 3814, "imageCount": 6, "sizes": ["68.58×42.55mm", "205.36×120.27mm", "19.05×18.96mm", "65.41×89.03mm", "65.66×55.88mm", "19.05×18.96mm"], "widthMm": 392, "heightMm": 531.44}, "20260708C03HT3": {"title": "“중증 난청, 보청기로는 역부족… ‘인공와우’가 유일한 대안” <인공 달팽이관>", "titleChars": 44, "titleNo": 36, "bodyChars": 3710, "bodyNo": 2830, "imageCount": 5, "sizes": ["176.78×250.57mm", "204.85×120.90mm", "130.94×69.88mm", "30.63×39.95mm", "105.41×48.64mm"], "widthMm": 392, "heightMm": 531.44}, "20260708C04HT4": {"title": "“만성 폐질환, 심장까지 위협한다… 숨 차거나 기침 길어지면 함께 관리해야”", "titleChars": 42, "titleNo": 33, "bodyChars": 3197, "bodyNo": 2439, "imageCount": 5, "sizes": ["361.31×157.35mm", "209.30×126.11mm", "59.69×37.85mm", "69.60×57.02mm", "19.05×19.05mm"], "widthMm": 392, "heightMm": 531.44}, "20260812C02HT2": {"title": "말 못할 고민 전립선비대증… ‘참당귀·황기’로 개선 가능성 확인", "titleChars": 35, "titleNo": 28, "bodyChars": 3512, "bodyNo": 2680, "imageCount": 5, "sizes": ["361.31×157.35mm", "209.30×116.84mm", "19.05×19.05mm", "142.11×59.94mm", "40.26×32.48mm"], "widthMm": 392, "heightMm": 531.44}, "20260812C03HT3": {"title": "고령자에 흔한 서맥성 부정맥, ‘무전극선 심박동기’로 합병증 줄인다", "titleChars": 37, "titleNo": 30, "bodyChars": 5068, "bodyNo": 3866, "imageCount": 4, "sizes": ["209.42×137.03mm", "137.67×68.07mm", "19.05×19.05mm", "65.28×83.82mm"], "widthMm": 392, "heightMm": 531.44}, "20260812C04HT4": {"title": "“폐섬유화증, 조기 관리 중요… 증상 완화 돕는 한방요법 주목”", "titleChars": 35, "titleNo": 27, "bodyChars": 3011, "bodyNo": 2297, "imageCount": 5, "sizes": ["361.31×157.35mm", "204.72×115.57mm", "142.24×70.99mm", "18.16×18.03mm", "121.67×49.91mm"], "widthMm": 392, "heightMm": 531.44}, "20260819C02HT2": {"title": "촌각 다투는 ‘뇌동맥류 파열’… 코일 색전술로 지체 없이 치료 <혈관 내 시술>", "titleChars": 44, "titleNo": 33, "bodyChars": 5524, "bodyNo": 4214, "imageCount": 5, "sizes": ["23.11×29.95mm", "137.67×59.18mm", "209.17×126.36mm", "18.03×17.94mm", "133.35×60.58mm"], "widthMm": 392, "heightMm": 531.44}, "20260819C03HT3": {"title": "피부 리프팅 시술, ‘정품 확인’ 필수… 효과·안전성 좌우한다", "titleChars": 34, "titleNo": 27, "bodyChars": 3555, "bodyNo": 2711, "imageCount": 4, "sizes": ["361.31×157.35mm", "212.22×126.49mm", "65.79×65.79mm", "65.66×50.55mm"], "widthMm": 392, "heightMm": 531.44}, "20260819C04HT4": {"title": "‘산부인과 로봇수술 2만례’ 달성한 차병원… “정밀·맞춤 치료 앞장”", "titleChars": 38, "titleNo": 31, "bodyChars": 1665, "bodyNo": 1270, "imageCount": 9, "sizes": ["25.15×22.75mm", "25.15×22.75mm", "24.13×22.75mm", "24.13×22.75mm", "24.13×22.75mm", "24.26×22.75mm", "139.06×48.89mm", "212.22×104.14mm", "361.31×195.45mm"], "widthMm": 392, "heightMm": 531.44}, "20260902D02HT2": {"title": "계절 바뀌자 ‘콜록콜록’… 기침·가래 지속되면 폐 건강 살펴야", "titleChars": 34, "titleNo": 27, "bodyChars": 2208, "bodyNo": 1684, "imageCount": 3, "sizes": ["361.31×228.60mm", "209.17×117.09mm", "64.39×41.27mm"], "widthMm": 392, "heightMm": 531.44}, "20260902D03HT3": {"title": "보행 장애·낙상 부르는 무지외반증… ‘최소 침습’으로 수술 부담 줄였다", "titleChars": 39, "titleNo": 31, "bodyChars": 5890, "bodyNo": 4492, "imageCount": 5, "sizes": ["209.55×122.68mm", "25.78×34.04mm", "66.17×71.88mm", "41.91×32.60mm", "62.61×48.64mm"], "widthMm": 392, "heightMm": 531.44}, "20260902D04HT4": {"title": "혈관 청소부 ‘HDL’, 대사증후군→심근경색 연결 막는다", "titleChars": 31, "titleNo": 26, "bodyChars": 3399, "bodyNo": 2593, "imageCount": 3, "sizes": ["361.31×157.35mm", "208.66×129.29mm", "139.70×87.63mm"], "widthMm": 392, "heightMm": 531.44}, "20260909D02HT2": {"title": "“유방암, 진단부터 수술·재건·회복까지… ‘원팀’으로 맞춤 치료”", "titleChars": 36, "titleNo": 31, "bodyChars": 2494, "bodyNo": 1902, "imageCount": 3, "sizes": ["361.31×228.60mm", "209.93×103.76mm", "142.24×51.56mm"], "widthMm": 392, "heightMm": 531.44}, "20260909D03HT3": {"title": "소비자가 직접 제품·가격 비교… ‘창고형 약국’이 바꾼 약 구매 풍경", "titleChars": 38, "titleNo": 29, "bodyChars": 3758, "bodyNo": 2867, "imageCount": 5, "sizes": ["176.78×293.62mm", "210.31×111.63mm", "104.39×67.31mm", "28.57×39.50mm", "40.89×50.04mm"], "widthMm": 392, "heightMm": 531.44}, "20260909D04HT4": {"title": "“고난도 인공관절 로봇수술, 결국 집도의 경험과 판단이 성패 가른다”", "titleChars": 38, "titleNo": 30, "bodyChars": 5628, "bodyNo": 4292, "imageCount": 6, "sizes": ["18.03×18.03mm", "209.30×129.03mm", "62.36×78.74mm", "132.14×78.99mm", "33.78×36.90mm", "단풍 사진"], "widthMm": 392, "heightMm": 531.44}, "20260917D02HT2": {"title": "전립선비대증 해법으로 떠오른 ‘참당귀·황기’… 배뇨 불편 개선 확인", "titleChars": 37, "titleNo": 30, "bodyChars": 2307, "bodyNo": 1759, "imageCount": 5, "sizes": ["26.03×35.05mm", "209.93×138.94mm", "106.68×65.53mm", "64.77×43.05mm", "176.78×250.57mm"], "widthMm": 392, "heightMm": 531.44}, "20260917D03HT3": {"title": "조기 진단 어렵고 재발 잦은 난소암… 치료 선택지 넓어진다", "titleChars": 32, "titleNo": 24, "bodyChars": 4436, "bodyNo": 3384, "imageCount": 5, "sizes": ["287.02×208.66mm", "137.54×67.44mm", "18.16×18.07mm", "69.78×72.14mm", "69.60×43.43mm"], "widthMm": 392, "heightMm": 531.44}, "20260917D04HT4": {"title": "한·양방 경계 허문 ‘통합의학’", "titleChars": 17, "titleNo": 14, "bodyChars": 2011, "bodyNo": 1533, "imageCount": 7, "sizes": ["118.24×53.97mm", "57.15×125.86mm", "57.28×104.27mm", "118.49×192.91mm", "57.40×120.78mm", "57.40×109.98mm", "361.31×157.35mm"], "widthMm": 392, "heightMm": 531.44}};
+const INSIDE_ARTICLES = {"20260702C02HT2": [{"order": 1, "title": "“밤잠 깨우는 ‘전립선비대증’… 방치하다간 ‘소변길’ 막힙니다”", "titleChars": 35, "titleNo": 30, "bodyChars": 2266, "bodyNo": 1728, "imageCount": 2, "sizes": ["209.38×132.00mm", "64.53×35.23mm"], "est": "ocr"}, {"order": 2, "title": "“암을 이겨낸 사람들은 무엇이 달랐을까”", "titleChars": 21, "titleNo": 18, "bodyChars": 1146, "bodyNo": 874, "imageCount": 3, "sizes": ["19.32×27.16mm", "18.04×18.02mm", "100.43×100.38mm"], "est": "ocr"}, {"order": 3, "title": "“생식 노화 연구에서 ‘건강 수명 연장’ 해법 찾는다”", "titleChars": 28, "titleNo": 23, "bodyChars": 1923, "bodyNo": 1467, "imageCount": 4, "sizes": ["프로필 사진 4장 · 각 약 30×30mm"], "est": "ocr"}, {"order": 4, "title": "밀당365 뉴스레터 800호 발행… 구독신청 받아요", "titleChars": 28, "titleNo": 22, "bodyChars": 311, "bodyNo": 238, "imageCount": 1, "sizes": ["QR코드 · 약 18×18mm"], "est": "ocr"}], "20260702C03HT3": [{"order": 1, "title": "“기침·가래가 멈추지 않으면 폐 이상 신호… COPD 의심해 봐야”", "titleChars": 37, "titleNo": 29, "bodyChars": 1784, "bodyNo": 1360, "imageCount": 2, "sizes": ["210.08×116.29mm", "137.80×95.02mm"], "est": "ocr"}, {"order": 2, "title": "방학 때도 못 쉬는 눈… “초등학생 근시, 질환으로 생각하세요”", "titleChars": 35, "titleNo": 27, "bodyChars": 1035, "bodyNo": 790, "imageCount": 1, "sizes": ["66.52×75.91mm"], "est": "ocr"}, {"order": 3, "title": "시원한 여름휴가… 日 나가노 치유의 숲을 걷다", "titleChars": 25, "titleNo": 19, "bodyChars": 3176, "bodyNo": 2423, "imageCount": 1, "sizes": ["18.04×18.02mm"], "est": "ocr"}], "20260708C02HT2": [{"order": 1, "title": "“불면증, 참고 견딜 병 아냐… 신약으로 맞춤 치료 길 열려”", "titleChars": 34, "titleNo": 25, "bodyChars": 2555, "bodyNo": 1949, "imageCount": 1, "sizes": ["205.06×120.02mm"], "est": "ocr"}, {"order": 2, "title": "자외선에 망가진 피부… 관리 늦으면 회복 어려워", "titleChars": 26, "titleNo": 20, "bodyChars": 1326, "bodyNo": 1011, "imageCount": 3, "sizes": ["68.61×42.46mm", "19.03×18.99mm", "65.34×88.95mm"], "est": "ocr"}, {"order": 3, "title": "유네스코 세계 유산 순례길을 걷다… 구마노 고도 걷기 4일", "titleChars": 32, "titleNo": 24, "bodyChars": 1120, "bodyNo": 854, "imageCount": 2, "sizes": ["65.68×55.88mm", "19.05×18.99mm"], "est": "ocr"}], "20260708C03HT3": [{"order": 1, "title": "“중증 난청, 보청기로는 역부족… ‘인공와우’가 유일한 대안”", "titleChars": 34, "titleNo": 28, "bodyChars": 2156, "bodyNo": 1645, "imageCount": 3, "sizes": ["176.72×250.32mm", "204.80×120.84mm", "130.75×70.02mm"], "est": "ocr"}, {"order": 2, "title": "족부 질환 비수술 치료의 세 가지 조건", "titleChars": 21, "titleNo": 15, "bodyChars": 1554, "bodyNo": 1185, "imageCount": 2, "sizes": ["30.70×40.03mm", "105.45×48.65mm"], "est": "ocr"}], "20260708C04HT4": [{"order": 1, "title": "“만성 폐질환, 심장까지 위협한다… 숨 차거나 기침 길어지면 함께 관리해야”", "titleChars": 42, "titleNo": 33, "bodyChars": 2279, "bodyNo": 1739, "imageCount": 3, "sizes": ["209.31×126.09mm", "59.62×37.79mm", "69.58×56.96mm"], "est": "ocr"}, {"order": 2, "title": "히말라야 설산·동화 같은 사원… 행복이 따로 없다", "titleChars": 27, "titleNo": 21, "bodyChars": 918, "bodyNo": 700, "imageCount": 2, "sizes": ["361.65×157.31mm", "19.08×19.03mm"], "est": "ocr"}], "20260812C02HT2": [{"order": 1, "title": "말 못할 고민 전립선비대증… ‘참당귀·황기’로 개선 가능성 확인", "titleChars": 35, "titleNo": 28, "bodyChars": 2869, "bodyNo": 2189, "imageCount": 3, "sizes": ["209.37×116.89mm", "142.16×59.93mm", "40.26×32.52mm"], "est": "ocr"}, {"order": 2, "title": "청명한 9월 시베리아, 자연과 내가 하나가 된다", "titleChars": 26, "titleNo": 20, "bodyChars": 643, "bodyNo": 491, "imageCount": 2, "sizes": ["361.65×157.31mm", "19.03×19.03mm"], "est": "ocr"}], "20260812C03HT3": [{"order": 1, "title": "고령자에 흔한 서맥성 부정맥, ‘무전극선 심박동기’로 합병증 줄인다", "titleChars": 37, "titleNo": 30, "bodyChars": 1990, "bodyNo": 1518, "imageCount": 1, "sizes": ["209.38×136.99mm"], "est": "ocr"}, {"order": 2, "title": "치료해도 허리 통증 지속되면 ‘고관절 질환’ 의심해야", "titleChars": 29, "titleNo": 23, "bodyChars": 2117, "bodyNo": 1615, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "일본의 온천과 숲, 단풍에 흠뻑 빠지다", "titleChars": 21, "titleNo": 16, "bodyChars": 961, "bodyNo": 733, "imageCount": 3, "sizes": ["137.87×68.14mm", "19.03×19.03mm", "65.32×83.80mm"], "est": "ocr"}], "20260812C04HT4": [{"order": 1, "title": "“폐섬유화증, 조기 관리 중요… 증상 완화 돕는 한방요법 주목”", "titleChars": 35, "titleNo": 27, "bodyChars": 2162, "bodyNo": 1649, "imageCount": 3, "sizes": ["204.52×115.36mm", "142.13×70.91mm", "121.59×49.85mm"], "est": "ocr"}, {"order": 2, "title": "카사블랑카의 로망… 모로코 여행 12일", "titleChars": 21, "titleNo": 17, "bodyChars": 849, "bodyNo": 648, "imageCount": 2, "sizes": ["361.65×157.31mm", "18.14×18.02mm"], "est": "ocr"}], "20260819C02HT2": [{"order": 1, "title": "촌각 다투는 ‘뇌동맥류 파열’… 코일 색전술로 지체 없이 치료", "titleChars": 34, "titleNo": 26, "bodyChars": 2477, "bodyNo": 1890, "imageCount": 1, "sizes": ["209.39×126.39mm"], "est": "ocr"}, {"order": 2, "title": "반복되는 염좌를 무시하면 안 되는 이유", "titleChars": 21, "titleNo": 16, "bodyChars": 2095, "bodyNo": 1598, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "단풍이 물든 일본 가을을 걷고 느끼다", "titleChars": 20, "titleNo": 15, "bodyChars": 952, "bodyNo": 726, "imageCount": 4, "sizes": ["23.14×30.02mm", "137.59×59.10mm", "18.01×17.97mm", "133.28×60.56mm"], "est": "ocr"}], "20260819C03HT3": [{"order": 1, "title": "피부 리프팅 시술, ‘정품 확인’ 필수… 효과·안전성 좌우한다", "titleChars": 34, "titleNo": 27, "bodyChars": 3555, "bodyNo": 2711, "imageCount": 4, "sizes": ["361.65×157.31mm", "212.11×126.43mm", "65.81×65.81mm", "65.68×50.57mm"], "est": "ocr"}], "20260819C04HT4": [{"order": 1, "title": "‘산부인과 로봇수술 2만례’ 달성한 차병원… “정밀·맞춤 치료 앞장”", "titleChars": 38, "titleNo": 31, "bodyChars": 1665, "bodyNo": 1270, "imageCount": 9, "sizes": ["25.15×22.78mm", "25.16×22.78mm", "24.11×22.74mm", "24.15×22.80mm", "24.11×22.76mm", "24.23×22.78mm", "139.08×48.88mm", "212.44×104.17mm", "361.65×195.31mm"], "est": "ocr"}], "20260902D02HT2": [{"order": 1, "title": "계절 바뀌자 ‘콜록콜록’… 기침·가래 지속되면 폐 건강 살펴야", "titleChars": 34, "titleNo": 27, "bodyChars": 2208, "bodyNo": 1684, "imageCount": 3, "sizes": ["361.65×228.31mm", "209.36×117.12mm", "64.51×41.17mm"], "est": "ocr"}], "20260902D03HT3": [{"order": 1, "title": "보행 장애·낙상 부르는 무지외반증… ‘최소 침습’으로 수술 부담 줄였다", "titleChars": 39, "titleNo": 31, "bodyChars": 2405, "bodyNo": 1834, "imageCount": 2, "sizes": ["209.45×122.52mm", "62.69×48.67mm"], "est": "ocr"}, {"order": 2, "title": "중장년 두뇌 건강 좌우하는 ‘뇌세포막’과 혈류", "titleChars": 25, "titleNo": 20, "bodyChars": 1454, "bodyNo": 1109, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "지긋지긋한 두통·어깨 통증… 원인은 턱관절?", "titleChars": 24, "titleNo": 20, "bodyChars": 2031, "bodyNo": 1549, "imageCount": 3, "sizes": ["25.82×34.00mm", "66.11×71.76mm", "41.89×32.64mm"], "est": "ocr"}], "20260902D04HT4": [{"order": 1, "title": "혈관 청소부 ‘HDL’, 대사증후군→심근경색 연결 막는다", "titleChars": 31, "titleNo": 26, "bodyChars": 3399, "bodyNo": 2593, "imageCount": 2, "sizes": ["208.68×129.21mm", "139.84×87.61mm"], "est": "ocr"}], "20260909D02HT2": [{"order": 1, "title": "“유방암, 진단부터 수술·재건·회복까지… ‘원팀’으로 맞춤 치료”", "titleChars": 36, "titleNo": 31, "bodyChars": 2494, "bodyNo": 1902, "imageCount": 3, "sizes": ["361.65×228.31mm", "210.26×103.93mm", "142.12×51.44mm"], "est": "ocr"}], "20260909D03HT3": [{"order": 1, "title": "소비자가 직접 제품·가격 비교… ‘창고형 약국’이 바꾼 약 구매 풍경", "titleChars": 38, "titleNo": 29, "bodyChars": 2294, "bodyNo": 1750, "imageCount": 3, "sizes": ["176.72×293.31mm", "210.06×111.45mm", "40.89×49.95mm"], "est": "ocr"}, {"order": 2, "title": "“고령 대동맥류 환자도 ‘스텐트’ 치료 가능”", "titleChars": 25, "titleNo": 20, "bodyChars": 1464, "bodyNo": 1117, "imageCount": 2, "sizes": ["104.31×67.25mm", "28.60×39.46mm"], "est": "ocr"}], "20260909D04HT4": [{"order": 1, "title": "“고난도 인공관절 로봇수술, 결국 집도의 경험과 판단이 성패 가른다”", "titleChars": 38, "titleNo": 30, "bodyChars": 1087, "bodyNo": 829, "imageCount": 1, "sizes": ["209.45×129.06mm"], "est": "ocr"}, {"order": 2, "title": "수술 전 꼭 확인하세요", "titleChars": 12, "titleNo": 10, "bodyChars": 374, "bodyNo": 285, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "일본의 가을… 나만의 단풍에 빠지다", "titleChars": 19, "titleNo": 15, "bodyChars": 1378, "bodyNo": 1051, "imageCount": 1, "sizes": ["도가쿠시 단풍 사진"], "est": "ocr"}, {"order": 4, "title": "예전 같지 않은 힘·움직임… ‘근력 저하’ 신호", "titleChars": 26, "titleNo": 20, "bodyChars": 2789, "bodyNo": 2127, "imageCount": 4, "sizes": ["18.05×18.02mm", "62.44×78.79mm", "131.87×78.85mm", "33.77×36.98mm"], "est": "ocr"}], "20260917D02HT2": [{"order": 1, "title": "전립선비대증 해법으로 떠오른 ‘참당귀·황기’… 배뇨 불편 개선 확인", "titleChars": 37, "titleNo": 30, "bodyChars": 1370, "bodyNo": 1044, "imageCount": 3, "sizes": ["209.96×138.90mm", "64.82×43.01mm", "176.70×250.32mm"], "est": "ocr"}, {"order": 2, "title": "건강한 걸음은 엄지에서 시작된다", "titleChars": 17, "titleNo": 14, "bodyChars": 937, "bodyNo": 715, "imageCount": 2, "sizes": ["26.00×34.99mm", "106.70×65.49mm"], "est": "ocr"}], "20260917D03HT3": [{"order": 1, "title": "조기 진단 어렵고 재발 잦은 난소암… 치료 선택지 넓어진다", "titleChars": 32, "titleNo": 24, "bodyChars": 893, "bodyNo": 681, "imageCount": 1, "sizes": ["286.58×208.24mm"], "est": "ocr"}, {"order": 2, "title": "쉬어도 풀리지 않는 피로… ‘기력 회복’이 필요한 때", "titleChars": 29, "titleNo": 22, "bodyChars": 2332, "bodyNo": 1779, "imageCount": 0, "sizes": [], "est": "ocr"}, {"order": 3, "title": "느리게 걷는 일본 후지산·시즈오카 단풍 여행", "titleChars": 24, "titleNo": 19, "bodyChars": 1211, "bodyNo": 924, "imageCount": 4, "sizes": ["137.32×67.27mm", "18.14×18.04mm", "69.68×72.01mm", "69.49×43.33mm"], "est": "ocr"}], "20260917D04HT4": [{"order": 1, "title": "한·양방 경계 허문 ‘통합의학’", "titleChars": 17, "titleNo": 14, "bodyChars": 2011, "bodyNo": 1533, "imageCount": 2, "sizes": ["118.41×54.02mm", "361.65×157.31mm"], "est": "ocr"}]};
 const USER_GALLERY_KEY = 'jopan-user-gallery-v4';
 
 try {
@@ -2293,7 +2305,7 @@ const ARTICLE_URL_KEY = 'jopan-article-urls-v1';
 let articleUrls = {};
 try { articleUrls = JSON.parse(localStorage.getItem(ARTICLE_URL_KEY) || '{}') || {}; } catch (_e) { articleUrls = {}; }
 function persistArticleUrls(){ try { localStorage.setItem(ARTICLE_URL_KEY, JSON.stringify(articleUrls)); } catch (_e) { /* 무시 */ } }
-const DEFAULT_SEARCH_TPL = 'https://health.chosun.com/search/search_main.jsp?search_txt={q}';
+const DEFAULT_SEARCH_TPL = ''; // 기본은 구글 검색 (site:health.chosun.com "제목")
 const CHOSUN_HOST = /^https:\/\/health\.chosun\.com\//;
 function popupWindow(url){
   const w = Math.min(1100, screen.availWidth - 80), h = Math.min(920, screen.availHeight - 80);
@@ -2311,6 +2323,7 @@ function openArticle(evt, kind, itemId, region){
     const q = title.replace(/[“”"‘’↗]/g, '').replace(/\s+/g, ' ').trim();
     let tpl = '';
     try { tpl = localStorage.getItem('jopan-search-url-v1') || ''; } catch (_e) { tpl = ''; }
+    if (/health\.chosun\.com\/search\/search_main/.test(tpl)) tpl = ''; // 예전 기본값(검색 불가)은 무시
     if (!tpl) tpl = DEFAULT_SEARCH_TPL;
     url = tpl.includes('{q}') ? tpl.replace('{q}', encodeURIComponent(q)) : 'https://www.google.com/search?q=' + encodeURIComponent('site:health.chosun.com "' + q + '"');
   }
@@ -2512,8 +2525,9 @@ function mdClear(kind, key){ delete mdStore[key]; mdPersist(); mdRerender(kind);
 /* 마크다운으로 계산한 값을 내지 기사 객체에 덮어쓴다 */
 function mdApplyArticle(itemId, index, article){
   const md = mdGet(itemId, 'art' + index);
-  if (!md) return { ...article, mdOn: false };
-  const out = { ...article, mdOn: true, bodyChars: md.c.total };
+  const ded = insetDeduct(itemId, 'art' + index);
+  if (!md) return { ...article, mdOn: false, bodyChars: Math.max(0, (article.bodyChars || 0) - ded), insetDed: ded };
+  const out = { ...article, mdOn: true, bodyChars: Math.max(0, md.c.total - ded), insetDed: ded };
   if (md.titleText) { out.title = md.titleText; out.titleChars = mdLen(md.titleText); }
   return out;
 }
@@ -2575,6 +2589,18 @@ function displayVisuals(entries=[],type=''){
   return entries.filter(([label]) => !/QR\s*코드/i.test(String(label || '')));
 }
 
+function insideAdN(item){
+  const a = INSIDE_AD_DATA[item.id];
+  return (a ? (Array.isArray(a) ? a.length : 1) : 0) + insetsOf(item.id).filter(r => r.kind === 'ad').length;
+}
+function codeLabel(item){
+  const src = [item.id, item.code, item.fileName, item.sub].map(v => String(v || '')).join(' ');
+  const m = src.match(/([A-Z]\d{2})\s*\/?\s*(HT\d)/i);
+  return m ? `${m[1].toUpperCase()} / ${m[2].toUpperCase()}` : String(item.code || '');
+}
+function cardMetaHtml(item, artN, adN){
+  return `${codeLabel(item)} · <i class="gc-art">기사 ${artN}개</i>${adN ? `, <i class="gc-ad">광고 ${adN}개</i>` : ''}`;
+}
 function renderInsideGallery(){
   const grid = document.getElementById('insideGalleryGrid');
   if (!grid) return;
@@ -2583,7 +2609,7 @@ function renderInsideGallery(){
     const card = document.createElement('div');
     card.className = 'gallery-card inside-card' + (insideSelected===item.id ? ' selected' : '');
     const articleCount = (INSIDE_ARTICLES[item.id] || []).length || 1;
-    card.innerHTML = `<img src="${item.img}" loading="lazy" alt="${item.date} ${item.page}면 샘플"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · ${item.page}면</strong><span>${item.code} · 기사 ${articleCount}개${(INSIDE_AD_DATA[item.id] ? (Array.isArray(INSIDE_AD_DATA[item.id]) ? INSIDE_AD_DATA[item.id].length : 1) : 0) ? `, 광고 ${Array.isArray(INSIDE_AD_DATA[item.id]) ? INSIDE_AD_DATA[item.id].length : 1}개` : ''}</span></div>`;
+    card.innerHTML = `<img src="${item.img}" loading="lazy" alt="${item.date} ${item.page}면 샘플"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · ${item.page}면</strong><span>${cardMetaHtml(item, articleCount + insetsOf(item.id).filter(r => r.kind === 'box').length, insideAdN(item))}</span></div>`;
     card.onclick = () => { insideSelected = item.id; insideRegionSelected = null; renderInsideGallery(); renderInsideDetail(); };
     grid.appendChild(card);
   });
@@ -2652,7 +2678,7 @@ function renderInsideDetail(){
   const adCard = adInfo ? `
     <div class="gsectionlabel">광고</div>
     <div class="bbox-card${adActive}" style="border-left:4px solid #b14963" onclick="selectInsideRegion('${item.id}','ad0')">
-      <div class="bbox-type" style="color:#b14963">광고 · 전체 폭</div>
+      <div class="bbox-type" style="color:#b14963">광고 · ${(adOvNow ? adOvNow.w : adInfo.region.w) >= 90 ? '전체 폭' : Math.round((adOvNow ? adOvNow.w : adInfo.region.w) / 100 * (item.width || 392)) + 'mm 폭'}</div>
       <div class="bbox-name"><span class="field-prefix">위치:</span>${escapeHtml(adInfo.name)}</div>
       <div class="bbox-row"><span>광고 단수</span><span class="cols-step" onclick="event.stopPropagation()"><button type="button" onclick="changeInsideAdDan('${item.id}',-1)" aria-label="단수 줄이기">−</button><b>${adNow.dan}단</b><button type="button" onclick="changeInsideAdDan('${item.id}',1)" aria-label="단수 늘리기">+</button></span></div>
       <div class="bbox-row"><span>광고 규격(표 기준)</span><span>${adInfo.region.w >= 90 ? 362 : adInfo.widthMm}×${adNow.h}mm <small class="ad-note">${Math.abs(adMeasuredNow - adNow.h) > 1 ? 'PDF 측정 ' + adMeasuredNow + 'mm → 광고 규격표로 보정' : ''}</small></span></div>
@@ -2730,8 +2756,8 @@ function region1myunRects(item){
   return {regions, W, H};
 }
 
-const INSIDE_REGION_RECTS = {"20260702C02HT2": [[0, 0, 100, 53.4], [0, 53.4, 40, 36.6], [40, 53.4, 60, 46.6], [0, 90, 40, 10]], "20260702C03HT3": [[0, 0, 70, 53.4], [70, 0, 30, 53.4], [0, 53.4, 100, 46.6]], "20260708C02HT2": [[0, 0, 100, 53.7], [0, 53.7, 41.2, 46.3], [41.2, 53.7, 58.8, 27.8]], "20260708C03HT3": [[0, 0, 100, 55.5], [0, 55.5, 45, 44.5]], "20260708C04HT4": [[0, 0, 100, 53.4], [0, 53.4, 100, 15.3]], "20260812C02HT2": [[0, 0, 100, 53], [0, 53, 100, 15]], "20260812C03HT3": [[0, 0, 100, 53.7], [0, 53.7, 59.9, 46.3], [59.9, 53.7, 40.1, 46.3]], "20260812C04HT4": [[0, 0, 100, 51.4], [0, 51.4, 100, 17.3]], "20260819C02HT2": [[0, 0, 100, 55.5], [0, 55.5, 60, 44.5], [60, 55.5, 40, 44.5]], "20260819C03HT3": [[0, 0, 100, 66.6]], "20260819C04HT4": [[0, 0, 100, 45]], "20260902D02HT2": [[0, 0, 100, 49]], "20260902D03HT3": [[0, 0, 100, 54.4], [0, 54.4, 41.2, 45.6], [41.2, 54.4, 58.8, 45.6]], "20260902D04HT4": [[0, 0, 100, 68.7], [0, 68.7, 100, 21.3]], "20260909D02HT2": [[0, 0, 100, 58]], "20260909D03HT3": [[0, 0, 100, 54.8], [0, 54.8, 50, 45.2]], "20260909D04HT4": [[0, 0, 65, 40], [65, 0, 35, 25], [0, 40, 40, 60], [40, 40, 60, 60]], "20260917D02HT2": [[0, 0, 100, 53.7], [50, 53.7, 50, 31.3]], "20260917D03HT3": [[0, 0, 100, 48.2], [0, 48.2, 59.9, 51.8], [59.9, 48.2, 40.1, 51.8]], "20260917D04HT4": [[0, 0, 100, 68.7]]};
-const INSIDE_AD_DATA = {"20260708C04HT4": {"name": "고려수지·서금요법 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260812C02HT2": {"name": "영동한의원 (광고)", "rect": [0, 68, 100, 30]}, "20260812C04HT4": {"name": "고려수지·서금요법 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260819C03HT3": {"name": "대한지방줄기세포학회 (광고)", "rect": [0, 66.6, 100, 31.4]}, "20260819C04HT4": {"name": "헬스조선 프리미엄 여행 비타투어 (광고)", "rect": [0, 45, 100, 53]}, "20260902D02HT2": {"name": "헬스조선 프리미엄 여행 비타투어 (광고)", "rect": [0, 49, 100, 49]}, "20260902D04HT4": {"name": "레이델 폴리코사놀20 (광고)", "rect": [0, 90, 100, 8]}, "20260909D02HT2": {"name": "헬스조선 프리미엄 여행 비타투어 (광고)", "rect": [0, 58, 100, 40]}, "20260909D03HT3": {"name": "대한지방줄기세포학회 (광고)", "rect": [51, 43, 47, 56]}, "20260917D02HT2": {"name": "전립선 건강기능식품 (광고, 추정)", "rect": [0, 85, 100, 13]}, "20260917D04HT4": {"name": "고려수지·서금요법 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260708C02HT2": {"name": "에버콜라겐 여름 한정 프로모션 (Advertorial)", "rect": [41.2, 81.5, 58.8, 18.5]}};
+const INSIDE_REGION_RECTS = {"20260702C02HT2": [[0, 0, 100, 53.4], [0, 53.4, 40, 36.6], [40, 53.4, 60, 46.6], [0, 90, 40, 10]], "20260702C03HT3": [[0, 0, 70, 53.4], [70, 0, 30, 53.4], [0, 53.4, 100, 46.6]], "20260708C02HT2": [[0, 0, 100, 53.7], [0, 53.7, 41.2, 46.3], [41.2, 53.7, 58.8, 27.8]], "20260708C03HT3": [[0, 0, 100, 55.5], [0, 55.5, 45, 44.5]], "20260708C04HT4": [[0, 0, 100, 53.4], [0, 53.4, 100, 15.3]], "20260812C02HT2": [[0, 0, 100, 53], [0, 53, 100, 15]], "20260812C03HT3": [[0, 0, 100, 53.7], [0, 53.7, 59.9, 46.3], [59.9, 53.7, 40.1, 46.3]], "20260812C04HT4": [[0, 0, 100, 51.4], [0, 51.4, 100, 17.3]], "20260819C02HT2": [[0, 0, 100, 55.5], [0, 55.5, 60, 44.5], [60, 55.5, 40, 44.5]], "20260819C03HT3": [[0, 0, 100, 66.6]], "20260819C04HT4": [[0, 0, 100, 45]], "20260902D02HT2": [[0, 0, 100, 49]], "20260902D03HT3": [[0, 0, 100, 54.4], [0, 54.4, 41.2, 45.6], [41.2, 54.4, 58.8, 45.6]], "20260902D04HT4": [[0, 0, 100, 68.7]], "20260909D02HT2": [[0, 0, 100, 58]], "20260909D03HT3": [[0, 0, 100, 54.8], [0, 54.8, 50, 45.2]], "20260909D04HT4": [[0, 0, 100, 40], [65, 23, 35, 17], [0, 40, 40, 60], [40, 40, 60, 60]], "20260917D02HT2": [[0, 0, 100, 53.7], [50, 53.7, 50, 31.3]], "20260917D03HT3": [[0, 0, 100, 48.2], [0, 48.2, 59.9, 51.8], [59.9, 48.2, 40.1, 51.8]], "20260917D04HT4": [[0, 0, 100, 68.7]]};
+const INSIDE_AD_DATA = {"20260708C04HT4": {"name": "고려수지·서금요법 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260812C02HT2": {"name": "영동한의원 (광고)", "rect": [0, 68, 100, 30]}, "20260812C04HT4": {"name": "고려수지·서금요법 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260819C03HT3": {"name": "대한지방줄기세포학회 (광고)", "rect": [0, 66.6, 100, 31.4]}, "20260819C04HT4": {"name": "헬스조선 프리미엄 여행 비타투어 (광고)", "rect": [0, 45, 100, 53]}, "20260902D02HT2": {"name": "헬스조선 프리미엄 여행 비타투어 (광고)", "rect": [0, 49, 100, 49]}, "20260902D04HT4": {"name": "레이델 폴리코사놀20 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260909D02HT2": {"name": "헬스조선 프리미엄 여행 비타투어 (광고)", "rect": [0, 58, 100, 40]}, "20260909D03HT3": {"name": "대한지방줄기세포학회 (광고)", "rect": [51, 43, 47, 56]}, "20260917D02HT2": {"name": "전립선 건강기능식품 (광고, 추정)", "rect": [0, 53.7, 48, 44.3]}, "20260917D04HT4": {"name": "고려수지·서금요법 (광고)", "rect": [0, 68.7, 100, 29.3]}, "20260708C02HT2": {"name": "에버콜라겐 여름 한정 프로모션 (Advertorial)", "rect": [41.2, 81.5, 58.8, 18.5]}};
 function regionInsideRects(item, articles){
   const W = 100, H = 100; // percentage-based rects, hand-verified per page layout
   const verified = INSIDE_REGION_RECTS[item.id];
@@ -3026,12 +3052,16 @@ function beginDrawRegion(evt, itemId, kind){
   document.addEventListener('mouseup', onUp);
 }
 
-function frontCounts(item){
+function boxTypesOf(item){
   const a = item.audit || GALLERY_AUDIT[item.id] || {};
-  const bt = a.bottom || [];
-  const ads = bt.filter(b => /^(ad|advertorial)$/.test(b.type)).length;
-  const arts = 1 + bt.filter(b => !/^(ad|advertorial|promo)$/.test(b.type)).length;
-  return `기사 ${arts}개${ads ? `, 광고 ${ads}개` : ''}`;
+  const list = (item.bottomBoxes && item.bottomBoxes.length) ? item.bottomBoxes : (a.bottom || []);
+  return list.map((b, i) => b.typeOv || (a.bottom && a.bottom[i] && a.bottom[i].type) || b.type);
+}
+function frontCounts(item){
+  const types = boxTypesOf(item), ins = insetsOf(item.id);
+  const ads = types.filter(t => /^(ad|advertorial)$/.test(t)).length + ins.filter(r => r.kind === 'ad').length;
+  const arts = 1 + types.filter(t => !/^(ad|advertorial|promo)$/.test(t)).length + ins.filter(r => r.kind === 'box').length;
+  return cardMetaHtml(item, arts, ads);
 }
 function renderGallery(){
   const grid = document.getElementById('galleryGrid');
@@ -3039,7 +3069,7 @@ function renderGallery(){
   GALLERY_DATA.forEach(item => {
     const card = document.createElement('div');
     card.className = 'gallery-card' + (gallerySelected===item.id ? ' selected' : '');
-    card.innerHTML = `<img src="${item.img}" loading="lazy"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · 1면</strong><span>${item.code || ''} · ${frontCounts(item)}</span></div>`;
+    card.innerHTML = `<img src="${item.img}" loading="lazy"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · 1면</strong><span>${frontCounts(item)}</span></div>`;
     card.onclick = () => { gallerySelected = item.id; galleryRegionSelected = null; renderGallery(); renderGalleryDetail(); };
     grid.appendChild(card);
   });
@@ -3063,15 +3093,15 @@ function renderGalleryDetail(){
   const mdTop = mdGet(item.id,'top');
   const title = editedValue(item.id,'title',(mdTop && mdTop.titleText) || item.title);
   const sub = editedValue(item.id,'sub',(mdTop && mdTop.shoulderText) || item.sub);
-  const topBody = mdTop ? mdTop.c.total : (audit.body || 0);
+  const topBody = Math.max(0, (mdTop ? mdTop.c.total : (audit.body || 0)) - insetDeduct(item.id,'top'));
   const topSheets = Math.round((topBody/200)*10)/10;
 
   let bottomHtml = boxes.map((b,index) => {
     const checked = audit.bottom?.[index] || {};
-    const type = checked.type || b.type;
-    const visuals = adVisuals(b, displayVisuals(checked.v || [],type));
+    const type = b.typeOv || checked.type || b.type;
+    const visuals = adVisuals(b, displayVisuals(checked.v || [],type)).concat(extraVisuals(item.id,'box'+index));
     const mdBox = mdGet(item.id,'box'+index);
-    const bodyN = mdBox ? mdBox.c.total : b.body;
+    const bodyN = (mdBox ? mdBox.c.total : b.body) == null ? null : Math.max(0, (mdBox ? mdBox.c.total : b.body) - insetDeduct(item.id,'box'+index));
     const sheets = bodyN == null ? null : Math.round((bodyN/200)*10)/10;
     const defaultTypeLabel = defaultBoxTypeLabel(type,b,checked);
     const editableTypeLabel = customBoxLabels[`${item.id}:${index}`] || defaultTypeLabel;
@@ -3812,6 +3842,215 @@ const _renderGalleryDetail0 = renderGalleryDetail;
 renderGalleryDetail = function(){ _renderGalleryDetail0(); layoutDetailMode('g'); hiResAfterRender('g'); };
 const _renderInsideDetail0 = renderInsideDetail;
 renderInsideDetail = function(){ _renderInsideDetail0(); layoutDetailMode('i'); hiResAfterRender('i'); };
+
+/* ===== 새김(인셋) 영역: 기사 안에 파고든 작은 박스 기사·광고를 따로 잡아 본문에서 뺀다 ===== */
+const INSET_KEY = 'jopan-insets-v1';
+let insetStore = {};
+try { insetStore = JSON.parse(localStorage.getItem(INSET_KEY) || '{}') || {}; } catch (_e) { insetStore = {}; }
+let insetDrawKind = null;
+function insetPersist(){ try { localStorage.setItem(INSET_KEY, JSON.stringify(insetStore)); } catch (_e) { /* 무시 */ } }
+function insetsOf(id){ return insetStore[id] || []; }
+function insetDeduct(id, host){ return insetsOf(id).filter(r => r.host === host).reduce((s, r) => s + (r.chars || 0), 0); }
+function insetKindOf(id){ return String(id).startsWith('upload-') || GALLERY_DATA.some(g => g.id === id) ? 'g' : 'i'; }
+function insetHostAt(wrap, cx, cy){
+  let best = null;
+  wrap.querySelectorAll('.thumb-region').forEach(el => {
+    const m = String(el.getAttribute('onclick') || '').match(/,'([^']+)'\)$/); if (!m) return;
+    const l = parseFloat(el.style.left), t = parseFloat(el.style.top), w = parseFloat(el.style.width), h = parseFloat(el.style.height);
+    if (cx >= l && cx <= l + w && cy >= t && cy <= t + h) { const a = w * h; if (!best || a < best.a) best = {key: m[1], a}; }
+  });
+  return best ? best.key : null;
+}
+async function insetCountChars(id, rect){
+  try {
+    const src = await loadSourcePage(id);
+    if (src) {
+      const {items, vp} = src, W = vp.width, H = vp.height, kind = insetKindOf(id);
+      const mm = W / (kind === 'g' ? 362 : 392);
+      const x0 = rect.x/100*W, x1 = (rect.x+rect.w)/100*W, y0 = rect.y/100*H, y1 = (rect.y+rect.h)/100*H;
+      const ls = pdfTextLines(items, H, mm).filter(l => { const cx = (l.x + l.x1)/2, cy = (l.y0 + l.y1)/2; return cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1; });
+      const md = ls.length ? pdfBoxMd(ls, mm) : '';
+      return {chars: md.trim() ? mdParse(md).c.total : 0, exact: true};
+    }
+  } catch (_e) { /* 아래 면적 추정 */ }
+  const kind = insetKindOf(id), pw = kind === 'g' ? 362 : 392, ph = kind === 'g' ? 500 : 531.44;
+  return {chars: Math.round((rect.w/100*pw) * (rect.h/100*ph) * 0.026), exact: false};
+}
+function insetSetKind(k){
+  insetDrawKind = insetDrawKind === k ? null : k;
+  if (insetDrawKind && typeof drawModeOn !== 'undefined' && drawModeOn) { drawModeOn = false; }
+  const id = gallerySelected || insideSelected;
+  if (gallerySelected) renderGalleryDetail(); if (insideSelected) renderInsideDetail();
+  if (insetDrawKind) showToast(`${k === 'ad' ? '광고' : '박스 기사'} 새김 영역: 썸네일에서 해당 위치를 드래그하세요`);
+}
+function insetRemove(id, i){
+  (insetStore[id] || []).splice(i, 1); if (insetStore[id] && !insetStore[id].length) delete insetStore[id];
+  insetPersist(); renderGallery(); renderInsideGallery();
+  if (gallerySelected) renderGalleryDetail(); if (insideSelected) renderInsideDetail();
+}
+function insetBeginDraw(evt){
+  if (!insetDrawKind) return;
+  const wrap = evt.currentTarget; if (!wrap || !wrap.classList.contains('thumb-wrap')) return;
+  evt.preventDefault(); evt.stopPropagation();
+  const id = wrap.dataset.itemId, img = wrap.querySelector('img'), r = (img || wrap).getBoundingClientRect();
+  const cl = v => Math.min(100, Math.max(0, v));
+  const sx = cl((evt.clientX - r.left) / r.width * 100), sy = cl((evt.clientY - r.top) / r.height * 100);
+  let box = null, cur = null;
+  const upd = e => {
+    const x2 = cl((e.clientX - r.left) / r.width * 100), y2 = cl((e.clientY - r.top) / r.height * 100);
+    if (!box) { box = document.createElement('div'); box.className = 'draw-box'; wrap.appendChild(box); }
+    cur = {x: Math.min(sx, x2), y: Math.min(sy, y2), w: Math.abs(x2 - sx), h: Math.abs(y2 - sy)};
+    box.style.left = cur.x + '%'; box.style.top = cur.y + '%'; box.style.width = cur.w + '%'; box.style.height = cur.h + '%';
+  };
+  const mv = e => upd(e);
+  const up = async e => {
+    document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up);
+    if (box) box.remove(); upd(e); if (box) box.remove();
+    if (!cur || cur.w < 2 || cur.h < 1.5) return;
+    const kind = insetDrawKind, host = insetHostAt(wrap, cur.x + cur.w / 2, cur.y + cur.h / 2);
+    if (!host) { showToast('기사 영역 안쪽에 그려 주세요 (바깥은 새김 영역으로 쓸 수 없어요)'); return; }
+    const cnt = await insetCountChars(id, cur);
+    (insetStore[id] = insetStore[id] || []).push({kind, host, x: +cur.x.toFixed(1), y: +cur.y.toFixed(1), w: +cur.w.toFixed(1), h: +cur.h.toFixed(1), chars: cnt.chars, exact: cnt.exact});
+    insetPersist(); insetDrawKind = null; renderGallery(); renderInsideGallery();
+    if (gallerySelected) renderGalleryDetail(); if (insideSelected) renderInsideDetail();
+    showToast(`새김 ${kind === 'ad' ? '광고' : '박스 기사'} 추가 · ${host} 본문에서 ${cnt.chars.toLocaleString()}자 제외${cnt.exact ? '' : ' (면적 추정)'}`);
+  };
+  document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+}
+function insetDecorate(detailId, id, kind){
+  const el = document.getElementById(detailId); if (!el || !id) return;
+  const wrap = el.querySelector('.thumb-wrap'); if (!wrap) return;
+  wrap.dataset.itemId = id;
+  if (!wrap.dataset.insetBound) { wrap.dataset.insetBound = '1'; wrap.addEventListener('mousedown', insetBeginDraw, true); }
+  wrap.classList.toggle('draw-mode', !!insetDrawKind || wrap.classList.contains('draw-mode'));
+  const list = insetsOf(id), pw = kind === 'g' ? 362 : 392, ph = kind === 'g' ? 500 : 531.44;
+  list.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'inset-rect ' + r.kind;
+    d.style.cssText = `position:absolute;left:${r.x}%;top:${r.y}%;width:${r.w}%;height:${r.h}%;border:2px dashed ${r.kind === 'ad' ? '#b14963' : '#e08a00'};background:${r.kind === 'ad' ? 'rgba(177,73,99,.12)' : 'rgba(224,138,0,.14)'};pointer-events:none;box-sizing:border-box`;
+    wrap.appendChild(d);
+  });
+  const col = wrap.parentElement; if (!col) return;
+  col.querySelectorAll('.inset-panel').forEach(n => n.remove());
+  const rows = list.map((r, i) => {
+    const w = Math.round(r.w / 100 * pw), h = Math.round(r.h / 100 * ph);
+    const what = r.kind === 'ad' ? `광고 ${w}×${h}mm · 약 ${Math.round(h / 31 * 10) / 10}단` : `박스 기사 ${w}×${h}mm · ${r.chars.toLocaleString()}자(공백 포함)`;
+    return `<div class="inset-row"><span class="inset-dot ${r.kind}"></span><span>${what} · 소속 ${r.host} 본문에서 ${r.chars.toLocaleString()}자 제외${r.exact ? '' : ' (면적 추정)'}</span><button type="button" class="draw-btn" onclick="insetRemove('${id}',${i})">삭제</button></div>`;
+  }).join('');
+  const panel = document.createElement('div'); panel.className = 'inset-panel';
+  panel.innerHTML = `<div class="inset-bar"><b>새김 영역</b> <span class="draw-hint">기사 중간에 파고든 박스·광고</span>
+    <button type="button" class="draw-btn${insetDrawKind === 'box' ? ' on' : ''}" onclick="insetSetKind('box')">＋ 박스 기사</button>
+    <button type="button" class="draw-btn${insetDrawKind === 'ad' ? ' on' : ''}" onclick="insetSetKind('ad')">＋ 광고</button></div>${rows}`;
+  col.insertBefore(panel, wrap.nextSibling);
+}
+(() => {
+  const g0 = renderGalleryDetail, i0 = renderInsideDetail;
+  renderGalleryDetail = function(){ g0(); insetDecorate('galleryDetail', gallerySelected, 'g'); };
+  renderInsideDetail = function(){ i0(); insetDecorate('insideGalleryDetail', insideSelected, 'i'); };
+  const gl0 = renderGallery, il0 = renderInsideGallery;
+})();
+
+/* ===== 추가 이미지(수동 입력) · 하단 박스 기사↔광고 전환 · 내지 기사→광고 전환 ===== */
+const IMGX_KEY = 'jopan-extra-imgs-v1';
+let imgX = {};
+try { imgX = JSON.parse(localStorage.getItem(IMGX_KEY) || '{}') || {}; } catch (_e) { imgX = {}; }
+function imgXPersist(){ try { localStorage.setItem(IMGX_KEY, JSON.stringify(imgX)); } catch (_e) { /* 무시 */ } }
+function extraVisuals(id, key){ return (((imgX[id] || {})[key]) || []).map((v, i) => [`추가 이미지 ${i + 1}`, `${v.w}×${v.h}mm`]); }
+function imgxRerender(){ renderGallery(); renderInsideGallery(); if (gallerySelected) renderGalleryDetail(); if (insideSelected) renderInsideDetail(); }
+function addExtraImage(id, key){
+  const w = Math.round(parseFloat((document.getElementById('imgxw-' + key) || {}).value)), h = Math.round(parseFloat((document.getElementById('imgxh-' + key) || {}).value));
+  if (!(w > 0 && h > 0)) { showToast('이미지 가로·세로(mm)를 숫자로 입력해 주세요'); return; }
+  ((imgX[id] = imgX[id] || {})[key] = imgX[id][key] || []).push({w, h});
+  imgXPersist(); imgxRerender(); showToast(`이미지 ${w}×${h}mm를 추가했어요`);
+}
+function removeExtraImage(id, key, i){
+  const l = (imgX[id] || {})[key]; if (!l) return; l.splice(i, 1);
+  if (!l.length) delete imgX[id][key]; if (imgX[id] && !Object.keys(imgX[id]).length) delete imgX[id];
+  imgXPersist(); imgxRerender();
+}
+const _mdApply0 = mdApplyArticle;
+mdApplyArticle = function(itemId, index, article){
+  const out = _mdApply0(itemId, index, article), ex = extraVisuals(itemId, 'art' + index);
+  if (ex.length) { out.imageCount = (out.imageCount || 0) + ex.length; out.sizes = (out.sizes || []).concat(ex.map(e => e[1])); }
+  return out;
+};
+function setBoxType(itemId, index, type){
+  const item = GALLERY_DATA.find(g => g.id === itemId); if (!item) return;
+  if (!item.bottomBoxes) item.bottomBoxes = [];
+  const a = item.audit || GALLERY_AUDIT[itemId] || {};
+  if (!item.bottomBoxes[index]) { const src = (a.bottom || [])[index]; if (!src) return; item.bottomBoxes[index] = {type: src.type, name: '', body: 0, photos: 0, cols: 1}; }
+  const b = item.bottomBoxes[index];
+  b.type = type === 'ad' ? 'ad' : 'box'; b.typeOv = b.type;
+  if (type === 'ad' && !b.adDan) { const m = a.bottom && a.bottom[index] ? adMeasuredH(a.bottom[index]) : 0; b.adDan = adNearest(m || 129).dan; }
+  normalizeBoxes(item);
+  boxListEdits[itemId] = item.bottomBoxes;
+  try { localStorage.setItem(BOX_LIST_KEY, JSON.stringify(boxListEdits)); } catch (_e) { /* 무시 */ }
+  imgxRerender();
+  showToast(type === 'ad' ? `${index + 2}번 박스를 광고로 바꿨어요 · 기사 개수·본문 글자수에서 제외` : `${index + 2}번 박스를 기사로 바꿨어요`);
+}
+const INCONV_KEY = 'jopan-inconv-v1';
+let inconv = [];
+try { inconv = JSON.parse(localStorage.getItem(INCONV_KEY) || '[]') || []; } catch (_e) { inconv = []; }
+function insideConvertCore(pid, k){
+  const arts = INSIDE_ARTICLES[pid], rects = INSIDE_REGION_RECTS[pid];
+  if (!arts || arts.length < 2 || !arts[k]) return false;
+  const rect = rects && rects[k] ? rects[k].slice() : [0, 70, 100, 28];
+  arts.splice(k, 1); if (rects) rects.splice(k, 1);
+  arts.forEach((a, i) => { a.order = i + 1; });
+  const total = arts.length + 1;
+  for (let i = k + 1; i < total; i++) { const from = pid + '::art' + i, to = pid + '::art' + (i - 1); if (from in mdStore) { mdStore[to] = mdStore[from]; delete mdStore[from]; } else delete mdStore[to]; }
+  delete mdStore[pid + '::art' + (total - 1)];
+  if (regionOverrides[pid]) Object.keys(regionOverrides[pid]).forEach(key => { if (/^art\d+$/.test(key)) delete regionOverrides[pid][key]; });
+  if (!INSIDE_AD_DATA[pid]) INSIDE_AD_DATA[pid] = {name: '광고 (기사에서 전환)', rect};
+  else (insetStore[pid] = insetStore[pid] || []).push({kind: 'ad', host: '', x: rect[0], y: rect[1], w: rect[2], h: rect[3], chars: 0, exact: true});
+  return true;
+}
+function convertInsideToAd(pid, k){
+  if (!confirm('이 기사를 광고로 바꿀까요? 기사 개수·본문 글자수에서 빠지고 광고 영역이 됩니다.')) return;
+  if (!insideConvertCore(pid, k)) { showToast('기사가 1개뿐이라 전환할 수 없어요'); return; }
+  insideRegionSelected = null;
+  const rec = userInside.find(r => r.item.id === pid);
+  if (rec) { rec.ad = INSIDE_AD_DATA[pid]; persistUserInside(); }
+  else { inconv.push({pid, k}); try { localStorage.setItem(INCONV_KEY, JSON.stringify(inconv)); } catch (_e) { /* 무시 */ } }
+  insetPersist(); mdPersist(); regionPersistAll(); imgxRerender();
+  showToast('광고로 전환했어요');
+}
+(() => { const done = []; inconv.forEach(c => { if (!/^uploadin-/.test(c.pid)) { if (insideConvertCore(c.pid, c.k)) done.push(c); } }); })();
+function imgxDecorate(detailId, id, kind){
+  const el = document.getElementById(detailId); if (!el || !id) return;
+  el.querySelectorAll('.photo-list').forEach(pl => {
+    if (pl.nextElementSibling && pl.nextElementSibling.classList.contains('imgx')) return;
+    const card = pl.closest('.bbox-card');
+    let key = '';
+    if (card) { const m = String(card.getAttribute('onclick') || '').match(/'((?:box|art)\d+)'\)$/); key = m ? m[1] : ''; }
+    else if (kind === 'i') key = 'art0';
+    if (!key) return;
+    const list = (imgX[id] || {})[key] || [];
+    const d = document.createElement('div'); d.className = 'imgx'; d.onclick = e => e.stopPropagation();
+    d.innerHTML = `<span>이미지 직접 추가</span> <input type="number" min="1" id="imgxw-${key}" placeholder="가로mm"> × <input type="number" min="1" id="imgxh-${key}" placeholder="세로mm"> <button type="button" class="draw-btn" onclick="addExtraImage('${id}','${key}')">＋ 추가</button>` +
+      list.map((v, i) => ` <span class="imgx-chip">${v.w}×${v.h}mm <a href="#" onclick="removeExtraImage('${id}','${key}',${i});return false" title="삭제">✕</a></span>`).join('');
+    pl.parentNode.insertBefore(d, pl.nextSibling);
+    if (card && kind === 'g') {
+      if (!card.querySelector('.type-switch')) {
+        const idx = Number(key.slice(3)); const t = boxTypesOf(GALLERY_DATA.find(g => g.id === id) || {})[idx];
+        const sw = document.createElement('div'); sw.className = 'bbox-row type-switch'; sw.onclick = e => e.stopPropagation();
+        const isAd = /^(ad|advertorial)$/.test(t);
+        sw.innerHTML = `<span>구분 바꾸기</span><span><button type="button" class="draw-btn${isAd ? '' : ' on'}" onclick="setBoxType('${id}',${idx},'box')">기사</button> <button type="button" class="draw-btn${isAd ? ' on' : ''}" onclick="setBoxType('${id}',${idx},'ad')">광고</button></span>`;
+        const first = card.querySelector('.bbox-row'); card.insertBefore(sw, first);
+      }
+    }
+    if (card && kind === 'i' && Number(key.slice(3)) >= 1 && !card.querySelector('.type-switch')) {
+      const sw = document.createElement('div'); sw.className = 'bbox-row type-switch'; sw.onclick = e => e.stopPropagation();
+      sw.innerHTML = `<span>구분 바꾸기</span><span><button type="button" class="draw-btn on">기사</button> <button type="button" class="draw-btn" onclick="convertInsideToAd('${id}',${Number(key.slice(3))})">광고로 전환</button></span>`;
+      card.insertBefore(sw, card.querySelector('.bbox-row'));
+    }
+  });
+}
+(() => {
+  const g1 = renderGalleryDetail, i1 = renderInsideDetail;
+  renderGalleryDetail = function(){ g1(); imgxDecorate('galleryDetail', gallerySelected, 'g'); };
+  renderInsideDetail = function(){ i1(); imgxDecorate('insideGalleryDetail', insideSelected, 'i'); };
+})();
 
 loadUserInside();
 renderGallery();
