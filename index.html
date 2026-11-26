@@ -510,7 +510,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 19:00</div>
+    <div class="ver-stamp">버전 2026.11.26 19:20</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -812,7 +812,7 @@
       </label>
       <input type="file" id="adminFiles" accept="application/pdf,.pdf" multiple style="display:none">
       <ul id="adminList" class="admin-list"></ul>
-      <div class="admin-actions"><button type="button" class="primary" onclick="closeAdmin()">닫기</button></div>
+      <div class="admin-actions"><button type="button" id="recoverBtn" onclick="recoverUploads()" title="이 브라우저에 보관된 원본 PDF 중 갤러리에서 빠진 것을 다시 분석해 되살립니다">♻ 누락된 업로드 복구</button> <span id="recoverMsg" class="admin-sub"></span><button type="button" class="primary" onclick="closeAdmin()">닫기</button></div>
     </div>
   </div>
 </div>
@@ -2012,6 +2012,7 @@ function setInsideAnalysisState(message, isError=false){
 
 /* 업로드 기록 저장: 브라우저 저장소(IndexedDB)에 담아 200건 이상도 저장. 실패하면 localStorage에 줄여서 저장 */
 function persistCapped(key, list, max){
+  if (!recsReady) { recsPending.add(key); return; }
   const snapshot = JSON.parse(JSON.stringify(list));
   idbPut('rec:' + key, snapshot).then(() => { try { localStorage.removeItem(key); } catch (_e) { /* 무시 */ } }).catch(() => {
     let n = Math.min(list.length, 25);
@@ -2019,6 +2020,41 @@ function persistCapped(key, list, max){
     const lost = list.length - Math.max(n, 0);
     if (lost > 0 && typeof showToast === 'function') showToast(`저장 공간이 부족해 업로드 ${lost}건은 이번 세션에서만 보여요`);
   });
+}
+let recsReady = false;
+const recsPending = new Set();
+async function idbKeys(){ const db = await idbOpen(); return new Promise((res, rej) => { const q = db.transaction('f').objectStore('f').getAllKeys(); q.onsuccess = () => res(q.result || []); q.onerror = () => rej(q.error); }); }
+async function orphanUploadKeys(){
+  const keys = (await idbKeys()).map(String).filter(k => /^upload(in)?-/.test(k));
+  const have = new Set([...GALLERY_DATA, ...INSIDE_SAMPLE_DATA].map(g => g.id));
+  return keys.filter(k => !have.has(k));
+}
+async function recoverUploads(){
+  const msg = document.getElementById('recoverMsg'), say = t => { if (msg) msg.textContent = t; };
+  say('보관된 PDF를 확인하는 중…');
+  let orphans = [];
+  try { orphans = await orphanUploadKeys(); } catch (_e) { say('이 브라우저에서는 보관된 PDF를 읽을 수 없어요'); return; }
+  if (!orphans.length) { say('복구할 누락 항목이 없어요'); showToast('복구할 누락된 업로드가 없어요'); return; }
+  let ok = 0, bad = 0;
+  for (let i = 0; i < orphans.length; i++) {
+    say(`복구 중 ${i + 1}/${orphans.length}…`);
+    try {
+      const rec = await idbGet(orphans[i]); if (!rec || !rec.blob) { bad++; continue; }
+      const file = new File([rec.blob], rec.name || (orphans[i] + '.pdf'), {type: 'application/pdf'});
+      const first = orphans[i].startsWith('upload-');
+      const hash = await fileSha256(file);
+      const done = first ? await analyzePdfUpload(file) : await analyzeInsideUpload(file);
+      if (done) {
+        const added = first ? GALLERY_DATA.find(g => g.id === gallerySelected) : INSIDE_SAMPLE_DATA.find(g => g.id === insideSelected);
+        if (added) { added.fileHash = hash; added.fileName = added.fileName || file.name; }
+        await idbDel(orphans[i]); ok++;
+      } else bad++;
+    } catch (_e) { bad++; }
+  }
+  gallerySelected = null; insideSelected = null;
+  try { regionPersistAll(); persistUserInside(); } catch (_e) { /* 무시 */ }
+  renderGallery(); renderInsideGallery(); renderGalleryDetail(); renderInsideDetail();
+  say(`복구 ${ok}건${bad ? ` · 실패 ${bad}건` : ''}`); showToast(`누락된 업로드 ${ok}건을 복구했어요${bad ? ` (실패 ${bad}건)` : ''}`);
 }
 async function loadRecsFromIdb(){
   try {
@@ -2032,8 +2068,13 @@ async function loadRecsFromIdb(){
       for (let k = INSIDE_SAMPLE_DATA.length - 1; k >= 0; k--) if (String(INSIDE_SAMPLE_DATA[k].id).startsWith('uploadin-')) INSIDE_SAMPLE_DATA.splice(k, 1);
       userInside = il; [...il].reverse().forEach(registerUserInside); changed = true;
     } else if (userInside.length) { persistUserInside(); }
+    recsReady = true;
+    if (recsPending.size) { recsPending.clear(); try { regionPersistAll(); persistUserInside(); } catch (_e) { /* 무시 */ } }
     if (changed) { renderGallery(); renderInsideGallery(); if (typeof refreshUploadDates === 'function') refreshUploadDates(); }
-  } catch (_e) { /* 기본 갤러리는 유지 */ }
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (_e) { /* 무시 */ }
+    const orph = await orphanUploadKeys().catch(() => []);
+    if (orph.length) showToast(`갤러리에 없는 보관 PDF가 ${orph.length}건 있어요 · 업로드 패널의 「누락된 업로드 복구」로 되살릴 수 있어요`);
+  } catch (_e) { recsReady = true; /* 기본 갤러리는 유지 */ }
 }
 function persistUserInside(){ persistCapped(USER_INSIDE_KEY, userInside); }
 function registerUserInside(rec){
