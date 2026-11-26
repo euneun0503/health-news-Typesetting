@@ -221,6 +221,9 @@
   .fine-dot.blank{ border-color:#777; background:repeating-linear-gradient(45deg,#ccc 0 2px,#fff 2px 4px); }
   .fine-warn{ color:#b14963; }
   .fine-note{ color:var(--ink-soft); }
+  .memo-big{ font-size:28px; font-weight:800; }
+  .memo-res{ padding:8px 4px; line-height:1.8; }
+  .md-calc-btns .primary{ background:var(--navy); color:#fff; border-color:var(--navy); }
   .imgx{ font-size:11px; margin:4px 0 6px; display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
   .imgx input{ width:70px; font-size:11px; padding:3px 5px; border:1px solid var(--line-strong); border-radius:4px; }
   .imgx-chip{ background:#eef4fa; border:1px solid #c6d8ea; border-radius:10px; padding:1px 7px; font-family:var(--mono); }
@@ -510,7 +513,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 20:00</div>
+    <div class="ver-stamp">버전 2026.11.26 20:20</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -745,24 +748,15 @@
     </div>
 
     <details class="md-calc" id="mdCalc">
-      <summary>글자수 계산기 <small>기사 원문을 마크다운으로 붙여넣기 · 공백 포함</small></summary>
+      <summary>글자수 계산기 <small>메모장처럼 붙여넣고 「글자수 체크」 · 공백 포함</small></summary>
       <div class="md-calc-body">
-        <div class="md-calc-grid">
+        <div class="md-calc-grid memo">
           <div>
-            <textarea id="mdCalcInput" spellcheck="false"></textarea>
-            <div class="md-calc-btns"><button type="button" id="mdCalcSample">예시 넣기</button><button type="button" id="mdCalcClear">지우기</button></div>
+            <textarea id="mdCalcInput" spellcheck="false" placeholder="여기를 클릭하고 기사 본문을 붙여넣으세요 (Ctrl+V)"></textarea>
+            <div class="md-calc-btns"><button type="button" id="mdCalcCheck" class="primary">글자수 체크</button><button type="button" id="mdCalcClear">지우기</button></div>
           </div>
           <div>
             <div id="mdCalcResult"></div>
-            <pre class="md-help">&gt; 어깨제목
-# 제목
-- 부제 (한 줄에 하나)
-기자: 이름       ← 기자·출처·사진 줄은 제외
-본문 문단 (줄 단위)
-### 소제목
----              ← 아래는 사이드·박스 글
-# 박스 제목
-박스 본문</pre>
           </div>
         </div>
       </div>
@@ -2754,19 +2748,23 @@ function mdCalcRender(){
   const ta = document.getElementById('mdCalcInput');
   const out = document.getElementById('mdCalcResult');
   if (!ta || !out) return;
-  try { localStorage.setItem('jopan-md-calc-v1', ta.value); } catch (_e) { /* 무시 */ }
-  out.innerHTML = ta.value.trim() ? mdResultHtml(mdParse(ta.value)) : '<div class="md-note">기사 원문을 마크다운으로 붙여넣으면 어깨제목·제목·부제·본문·박스 글자수를 한 번에 계산합니다.</div>';
+  const raw = ta.value.replace(/\r/g, '');
+  const lines = raw.split('\n').filter(l => l.trim());
+  if (!lines.length) { out.innerHTML = ''; return; }
+  const txt = lines.map(l => l.replace(/[\t\u00a0]+/g, ' ').replace(/ {2,}/g, ' ').trim()).join('');
+  const sp = txt.length, no = txt.replace(/\s/g, '').length, sheets = Math.round(sp / 200 * 10) / 10;
+  out.innerHTML = `<div class="memo-res"><div>공백 포함 <b class="memo-big">${sp.toLocaleString()}</b> 자</div><div>공백 제외 <b>${no.toLocaleString()}</b>자 · 원고지 <b>${sheets}</b>매 · 문단(줄) <b>${lines.length}</b>개</div><div class="md-note">줄바꿈은 빼고 공백은 포함해서 셉니다.</div></div>`;
 }
 function mdCalcInit(){
   const ta = document.getElementById('mdCalcInput');
   if (!ta) return;
-  ta.placeholder = MD_HELP;
-  try { ta.value = localStorage.getItem('jopan-md-calc-v1') || ''; } catch (_e) { /* 무시 */ }
-  ta.oninput = mdCalcRender;
-  const sample = document.getElementById('mdCalcSample');
-  if (sample) sample.onclick = () => { ta.value = MD_SAMPLE; mdCalcRender(); };
+  try { localStorage.removeItem('jopan-md-calc-v1'); } catch (_e) { /* 무시 */ }
+  ta.value = '';
+  const check = document.getElementById('mdCalcCheck');
+  if (check) check.onclick = mdCalcRender;
+  ta.addEventListener('paste', () => setTimeout(mdCalcRender, 0));
   const clear = document.getElementById('mdCalcClear');
-  if (clear) clear.onclick = () => { ta.value = ''; mdCalcRender(); };
+  if (clear) clear.onclick = () => { ta.value = ''; document.getElementById('mdCalcResult').innerHTML = ''; ta.focus(); };
   mdCalcRender();
 }
 
