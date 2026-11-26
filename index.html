@@ -513,7 +513,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 20:20</div>
+    <div class="ver-stamp">버전 2026.11.26 20:30</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -2524,7 +2524,7 @@ function openArticle(evt, kind, itemId, region){
     try { tpl = localStorage.getItem('jopan-search-url-v1') || ''; } catch (_e) { tpl = ''; }
     if (/health\.chosun\.com\/search\/search_main/.test(tpl)) tpl = ''; // 예전 기본값(검색 불가)은 무시
     if (!tpl) tpl = DEFAULT_SEARCH_TPL;
-    url = tpl.includes('{q}') ? tpl.replace('{q}', encodeURIComponent(q)) : 'https://www.google.com/search?q=' + encodeURIComponent('site:health.chosun.com ' + q);
+    url = tpl.includes('{q}') ? tpl.replace('{q}', encodeURIComponent(q)) : 'https://www.google.com/search?q=' + encodeURIComponent(q);
   }
   if (/^https?:\/\//.test(url) && !/google\.com\/search/.test(url)) { const gc = articleGuideChars(kind, itemId, region); if (gc) url = url.replace(/#.*$/, '') + '#jopan=' + gc; }
   const win = popupWindow(url);
