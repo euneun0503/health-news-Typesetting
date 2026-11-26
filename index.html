@@ -510,7 +510,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 18:20</div>
+    <div class="ver-stamp">버전 2026.11.26 18:40</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -2009,7 +2009,18 @@ function setInsideAnalysisState(message, isError=false){
   if (!el) return;
   el.textContent = message; el.className = 'analysis-state show' + (isError ? ' error' : '');
 }
-function persistUserInside(){ try { localStorage.setItem(USER_INSIDE_KEY, JSON.stringify(userInside.slice(0, 8))); } catch (_e) { setInsideAnalysisState('저장 공간이 부족해 이번 세션에서만 유지됩니다.', true); } }
+
+/* 업로드 기록 저장: 용량이 모자라면 오래된 것부터 줄여 저장하고, 못 담은 개수를 알린다 */
+function persistCapped(key, list, max){
+  let n = Math.min(list.length, max || 60);
+  for (; n >= 0; n--) {
+    try { localStorage.setItem(key, JSON.stringify(list.slice(0, n))); break; } catch (_e) { /* 줄여서 다시 시도 */ }
+  }
+  const lost = list.length - Math.max(n, 0);
+  if (lost > 0 && typeof showToast === 'function') showToast(`저장 공간이 부족해 오래된 업로드 ${lost}건은 이번 세션에서만 보여요 (원본 PDF는 다시 올려 주세요)`);
+  return lost;
+}
+function persistUserInside(){ persistCapped(USER_INSIDE_KEY, userInside, 60); }
 function registerUserInside(rec){
   INSIDE_SAMPLE_DATA.unshift(rec.item);
   INSIDE_ARTICLES[rec.item.id] = rec.articles;
@@ -2288,11 +2299,11 @@ async function adminHandleFiles(fileList){
     const isFirst = isFirstPagePdf(files[i].name);
     const hash = await fileSha256(files[i]);
     const conflict = findUploadConflict(files[i].name, hash);
-    if (conflict && conflict.type !== 'replace') {
-      st.textContent = conflict.type === 'same' ? '이미 올라간 파일 — 반영 안 함' : '같은 발행일·면의 기본 샘플이 있어 반영 안 함';
+    if (conflict) {
+      const ci = conflict.item || {};
+      st.innerHTML = `⚠ <b>기존에 등록된 파일이 있습니다</b> — 올라가지 않았어요 (${escapeAttr(ci.date || '')} · ${escapeAttr(String(ci.page || ''))}면). 다시 올리려면 기존 썸네일을 먼저 삭제하세요.`;
       st.className = 'st skip'; dup++; continue;
     }
-    if (conflict && conflict.type === 'replace') { conflict.kind === 'g' ? removeUserGallery(conflict.item.id) : deleteUserInside(conflict.item.id); replaced++; }
     const ok = isFirst ? await analyzePdfUpload(files[i]) : await analyzeInsideUpload(files[i]);
     if (ok) {
       const added = isFirst ? GALLERY_DATA.find(g => g.id === gallerySelected) : INSIDE_SAMPLE_DATA.find(g => g.id === insideSelected);
@@ -2302,7 +2313,7 @@ async function adminHandleFiles(fileList){
     if (ok) { isFirst ? first++ : inside++; } else fail++;
   }
   renderGallery(); renderInsideGallery();
-  if (typeof showToast === 'function') showToast(`업로드 완료: 1면 ${first}건 · 내지 ${inside}건${dup ? ' · 중복 ' + dup + '건 건너뜀' : ''}${replaced ? ' · 교체 ' + replaced + '건' : ''}${fail ? ' · 실패 ' + fail + '건' : ''}`);
+  if (typeof showToast === 'function') showToast(`업로드 완료: 1면 ${first}건 · 내지 ${inside}건${dup ? ' · 기존에 등록된 파일 ' + dup + '건은 올라가지 않았어요' : ''}${replaced ? ' · 교체 ' + replaced + '건' : ''}${fail ? ' · 실패 ' + fail + '건' : ''}`);
   document.getElementById((inside > 0 && first === 0) ? 'subtabInside' : 'subtabGallery').click();
 }
 (function initAdminUpload(){
@@ -3528,8 +3539,8 @@ async function analyzePdfUpload(file){
     } catch (mdError) { console.warn('markdown conversion skipped', mdError); }
     item.fileName = file.name; await saveSourceFile(item.id, file);
     GALLERY_DATA.unshift(item);
-    const uploads = GALLERY_DATA.filter(entry=>String(entry.id).startsWith('upload-')).slice(0,8);
-    try { localStorage.setItem(USER_GALLERY_KEY,JSON.stringify(uploads)); } catch (_error) { /* 화면에는 계속 유지 */ }
+    const uploads = GALLERY_DATA.filter(entry=>String(entry.id).startsWith('upload-'));
+    persistCapped(USER_GALLERY_KEY, uploads, 60);
     gallerySelected = item.id;
     renderGallery(); renderGalleryDetail();
     setAnalysisState(`분석 완료: ${usedOcr ? '한글 OCR 교정 · ' : ''}제목 ${charCount(detectedTitle)}자, 본문 ${charCount(bodyText).toLocaleString()}자, 이미지 ${visualCount(visualPairs(detectedImages))}장. 좌→우 실제 좌표 순서로 갤러리에 추가했습니다.`);
@@ -3605,8 +3616,8 @@ function regionSnapTake(itemId, kind){
 function regionPersistAll(){
   try { localStorage.setItem(REGION_OVERRIDE_KEY, JSON.stringify(regionOverrides)); } catch (_e) { /* 무시 */ }
   mdPersist();
-  const ups = GALLERY_DATA.filter(e => String(e.id).startsWith('upload-')).slice(0,8);
-  try { localStorage.setItem(USER_GALLERY_KEY, JSON.stringify(ups)); } catch (_e) { /* 무시 */ }
+  const ups = GALLERY_DATA.filter(e => String(e.id).startsWith('upload-'));
+  persistCapped(USER_GALLERY_KEY, ups, 60);
 }
 function regionRestore(){
   const s = regionSnap; if (!s) return;
