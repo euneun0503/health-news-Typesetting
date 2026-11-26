@@ -513,7 +513,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 20:30</div>
+    <div class="ver-stamp">버전 2026.11.26 20:50</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -2480,15 +2480,15 @@ function counterPageHtml(title, guide){
   <textarea id="ta" placeholder="여기에 기사 본문을 붙여넣으세요"></textarea>
   <div class="row"><label>앞에서 제외할 줄 <input type="number" id="hd" min="0" value="1"></label><label>뒤에서 제외할 줄 <input type="number" id="tl" min="0" value="0"></label></div>
   <div class="row"><label>조판가이드 글자수 <input type="number" id="g" min="0" style="width:80px" value="${guide || ''}"> 자</label></div>
-  <div class="card"><div>공백 포함 <span class="big" id="sp">0</span> 자</div><div>공백 제외 <b id="no">0</b>자 · 원고지 <b id="sh">0</b>매 · 문단 <b id="pc">0</b>개</div><div id="df" class="diff" style="display:none"></div></div>
-  <div style="margin-top:8px;font-size:11px;color:#6b7785">줄바꿈은 글자수에서 제외하고, 공백은 포함해서 셉니다(조판가이드와 같은 기준). 읽기 모드 글에 제목·기자·날짜 줄이 앞에 붙으면 「앞에서 제외할 줄」을 늘리세요.</div></main>
+  <div class="card"><div>공백 포함 <span class="big" id="sp">0</span> 자</div><div>공백 제외 <b id="no">0</b>자 · 원고지 <b id="sh">0</b>매 · 문단 <b id="pc">0</b>개</div><div id="bl" style="font-size:11.5px;color:#6b7785"></div><div id="df" class="diff" style="display:none"></div></div>
+  <div style="margin-top:8px;font-size:11px;color:#6b7785">줄바꿈은 제외하고 공백은 포함하며, 글 사이 빈 줄 1줄은 25자로 셉니다(조판가이드와 같은 기준). 읽기 모드 글에 제목·기자·날짜 줄이 앞에 붙으면 「앞에서 제외할 줄」을 늘리세요.</div></main>
   <script>
   document.getElementById('t').textContent=${JSON.stringify(title || '')};
   var ta=document.getElementById('ta');
-  function calc(){var raw=ta.value.replace(/\\r/g,''),lines=raw.split('\\n').filter(function(l){return l.trim()});
+  function calc(){var raw=ta.value.replace(/\\r/g,'').split('\\n'),pos=[];raw.forEach(function(l,i){if(l.trim())pos.push(i)});var lines=pos.map(function(i){return raw[i]});
    var h=Math.max(0,parseInt(document.getElementById('hd').value,10)||0),t=Math.max(0,parseInt(document.getElementById('tl').value,10)||0);
-   var use=lines.slice(h,Math.max(h,lines.length-t));var txt=use.map(function(l){return l.replace(/[\\t\\u00a0]+/g,' ').replace(/ {2,}/g,' ').trim()}).join('');
-   var sp=txt.length,no=txt.replace(/\\s/g,'').length,g=parseInt(document.getElementById('g').value,10)||0;
+   var e=Math.max(h,lines.length-t),use=lines.slice(h,e),up=pos.slice(h,e);var blank=up.length?(up[up.length-1]-up[0]+1)-up.length:0;var txt=use.map(function(l){return l.replace(/[\\t\\u00a0]+/g,' ').replace(/ {2,}/g,' ').trim()}).join('');
+   var sp=txt.length+blank*25,no=txt.replace(/\\s/g,'').length,g=parseInt(document.getElementById('g').value,10)||0;document.getElementById('bl').textContent=blank?('빈 줄 '+blank+'줄×25자 = '+(blank*25)+'자 포함'):'빈 줄 없음';
    document.getElementById('sp').textContent=sp.toLocaleString();document.getElementById('no').textContent=no.toLocaleString();
    document.getElementById('sh').textContent=(Math.round(sp/200*10)/10);document.getElementById('pc').textContent=use.length;
    var d=document.getElementById('df');if(g&&sp){var df=sp-g,pc=Math.round(df/g*1000)/10;d.style.display='block';d.className='diff '+(Math.abs(pc)<=5?'ok':'bad');
@@ -2604,10 +2604,13 @@ const MD_META_RE = /^(기자|출처|사진|사진설명|사진출처|이미지|�
 
 function mdParse(md){
   const r = { shoulder: [], title: [], subs: [], body: [], heads: [], side: [], boxTitle: [], meta: 0 };
-  let zone = 'main';
+  let zone = 'main', blankRun = 0, started = false;
+  r.blankMain = 0; r.blankSide = 0;
   String(md || '').split(/\r?\n/).forEach(raw => {
     const line = raw.trim();
-    if (!line) return;
+    if (!line) { if (started) blankRun++; return; }      // 글 사이의 빈 줄 = 25자(한 줄 분량)
+    started = true;
+    if (blankRun) { if (zone === 'side') r.blankSide += blankRun; else r.blankMain += blankRun; blankRun = 0; }
     if (/^(-{3,}|\*{3,}|_{3,})$/.test(line)) { zone = 'side'; return; }
     if (/^<!--[\s\S]*-->$/.test(line)) return;
     let m;
@@ -2625,9 +2628,9 @@ function mdParse(md){
     shoulder: sum(r.shoulder),
     title: sum(r.title) + Math.max(0, r.title.length - 1),
     subs: r.subs.map(mdLen), subTotal: sum(r.subs),
-    body: sum(r.body), bodyParas: r.body.length,
+    body: sum(r.body) + r.blankMain * 25, bodyParas: r.body.length,
     heads: r.heads.map(mdLen), headTotal: sum(r.heads),
-    side: sum(r.side), sideParas: r.side.length,
+    side: sum(r.side) + r.blankSide * 25, sideParas: r.side.length, blankLines: r.blankMain + r.blankSide,
     boxTitle: sum(r.boxTitle),
   };
   c.total = c.body + c.side;                       // 기사 글자 수 = 본문 + 사이드(박스) 본문
@@ -2655,6 +2658,7 @@ function mdBadge(md){
   if (!md) return '<em class="md-badge">PDF 추정</em>';
   return md.src === 'pdf' ? '<em class="md-badge auto">PDF→마크다운 자동</em>' : '<em class="md-badge on">마크다운 실측</em>';
 }
+function r_blank(p, z){ return z === 'main' ? p.r.blankMain : p.r.blankSide; }
 function mdResultHtml(p){
   const c = p.c;
   const chips = [];
@@ -2662,7 +2666,7 @@ function mdResultHtml(p){
   if (c.shoulder) add('어깨제목', c.shoulder + '자');
   if (c.title || c.boxTitle) add('제목', (c.title || c.boxTitle) + '자');
   if (c.subs.length) add('부제', c.subTotal + '자', c.subs.length + '줄 · ' + c.subs.join('/'));
-  add('본문', c.body.toLocaleString() + '자', c.bodyParas + '문단');
+  add('본문', c.body.toLocaleString() + '자', c.bodyParas + '문단' + (r_blank(p, 'main') ? ' · 빈 줄 ' + p.r.blankMain + '줄×25자' : ''));
   if (c.heads.length) add('소제목', c.headTotal + '자', c.heads.length + '개 · ' + c.heads.join('/'));
   if (c.side) add('사이드·박스', c.side.toLocaleString() + '자', c.sideParas + '문단');
   add('기사 글자 수', c.total.toLocaleString() + '자', '원고지 ' + c.sheets + '매');
@@ -2748,12 +2752,14 @@ function mdCalcRender(){
   const ta = document.getElementById('mdCalcInput');
   const out = document.getElementById('mdCalcResult');
   if (!ta || !out) return;
-  const raw = ta.value.replace(/\r/g, '');
-  const lines = raw.split('\n').filter(l => l.trim());
-  if (!lines.length) { out.innerHTML = ''; return; }
+  const raw = ta.value.replace(/\r/g, '').split('\n');
+  const idx = raw.map((l, i) => l.trim() ? i : -1).filter(i => i >= 0);
+  if (!idx.length) { out.innerHTML = ''; return; }
+  const lines = idx.map(i => raw[i]);
+  const blank = (idx[idx.length - 1] - idx[0] + 1) - idx.length;          // 글 사이의 빈 줄 수
   const txt = lines.map(l => l.replace(/[\t\u00a0]+/g, ' ').replace(/ {2,}/g, ' ').trim()).join('');
-  const sp = txt.length, no = txt.replace(/\s/g, '').length, sheets = Math.round(sp / 200 * 10) / 10;
-  out.innerHTML = `<div class="memo-res"><div>공백 포함 <b class="memo-big">${sp.toLocaleString()}</b> 자</div><div>공백 제외 <b>${no.toLocaleString()}</b>자 · 원고지 <b>${sheets}</b>매 · 문단(줄) <b>${lines.length}</b>개</div><div class="md-note">줄바꿈은 빼고 공백은 포함해서 셉니다.</div></div>`;
+  const base = txt.length, sp = base + blank * 25, no = txt.replace(/\s/g, '').length, sheets = Math.round(sp / 200 * 10) / 10;
+  out.innerHTML = `<div class="memo-res"><div>공백 포함 <b class="memo-big">${sp.toLocaleString()}</b> 자</div><div>${blank ? `글자 ${base.toLocaleString()}자 + 빈 줄 ${blank}줄 × 25자 = ${(blank * 25).toLocaleString()}자` : '빈 줄 없음'}</div><div>공백 제외(글자만) <b>${no.toLocaleString()}</b>자 · 원고지 <b>${sheets}</b>매 · 문단(줄) <b>${lines.length}</b>개</div><div class="md-note">공백 포함 · 줄바꿈 제외 · 글 사이 빈 줄 1줄 = 25자(한 줄 분량)로 계산합니다.</div></div>`;
 }
 function mdCalcInit(){
   const ta = document.getElementById('mdCalcInput');
