@@ -457,6 +457,7 @@
   #viewEdit .refwrap td.num{text-align:center;}
   #viewEdit .refwrap th:not(:first-child){text-align:center;}
   #viewEdit .refwrap + .refwrap{margin-top:18px;}
+  .ad-note{color:#b26a00;font-size:10.5px;margin-left:4px;}
   .cols-step{display:inline-flex;align-items:center;gap:8px;}
   .cols-step button{width:22px;height:22px;border:1px solid var(--line-strong);background:#fff;border-radius:5px;cursor:pointer;font-size:14px;line-height:1;padding:0;}
   .cols-step button:hover{background:var(--magenta);color:#fff;border-color:var(--magenta);}
@@ -482,7 +483,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 15:45</div>
+    <div class="ver-stamp">버전 2026.11.26 16:10</div>
   </div>
   <div class="meta">
     본지 6단 · 1단(칼럼) 55mm<br>
@@ -2086,7 +2087,8 @@ async function analyzeInsideUpload(file){
     const m = file.name.match(/(20\d{2})(\d{2})(\d{2})([A-Z])(\d{2})/);
     const today = new Date();
     const date = m ? `${m[1]}.${m[2]}.${m[3]}` : `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()).padStart(2,'0')}`;
-    const item = {fileName:file.name, id, date, page:m ? Number(m[5]) : '', code:file.name.replace(/\.pdf$/i, ''), img:canvas.toDataURL('image/jpeg', .72), width:Math.round(W * ptMm * 100) / 100, height:Math.round(H * ptMm * 100) / 100, source:'업로드 PDF 자동 분석'};
+    const pdDate = pdfIssueDate(items, W, H);
+    const item = {fileName:file.name, id, date: pdDate ? pdDate.date : date, dow: pdDate ? pdDate.dow : '', datePdf: !!pdDate, page:m ? Number(m[5]) : '', code:file.name.replace(/\.pdf$/i, ''), img:canvas.toDataURL('image/jpeg', .72), width:Math.round(W * ptMm * 100) / 100, height:Math.round(H * ptMm * 100) / 100, source:'업로드 PDF 자동 분석'};
     const rec = {item, articles, rects, ad};
     await saveSourceFile(id, file);
     userInside.unshift(rec); registerUserInside(rec); persistUserInside();
@@ -2573,7 +2575,7 @@ function renderInsideGallery(){
     const card = document.createElement('div');
     card.className = 'gallery-card inside-card' + (insideSelected===item.id ? ' selected' : '');
     const articleCount = (INSIDE_ARTICLES[item.id] || []).length || 1;
-    card.innerHTML = `<img src="${item.img}" loading="lazy" alt="${item.date} ${item.page}면 샘플"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${item.date} · ${item.page}면</strong><span>${item.code} · 기사 ${articleCount}개</span></div>`;
+    card.innerHTML = `<img src="${item.img}" loading="lazy" alt="${item.date} ${item.page}면 샘플"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · ${item.page}면</strong><span>${item.code} · 기사 ${articleCount}개</span></div>`;
     card.onclick = () => { insideSelected = item.id; insideRegionSelected = null; renderInsideGallery(); renderInsideDetail(); };
     grid.appendChild(card);
   });
@@ -2636,13 +2638,16 @@ function renderInsideDetail(){
     const adOv2 = getRegionOverride(item.id, 'ad0');
     if (adOv2) adDanNow = Math.round((adOv2.h/100*pageHeightMm/31)*10)/10;
   }
+  const adOvNow = adInfo ? getRegionOverride(item.id, 'ad0') : null;
+  const adMeasuredNow = adInfo ? Math.round(adOvNow ? adOvNow.h / 100 * pageHeightMm : adInfo.heightMm) : 0;
+  const adNow = adInfo ? adNearest(adMeasuredNow) : null;
   const adCard = adInfo ? `
     <div class="gsectionlabel">광고</div>
     <div class="bbox-card${adActive}" style="border-left:4px solid #b14963" onclick="selectInsideRegion('${item.id}','ad0')">
       <div class="bbox-type" style="color:#b14963">광고 · 전체 폭</div>
       <div class="bbox-name"><span class="field-prefix">위치:</span>${escapeHtml(adInfo.name)}</div>
-      <div class="bbox-row"><span>광고 단수</span><span>약 ${adDanNow}단</span></div>
-      <div class="bbox-row"><span>대략적 사이즈</span><span>약 ${adInfo.widthMm}×${adInfo.heightMm}mm</span></div>
+      <div class="bbox-row"><span>광고 단수</span><span class="cols-step" onclick="event.stopPropagation()"><button type="button" onclick="changeInsideAdDan('${item.id}',-1)" aria-label="단수 줄이기">−</button><b>${adNow.dan}단</b><button type="button" onclick="changeInsideAdDan('${item.id}',1)" aria-label="단수 늘리기">+</button></span></div>
+      <div class="bbox-row"><span>광고 규격(표 기준)</span><span>${adInfo.region.w >= 90 ? 362 : adInfo.widthMm}×${adNow.h}mm <small class="ad-note">${Math.abs(adMeasuredNow - adNow.h) > 1 ? 'PDF 측정 ' + adMeasuredNow + 'mm → 광고 규격표로 보정' : ''}</small></span></div>
     </div>` : '';
   const drawToolbar2 = `
     <div class="draw-toolbar">
@@ -2780,8 +2785,8 @@ function changeBoxCols(itemId, index, delta){
   const next = boxes[index].cols + delta;
   if (next < 1 || next > 5 || (delta > 0 && used + 1 > 5)) { showToast('하단 박스 칼럼 합은 1~5칼럼이에요'); return; }
   boxes[index].cols = next;
-  item.bottomBoxes = boxes; item.usedCols = undefined;
-  boxListEdits[itemId] = boxes;
+  item.bottomBoxes = boxes; normalizeBoxes(item);
+  boxListEdits[itemId] = item.bottomBoxes;
   try { localStorage.setItem(BOX_LIST_KEY, JSON.stringify(boxListEdits)); } catch (_e) { /* 세션에는 반영 */ }
   renderGalleryDetail();
 }
@@ -2790,16 +2795,25 @@ function changeBoxCount(itemId, delta){
   if (!item) return;
   const boxes = (item.bottomBoxes || []).slice();
   if (delta > 0){
-    boxes.push({type:'box', name:'새 박스 제목 (클릭해서 수정)', body:0, photos:0, cols:1, size:'약 69×133mm (추정)', titleChars:0});
+    let used = boxes.reduce((sum, b) => sum + b.cols, 0), newCols = 5 - used;
+    if (newCols < 1) {                                     // 빈 칼럼이 없으면 가장 넓은 박스에서 1칼럼을 가져온다
+      const widest = boxes.reduce((w, b, i) => (!w || b.cols > boxes[w.i].cols) ? {i} : w, null);
+      if (!widest || boxes[widest.i].cols < 2) { showToast('하단 박스는 5칼럼까지만 나눌 수 있어요'); return; }
+      boxes[widest.i] = {...boxes[widest.i], cols: boxes[widest.i].cols - 1}; newCols = 1;
+    }
+    boxes.push({type:'box', name:'새 박스 제목 (클릭해서 수정)', body:0, photos:0, cols:newCols, size:'', titleChars:0});
+    if (item.audit && item.audit.bottom) item.audit.bottom[boxes.length - 1] = {type:'box', layout:`${newCols}칼럼 기사`, v:[]};
   } else if (delta < 0){
     if (boxes.length <= 0){
       if (typeof showToast === 'function') showToast('더 줄일 박스가 없어요');
       return;
     }
     boxes.pop();
+    if (item.audit && item.audit.bottom) item.audit.bottom.length = boxes.length;
   }
   item.bottomBoxes = boxes;
-  boxListEdits[itemId] = boxes;
+  normalizeBoxes(item);
+  boxListEdits[itemId] = item.bottomBoxes;
   if (typeof pruneRegionOverridesAbove === 'function') pruneRegionOverridesAbove(itemId, 'box', boxes.length);
   if (galleryRegionSelected && Number((galleryRegionSelected.match(/^box(\d+)$/)||[])[1]) >= boxes.length) galleryRegionSelected = null;
   try {
@@ -3010,7 +3024,7 @@ function renderGallery(){
   GALLERY_DATA.forEach(item => {
     const card = document.createElement('div');
     card.className = 'gallery-card' + (gallerySelected===item.id ? ' selected' : '');
-    card.innerHTML = `<img src="${item.img}" loading="lazy"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate">${item.date}</div>`;
+    card.innerHTML = `<img src="${item.img}" loading="lazy"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate">${dateLabel(item)}</div>`;
     card.onclick = () => { gallerySelected = item.id; galleryRegionSelected = null; renderGallery(); renderGalleryDetail(); };
     grid.appendChild(card);
   });
@@ -3040,7 +3054,7 @@ function renderGalleryDetail(){
   let bottomHtml = boxes.map((b,index) => {
     const checked = audit.bottom?.[index] || {};
     const type = checked.type || b.type;
-    const visuals = displayVisuals(checked.v || [],type);
+    const visuals = adVisuals(b, displayVisuals(checked.v || [],type));
     const mdBox = mdGet(item.id,'box'+index);
     const bodyN = mdBox ? mdBox.c.total : b.body;
     const sheets = bodyN == null ? null : Math.round((bodyN/200)*10)/10;
@@ -3056,6 +3070,7 @@ function renderGalleryDetail(){
         <div class="bbox-type" style="color:${BOTTOM_TYPE_COLOR[type]||'#888'}"><input class="bbox-type-edit" value="${escapeAttr(editableTypeLabel)}" aria-label="구분명 수정" title="클릭하여 구분명 수정" onclick="event.stopPropagation()" onchange="setBoxLabel('${item.id}',${index},this.value)" onblur="setBoxLabel('${item.id}',${index},this.value)"></div>
         <div class="bbox-name"><span class="field-prefix">제목:</span>${linkedTitle('g',item.id,'box'+index,editableText(item.id,'box',boxName,index))}</div>
         <div class="bbox-row"><span>사용 칼럼(5칼럼 중)</span><span class="cols-step" onclick="event.stopPropagation()"><button type="button" onclick="changeBoxCols('${item.id}',${index},-1)" aria-label="칼럼 줄이기">−</button><b>${b.cols}칼럼</b><button type="button" onclick="changeBoxCols('${item.id}',${index},1)" aria-label="칼럼 늘리기">+</button></span></div>
+        ${type === 'ad' ? adRowHtml(item, b, index, checked) : ''}
         ${bodyN == null ? '' : `<div class="bbox-row"><span>제목 글자 수</span><span>공백 포함 ${charCount(boxName)}자</span></div>
         <div class="bbox-row"><span>본문 글자 수</span><span>${Number(bodyN).toLocaleString()}자 · 원고지 ${sheets}매 ${mdBadge(mdBox)}</span></div>`}
         <div class="bbox-row"><span>이미지 총 개수</span><span>${visualCount(visuals)}장</span></div>
@@ -3166,7 +3181,7 @@ function detectPdfImages(pdfjs, operatorList,viewport,opts={}){
     let label = isQr ? 'QR코드' : isMasthead ? '면머리 광고' : isBottom ? '하단 이미지' : isMain ? '메인 이미지' : '기사 이미지';
     let dan = 0;
     if (opts.firstPage && isBottom && !isQr && !isMasthead && entry.widthMm >= pageWidthMm*.58) {
-      dan = Math.max(1, Math.round(entry.heightMm / 31));          // 단수 = 세로(mm) ÷ 31
+      dan = adNearest(entry.heightMm).dan;                          // 광고 규격표(통)에서 가장 가까운 단수
       label = `하단 광고 ${dan}단${entry.widthMm >= 340 ? ' 통' : ''}`;
     }
     return {...entry,dan,centerY,isBottom,isMasthead,isQr,label,size:`${Math.round(entry.widthMm)}×${Math.round(entry.heightMm)}mm`};
@@ -3351,8 +3366,9 @@ async function analyzePdfUpload(file){
 
     const dm = file.name.match(/(20\d{2})(\d{2})(\d{2})[A-Z]\d{2}/);
     const date = dm ? `${dm[1]}.${dm[2]}.${dm[3]}` : new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\. /g,'.').replace(/\.$/,'');
+    const pdDate = pdfIssueDate(textItems, viewport.width, viewport.height);
     const item = {
-      id:`upload-${Date.now()}`, date, title:detectedTitle, sub:`업로드 PDF 자동 분석 · ${file.name}`,
+      id:`upload-${Date.now()}`, date: pdDate ? pdDate.date : date, dow: pdDate ? pdDate.dow : '', datePdf: !!pdDate, title:detectedTitle, sub:`업로드 PDF 자동 분석 · ${file.name}`,
       chars:charCount(bodyText), sheets:Math.round(charCount(bodyText)/20)/10, dan:null,
       titleChars:charCount(detectedTitle), imgsize:'', photos:visualCount(visualPairs(detectedImages)), side:'',
       bottomBoxes:inferredBottom.boxes,
@@ -3529,7 +3545,7 @@ const issueDateFromName = it => {
 function applyDateEdits(){
   [...GALLERY_DATA, ...INSIDE_SAMPLE_DATA].forEach(it => {
     if (dateEdits[it.id]) { it.date = dateEdits[it.id]; return; }
-    if (/^upload/.test(String(it.id))) { const d = issueDateFromName(it); if (d) it.date = d; }
+    if (/^upload/.test(String(it.id)) && !it.datePdf) { const d = issueDateFromName(it); if (d) it.date = d; }
   });
 }
 function sortGalleries(){
@@ -3554,7 +3570,7 @@ function setItemDate(id, iso){
   showToast(`발행일을 ${date}로 바꾸고 최신순으로 정렬했어요.`);
 }
 function dateEditor(item){
-  return `<label class="date-edit" onclick="event.stopPropagation()">발행일 <input type="date" value="${dateToIso(item.date)}" onchange="setItemDate('${item.id}',this.value)"></label>`;
+  return `<label class="date-edit" onclick="event.stopPropagation()">발행일 <input type="date" value="${dateToIso(item.date)}" onchange="setItemDate('${item.id}',this.value)"><b>(${dowOf(item.date)})</b></label>`;
 }
 async function fileSha256(file){
   try { const d = await crypto.subtle.digest('SHA-256', await file.arrayBuffer()); return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join(''); }
@@ -3675,6 +3691,108 @@ renderGallery = function(){ _renderGallery1(); decorateCards('g'); };
 const _renderInsideGallery1 = renderInsideGallery;
 renderInsideGallery = function(){ _renderInsideGallery1(); decorateCards('i'); };
 
+/* ===== 발행일: PDF 우측 상단 인쇄 날짜("2026년 4월 17일 금요일") 읽기 + 요일 표시 ===== */
+const DOW_KO = ['일','월','화','수','목','금','토'];
+function pdfIssueDate(items, W, H){
+  const top = (items || []).filter(i => { const t = i.transform || []; return (H - (t[5] || 0)) < H * 0.2; })
+    .sort((a, b) => (Math.round((b.transform[5]) / 3) - Math.round((a.transform[5]) / 3)) || (a.transform[4] - b.transform[4]));
+  const text = top.map(i => String(i.str || '')).join(' ');
+  const m = text.match(/(20\d{2})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일(?:\s*([월화수목금토일])\s*요\s*일)?/);
+  if (!m) return null;
+  return {date: `${m[1]}.${String(m[2]).padStart(2,'0')}.${String(m[3]).padStart(2,'0')}`, dow: m[4] || ''};
+}
+function dowOf(date){
+  const m = String(date || '').match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+  return m ? DOW_KO[new Date(+m[1], +m[2] - 1, +m[3]).getDay()] : '';
+}
+function dateLabel(item){
+  const d = dowOf(item.date);
+  return `${item.date}${d ? ` (${d})` : ''}`;
+}
+async function refreshUploadDates(){
+  let changed = false;
+  for (const it of [...GALLERY_DATA, ...INSIDE_SAMPLE_DATA]) {
+    if (!/^upload/.test(String(it.id)) || it.datePdf || dateEdits[it.id]) continue;
+    try {
+      const src = await loadSourcePage(it.id); if (!src) continue;
+      const pd = pdfIssueDate(src.items, src.vp.width, src.vp.height);
+      if (pd) { it.date = pd.date; it.dow = pd.dow; it.datePdf = true; changed = true; }
+    } catch (_e) { /* 원본이 없으면 파일명 날짜 유지 */ }
+  }
+  if (changed) { try { regionPersistAll(); persistUserInside(); } catch (_e) { /* 무시 */ } renderGallery(); renderInsideGallery(); if (gallerySelected) renderGalleryDetail(); if (insideSelected) renderInsideDetail(); }
+}
+
+/* ===== 광고 단수 ↔ 광고 사이즈표(통) 연동 · 박스 추가 시 칼럼/위치/크기 정리 ===== */
+const AD_TONG = PRESETS.filter(p => p.group === '통' && !p.full).map(p => ({dan: parseFloat(p.name), h: p.h}));
+function adNearest(hMm){ return AD_TONG.reduce((b, p) => Math.abs(p.h - hMm) < Math.abs(b.h - hMm) ? p : b, AD_TONG[0]); }
+function adStep(dan, dir){
+  let i = AD_TONG.findIndex(p => p.dan === dan); if (i < 0) i = 0;
+  return AD_TONG[Math.min(AD_TONG.length - 1, Math.max(0, i + dir))];
+}
+function boxWidthMm(cols){ return cols >= 5 ? 362 : Math.round(cols * 68.72 + (cols - 1) * 4.6); }
+function boxAdLabel(b){ return `하단 광고 ${b.adDan}단${b.cols >= 5 ? ' 통' : ''}`; }
+function adMeasuredH(checked){
+  const v = (checked && checked.v || []).find(x => !/QR/.test(x[0]));
+  const m = v && String(v[1]).match(/×\s*(\d+)/);
+  return m ? +m[1] : 0;
+}
+/* 1면 하단 광고 박스: 단수 +/- → 광고 규격표의 세로(mm)·가로(칼럼 폭)로 보정 */
+function changeBoxAdDan(itemId, index, dir){
+  const item = GALLERY_DATA.find(g => g.id === itemId); if (!item) return;
+  const boxes = (item.bottomBoxes || []).map(b => ({...b})); const b = boxes[index]; if (!b) return;
+  const auditAll = item.audit || GALLERY_AUDIT[item.id] || {};
+  const audit = (auditAll.bottom && auditAll.bottom[index]) || {};
+  const cur = b.adDan || adNearest(adMeasuredH(audit) || 31).dan;
+  const next = adStep(cur, dir);
+  b.adDan = next.dan; b.adSize = `${boxWidthMm(b.cols)}×${next.h}mm`;
+  item.bottomBoxes = boxes; boxListEdits[itemId] = boxes;
+  try { localStorage.setItem(BOX_LIST_KEY, JSON.stringify(boxListEdits)); } catch (_e) { /* 세션에는 반영 */ }
+  showToast(`광고 규격표 ${next.dan}단 → 세로 ${next.h}mm 적용 (${b.adSize})`);
+  renderGalleryDetail();
+}
+function adVisuals(b, visuals){
+  if (b.type !== 'ad' || !b.adDan) return visuals;
+  const rest = visuals.filter(x => /QR/.test(x[0]));
+  return [[boxAdLabel(b), b.adSize], ...rest];
+}
+function adRowHtml(item, b, index, checked){
+  const dan = b.adDan || adNearest(adMeasuredH(checked) || 129).dan;
+  const h = (AD_TONG.find(p => p.dan === dan) || {}).h;
+  const measured = adMeasuredH(checked);
+  const note = !b.adDan && measured && Math.abs(measured - h) > 1 ? `<small class="ad-note">PDF 측정 ${measured}mm → 광고 규격표로 보정</small>` : '';
+  return `<div class="bbox-row"><span>광고 단수</span><span class="cols-step" onclick="event.stopPropagation()"><button type="button" onclick="changeBoxAdDan('${item.id}',${index},-1)" aria-label="단수 줄이기">−</button><b>${dan}단</b><button type="button" onclick="changeBoxAdDan('${item.id}',${index},1)" aria-label="단수 늘리기">+</button></span></div>
+    <div class="bbox-row"><span>광고 규격(표 기준)</span><span>${boxWidthMm(b.cols)}×${h}mm ${note}</span></div>`;
+}
+/* 내지 광고: 단수 +/- → 규격표(통) 세로로 보정, 아래 모서리 기준 */
+function insideAdDanNow(adInfo, adOv, pageH){
+  const hMm = adOv ? adOv.h / 100 * pageH : adInfo.heightMm;
+  return adNearest(hMm);
+}
+function changeInsideAdDan(itemId, dir){
+  const item = INSIDE_SAMPLE_DATA.find(g => g.id === itemId); const info = item && insideAdInfo(item); if (!info) return;
+  const pageH = item.height || 531.44;
+  const ov = getRegionOverride(itemId, 'ad0') || {x: info.region.x, y: info.region.y, w: info.region.w, h: info.region.h};
+  const next = adStep(adNearest(ov.h / 100 * pageH).dan, dir);
+  const newH = Math.round(next.h / pageH * 1000) / 10;
+  regionSnapTake(itemId, 'i');
+  regionOverrides[itemId] = regionOverrides[itemId] || {};
+  regionOverrides[itemId]['ad0'] = {x: ov.x, y: Math.round((ov.y + ov.h - newH) * 10) / 10, w: ov.w, h: newH};
+  showToast(`광고 규격표 ${next.dan}단 통 → 세로 ${next.h}mm 적용 — "저장하기"를 눌러야 확정돼요`);
+  renderInsideDetail();
+}
+/* 박스를 추가·삭제·칼럼 변경한 뒤 칼럼 합·위치·크기를 정리한다 */
+function normalizeBoxes(item){
+  const boxes = item.bottomBoxes || []; const n = boxes.length;
+  const topH = Math.min((item.dan || 11) * 31, 440), rowH = Math.round(Math.max(500 - 5 - topH, 40));
+  boxes.forEach((b, i) => {
+    b.position = (n === 1 && b.cols >= 5) ? '하단 전체' : i === 0 ? '좌측 하단' : i === n - 1 ? '우측 하단' : '가운데 하단';
+    if (b.type === 'ad' && b.adDan) { const h = (AD_TONG.find(p => p.dan === b.adDan) || {}).h; b.adSize = `${boxWidthMm(b.cols)}×${h}mm`; }
+    else if (b.type !== 'ad') b.size = `약 ${boxWidthMm(b.cols)}×${rowH}mm`;
+  });
+  item.usedCols = Math.min(5, boxes.reduce((s, b) => s + b.cols, 0));
+  if (regionOverrides[item.id]) Object.keys(regionOverrides[item.id]).forEach(k => { if (/^box\d+$/.test(k)) delete regionOverrides[item.id][k]; });
+}
+
 const _renderGalleryDetail0 = renderGalleryDetail;
 renderGalleryDetail = function(){ _renderGalleryDetail0(); layoutDetailMode('g'); hiResAfterRender('g'); };
 const _renderInsideDetail0 = renderInsideDetail;
@@ -3684,6 +3802,7 @@ loadUserInside();
 renderGallery();
 renderInsideGallery();
 mdCalcInit();
+refreshUploadDates();
 
 function showToast(message){
   const toast = document.getElementById('toast');
