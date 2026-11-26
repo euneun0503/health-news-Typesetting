@@ -482,7 +482,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 15:40</div>
+    <div class="ver-stamp">버전 2026.11.26 15:45</div>
   </div>
   <div class="meta">
     본지 6단 · 1단(칼럼) 55mm<br>
@@ -3520,8 +3520,17 @@ try { dateEdits = JSON.parse(localStorage.getItem(DATE_EDIT_KEY) || '{}') || {};
 const dateKey = d => { const m = String(d || '').match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); return m ? (+m[1]) * 10000 + (+m[2]) * 100 + (+m[3]) : 0; };
 const dateToIso = d => { const m = String(d || '').match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); return m ? `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}` : ''; };
 const isoToDate = iso => String(iso || '').replace(/-/g, '.');
+/* 업로드 카드의 발행일 = 파일명(YYYYMMDD…)의 날짜. 예전 버전에서 업로드한 날짜로 저장된 카드도 바로잡는다 */
+const issueDateFromName = it => {
+  const src = it.fileName || it.code || ((String(it.sub || '').match(/(20\d{6}[A-Z]\d{2}\w*)/) || [])[1]) || '';
+  const m = String(src).match(/(20\d{2})(\d{2})(\d{2})[A-Z]\d{2}/);
+  return m ? `${m[1]}.${m[2]}.${m[3]}` : '';
+};
 function applyDateEdits(){
-  [...GALLERY_DATA, ...INSIDE_SAMPLE_DATA].forEach(it => { if (dateEdits[it.id]) it.date = dateEdits[it.id]; });
+  [...GALLERY_DATA, ...INSIDE_SAMPLE_DATA].forEach(it => {
+    if (dateEdits[it.id]) { it.date = dateEdits[it.id]; return; }
+    if (/^upload/.test(String(it.id))) { const d = issueDateFromName(it); if (d) it.date = d; }
+  });
 }
 function sortGalleries(){
   applyDateEdits(); if (typeof applyDeleted === 'function') applyDeleted();
