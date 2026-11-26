@@ -497,7 +497,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 17:10</div>
+    <div class="ver-stamp">버전 2026.11.26 17:25</div>
   </div>
   <div class="meta">
     본지 6단 · 1단(칼럼) 55mm<br>
@@ -2593,6 +2593,10 @@ function insideAdN(item){
   const a = INSIDE_AD_DATA[item.id];
   return (a ? (Array.isArray(a) ? a.length : 1) : 0) + insetsOf(item.id).filter(r => r.kind === 'ad').length;
 }
+function sectionLabel(item){
+  const m = codeLabel(item).match(/^([A-Z])\d{2}/);
+  return m ? `${m[1]}섹션` : '1면';
+}
 function codeLabel(item){
   const src = [item.id, item.code, item.fileName, item.sub].map(v => String(v || '')).join(' ');
   const m = src.match(/([A-Z]\d{2})\s*\/?\s*(HT\d)/i);
@@ -3069,7 +3073,7 @@ function renderGallery(){
   GALLERY_DATA.forEach(item => {
     const card = document.createElement('div');
     card.className = 'gallery-card' + (gallerySelected===item.id ? ' selected' : '');
-    card.innerHTML = `<img src="${item.img}" loading="lazy"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · 1면</strong><span>${frontCounts(item)}</span></div>`;
+    card.innerHTML = `<img src="${item.img}" loading="lazy"><button type="button" class="card-dl" title="다운로드 (원본파일명_다운로드일시)" onclick="event.stopPropagation();downloadSource('${item.id}')">⬇</button><div class="gdate"><strong>${dateLabel(item)} · ${sectionLabel(item)}</strong><span>${frontCounts(item)}</span></div>`;
     card.onclick = () => { gallerySelected = item.id; galleryRegionSelected = null; renderGallery(); renderGalleryDetail(); };
     grid.appendChild(card);
   });
@@ -3153,7 +3157,7 @@ function renderGalleryDetail(){
       </div>
     </div>
     <div class="gbody">
-      <div class="gdate2">${dateEditor(item)} · 1면</div>
+      <div class="gdate2">${dateEditor(item)} · ${sectionLabel(item)} · 1면</div>
       <div class="gtitle"><span class="field-prefix">제목:</span>${linkedTitle('g',item.id,'top',editableText(item.id,'title',title))}</div>
       <div class="gsub"><span class="field-prefix">어깨 제목:</span>${editableText(item.id,'sub',sub)}</div>
 
