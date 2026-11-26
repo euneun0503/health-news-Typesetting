@@ -215,6 +215,12 @@
   .thumb-wrap.draw-mode .thumb-region.active{ cursor:crosshair; }
   .draw-box{ position:absolute; border:2px dashed var(--magenta); background:rgba(200,56,111,0.15); pointer-events:none; box-sizing:border-box; }
   .draw-toolbar{ display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+  .fine-panel{ margin-top:8px; font-size:11px; }
+  .fine-row{ font-family:var(--mono); font-size:11px; padding:2px 0; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .fine-dot{ width:10px; height:10px; display:inline-block; border:1px solid rgba(160,40,160,.9); background:rgba(160,40,160,.25); }
+  .fine-dot.blank{ border-color:#777; background:repeating-linear-gradient(45deg,#ccc 0 2px,#fff 2px 4px); }
+  .fine-warn{ color:#b14963; }
+  .fine-note{ color:var(--ink-soft); }
   .imgx{ font-size:11px; margin:4px 0 6px; display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
   .imgx input{ width:70px; font-size:11px; padding:3px 5px; border:1px solid var(--line-strong); border-radius:4px; }
   .imgx-chip{ background:#eef4fa; border:1px solid #c6d8ea; border-radius:10px; padding:1px 7px; font-family:var(--mono); }
@@ -435,6 +441,13 @@
   .pv-hint{color:rgba(255,255,255,.6);font-size:12px;text-align:center;padding:6px 0 10px;}
   .title-row{display:flex;align-items:center;gap:12px;}
   .top{position:relative;}
+  .wing-install-btn{position:absolute;left:150px;bottom:5px;font-size:10px;padding:2px 8px;border:1px solid rgba(255,255,255,.35);background:transparent;color:rgba(255,255,255,.75);border-radius:10px;cursor:pointer;}
+  .wing-install-btn:hover{background:rgba(255,255,255,.15);color:#fff;}
+  .wing-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;}
+  .wing-box{background:#fff;color:#222;max-width:560px;width:92%;border-radius:10px;padding:20px 22px;font-size:13px;line-height:1.6;max-height:88vh;overflow:auto;}
+  .wing-box h3{margin:0 0 6px;font-size:16px;} .wing-box h4{margin:14px 0 4px;font-size:13px;}
+  .wing-box a.bm{display:inline-block;padding:6px 12px;background:#0b2a4a;color:#fff;border-radius:6px;text-decoration:none;font-weight:700;cursor:grab;}
+  .wing-box .small{font-size:11.5px;color:#666;}
   .ver-stamp{position:absolute;left:34px;bottom:8px;font-size:10px;color:rgba(255,255,255,.4);}
   .admin-btn{position:absolute;right:12px;bottom:10px;width:22px;height:22px;border-radius:6px;opacity:.55;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .15s;}
   .admin-btn:hover{background:rgba(255,255,255,.28);opacity:1;}
@@ -497,7 +510,8 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 17:25</div>
+    <div class="ver-stamp">버전 2026.11.26 18:00</div>
+    <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
     본지 6단 · 1단(칼럼) 55mm<br>
@@ -2312,6 +2326,81 @@ function popupWindow(url){
   const left = Math.max(0, Math.round((screen.availWidth - w) / 2)), top = Math.max(0, Math.round((screen.availHeight - h) / 2));
   return window.open(url, 'jopanArticle', `popup=yes,width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
 }
+
+/* ===== 기사 팝업용 '원문 글자수' 날개 배너 (북마클릿 / 사용자 스크립트) ===== */
+function wingMain(auto){
+  var ID = 'jopan-wing', old = document.getElementById(ID);
+  if (old) { if (!auto) { var ob = old.querySelector('[data-open]'); if (ob) ob.click(); } return; }
+  var hm = (location.hash.match(/jopan=([^&]+)/) || [])[1] || '', guide = parseInt(decodeURIComponent(hm).split('|')[0], 10) || 0;
+  function cnt(t){ t = String(t).replace(/[\r\n\t ]+/g, ' ').replace(/ {2,}/g, ' ').trim(); return {sp: t.length, no: t.replace(/\s/g, '').length}; }
+  function bodyText(){
+    var sels = ['#article_body', '.article_body', '#articleBody', '.article-body', '#news_body_id', '[itemprop="articleBody"]', '.news_text', '.view_cont', '.article-view-content', '#newsct_article'];
+    for (var i = 0; i < sels.length; i++) { var e = document.querySelector(sels[i]); if (e && e.innerText && e.innerText.length > 200) return {t: e.innerText, how: sels[i]}; }
+    var best = null, bl = 0, ps = document.querySelectorAll('p');
+    var sums = new Map();
+    for (var j = 0; j < ps.length; j++) { var p = ps[j], l = (p.innerText || '').trim().length; if (l < 20) continue; var par = p.parentElement; sums.set(par, (sums.get(par) || 0) + l); }
+    sums.forEach(function(v, k){ if (v > bl) { bl = v; best = k; } });
+    if (best) { var parts = []; best.querySelectorAll('p, h3, h4').forEach(function(n){ var t = (n.innerText || '').trim(); if (t) parts.push(t); }); return {t: parts.join('\n'), how: '문단 자동 탐지'}; }
+    return {t: document.body.innerText || '', how: '페이지 전체'};
+  }
+  var root = document.createElement('div'); root.id = ID;
+  root.style.cssText = 'position:fixed;top:84px;right:0;z-index:2147483647;font:12px/1.55 -apple-system,"Malgun Gothic",sans-serif;color:#fff;';
+  root.innerHTML = '<button data-open style="display:block;margin-left:auto;background:#0b2a4a;color:#fff;border:0;border-radius:8px 0 0 8px;padding:9px 11px;font-weight:700;cursor:pointer;box-shadow:-2px 2px 8px rgba(0,0,0,.3)">📏 글자수</button>' +
+    '<div data-panel style="display:none;width:230px;background:#0b2a4a;border-radius:10px 0 0 10px;padding:11px 13px;box-shadow:-3px 3px 12px rgba(0,0,0,.35)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:6px"><span>원문 글자수 · 조판가이드</span><span data-close style="cursor:pointer;padding:0 4px">✕</span></div>' +
+    '<div data-out style="font-size:12px"></div>' +
+    '<div style="margin-top:8px;display:flex;gap:5px"><button data-auto style="flex:1;padding:5px;border:0;border-radius:5px;cursor:pointer">본문 다시 측정</button><button data-sel style="flex:1;padding:5px;border:0;border-radius:5px;cursor:pointer">드래그한 글자</button></div>' +
+    '<div style="margin-top:7px;font-size:11px;color:#bcd">조판 글자수 <input data-g type="number" style="width:70px;padding:2px 4px;border:0;border-radius:4px" value="' + (guide || '') + '"> 자</div>' +
+    '<div data-note style="margin-top:6px;font-size:10.5px;color:#9bb">제목 제외 본문 기준 · 틀리면 본문을 드래그해 「드래그한 글자」를 누르세요</div></div>';
+  document.body.appendChild(root);
+  var panel = root.querySelector('[data-panel]'), openB = root.querySelector('[data-open]'), out = root.querySelector('[data-out]'), gi = root.querySelector('[data-g]');
+  function show(c, how){
+    var g = parseInt(gi.value, 10) || 0, sheets = Math.round(c.sp / 200 * 10) / 10, h = '<div>공백 포함 <b style="font-size:17px">' + c.sp.toLocaleString() + '</b>자</div><div>공백 제외 <b>' + c.no.toLocaleString() + '</b>자 · 원고지 <b>' + sheets + '</b>매</div>';
+    if (g) { var d = c.sp - g, pc = Math.round(d / g * 1000) / 10; h += '<div style="margin-top:4px;padding:4px 6px;border-radius:5px;background:' + (Math.abs(pc) <= 5 ? '#1c6b43' : '#8a3a2a') + '">조판 ' + g.toLocaleString() + '자 대비 ' + (d >= 0 ? '+' : '') + d.toLocaleString() + '자 (' + (pc >= 0 ? '+' : '') + pc + '%)</div>'; }
+    h += '<div style="font-size:10.5px;color:#9bb;margin-top:3px">측정 기준: ' + how + '</div>'; out.innerHTML = h;
+  }
+  function measureAuto(){ var b = bodyText(); show(cnt(b.t), b.how); }
+  function measureSel(){ var t = String(window.getSelection ? window.getSelection() : ''); if (!t.trim()) { out.innerHTML = '본문을 먼저 드래그해 선택하세요'; return; } show(cnt(t), '드래그한 글자'); }
+  openB.onclick = function(){ openB.style.display = 'none'; panel.style.display = 'block'; measureAuto(); };
+  root.querySelector('[data-close]').onclick = function(){ panel.style.display = 'none'; openB.style.display = 'block'; };
+  root.querySelector('[data-auto]').onclick = measureAuto; root.querySelector('[data-sel]').onclick = measureSel;
+  gi.oninput = function(){ if (panel.style.display !== 'none') measureAuto(); };
+  if (!auto) openB.click();
+}
+function wingBookmarklet(){ return 'javascript:(' + encodeURIComponent(wingMain.toString()) + ')()'; }
+function wingUserscript(){
+  return '// ==UserScript==\n// @name         조판가이드 원문 글자수 날개 배너\n// @namespace    jopan-guide\n// @version      1.0\n// @description  기사 페이지 우측 상단에 원문 글자수를 재는 버튼을 붙입니다\n// @match        https://health.chosun.com/*\n// @match        https://www.chosun.com/*\n// @grant        none\n// @run-at       document-idle\n// ==/UserScript==\n(' + wingMain.toString() + ')(true);\n';
+}
+function openWingHelp(){
+  closeWingHelp();
+  const d = document.createElement('div'); d.className = 'wing-modal'; d.id = 'wingModal'; d.onclick = e => { if (e.target === d) closeWingHelp(); };
+  d.innerHTML = `<div class="wing-box"><h3>📏 원문 글자수 도구</h3>
+    <div>기사 팝업(헬스조선 기사 페이지) 우측 상단에 <b>「📏 글자수」 버튼</b>을 붙여, 누르면 기사 본문의 글자수(공백 포함/제외·원고지 매수)를 재고 <b>조판 가이드에서 센 글자수와의 차이</b>를 보여줍니다.</div>
+    <h4>방법 1 · 즉시 사용 (북마클릿)</h4>
+    <div>아래 파란 버튼을 <b>북마크바로 끌어다 놓고</b>, 기사 페이지에서 그 북마크를 누르세요. 설치할 것이 없습니다.<br><br><a class="bm" id="wingBm" href="#" onclick="return false">📏 글자수</a></div>
+    <h4>방법 2 · 자동으로 항상 표시 (Tampermonkey 등)</h4>
+    <div>브라우저에 Tampermonkey 같은 사용자 스크립트 확장을 설치한 뒤, 아래 파일을 열어 설치하면 기사 페이지마다 버튼이 자동으로 나옵니다.<br><br><button type="button" class="draw-btn" onclick="downloadWingScript()">⬇ 사용자 스크립트(.user.js) 받기</button></div>
+    <h4>쓰는 법</h4>
+    <div class="small">① 조판가이드에서 기사 제목을 눌러 팝업을 엽니다(조판 글자수가 주소에 함께 전달돼요). ② 기사 페이지에서 「📏 글자수」를 누르면 본문을 자동 측정합니다. ③ 본문이 잘못 잡히면 본문을 드래그해 「드래그한 글자」를 누르세요. 조판 글자수는 칸에 직접 입력해도 됩니다.<br>※ 헬스조선 사이트 구조를 이 도구가 직접 확인하지 못해 본문 위치를 자동 탐지합니다. 오차가 크면 드래그 측정을 쓰세요.</div>
+    <div style="text-align:right;margin-top:12px"><button type="button" class="draw-btn" onclick="closeWingHelp()">닫기</button></div></div>`;
+  document.body.appendChild(d);
+  document.getElementById('wingBm').setAttribute('href', wingBookmarklet());
+}
+function closeWingHelp(){ const m = document.getElementById('wingModal'); if (m) m.remove(); }
+function downloadWingScript(){
+  const blob = new Blob([wingUserscript()], {type: 'text/javascript'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '조판가이드_원문글자수.user.js';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function articleGuideChars(kind, itemId, region){
+  try {
+    if (kind === 'i') { const m = String(region).match(/^art(\d+)$/); const arts = INSIDE_ARTICLES[itemId] || []; return m && arts[+m[1]] ? mdApplyArticle(itemId, +m[1], arts[+m[1]]).bodyChars || 0 : 0; }
+    const item = GALLERY_DATA.find(g => g.id === itemId); if (!item) return 0;
+    if (region === 'top') { const a = item.audit || GALLERY_AUDIT[itemId] || {}, md = mdGet(itemId, 'top'); return Math.max(0, (md ? md.c.total : (a.body || 0)) - insetDeduct(itemId, 'top')); }
+    const m = String(region).match(/^box(\d+)$/); if (m) { const md = mdGet(itemId, region), b = (item.bottomBoxes || [])[+m[1]]; return Math.max(0, (md ? md.c.total : (b && b.body) || 0) - insetDeduct(itemId, region)); }
+  } catch (_e) { /* 무시 */ }
+  return 0;
+}
 function openArticle(evt, kind, itemId, region){
   if (evt) { evt.stopPropagation(); evt.preventDefault(); }
   const key = itemId + '::' + region;
@@ -2327,6 +2416,7 @@ function openArticle(evt, kind, itemId, region){
     if (!tpl) tpl = DEFAULT_SEARCH_TPL;
     url = tpl.includes('{q}') ? tpl.replace('{q}', encodeURIComponent(q)) : 'https://www.google.com/search?q=' + encodeURIComponent('site:health.chosun.com "' + q + '"');
   }
+  if (/^https?:\/\//.test(url) && !/google\.com\/search/.test(url)) { const gc = articleGuideChars(kind, itemId, region); if (gc) url = url.replace(/#.*$/, '') + '#jopan=' + gc; }
   const win = popupWindow(url);
   if (!win && typeof showToast === 'function') showToast('팝업이 차단됐어요. 브라우저 주소창의 팝업 허용을 눌러주세요');
 }
@@ -4054,6 +4144,111 @@ function imgxDecorate(detailId, id, kind){
   const g1 = renderGalleryDetail, i1 = renderInsideDetail;
   renderGalleryDetail = function(){ g1(); imgxDecorate('galleryDetail', gallerySelected, 'g'); };
   renderInsideDetail = function(){ i1(); imgxDecorate('insideGalleryDetail', insideSelected, 'i'); };
+})();
+
+/* ===== 영역 정밀 분석: 지면 이미지를 칸(≈6mm)으로 나눠 글자/이미지·그래픽/빈 공간을 구분 ===== */
+let fineOn = false;
+const fineCache = {};
+function fineToggle(){ fineOn = !fineOn; if (gallerySelected) renderGalleryDetail(); if (insideSelected) renderInsideDetail(); }
+function fineLoadImg(src){ return new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; }); }
+async function fineAnalyze(id, src, pwMm, phMm){
+  const key = id + ':' + (src || '').length;
+  if (fineCache[key]) return fineCache[key];
+  const im = await fineLoadImg(src);
+  const Wpx = 1100, Hpx = Math.round(Wpx * im.height / im.width), C = 16;
+  const cv = document.createElement('canvas'); cv.width = Wpx; cv.height = Hpx;
+  const ctx = cv.getContext('2d', {willReadFrequently: true}); ctx.drawImage(im, 0, 0, Wpx, Hpx);
+  const data = ctx.getImageData(0, 0, Wpx, Hpx).data;
+  const gx = Math.floor(Wpx / C), gy = Math.floor(Hpx / C);
+  const cls = new Uint8Array(gx * gy);   // 0 빈 공간, 1 글자, 2 이미지·그래픽
+  for (let cy = 0; cy < gy; cy++) for (let cx = 0; cx < gx; cx++) {
+    let ink = 0, mid = 0, sat = 0, n = 0, dark = 0, white = 0;
+    for (let y = cy * C; y < cy * C + C; y++) for (let x = cx * C; x < cx * C + C; x++) {
+      const i = (y * Wpx + x) * 4, r = data[i], g = data[i+1], b = data[i+2];
+      const l = (r * 3 + g * 6 + b) / 10, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      if (l < 150) ink++; if (l >= 70 && l < 190) mid++; if (l >= 240) white++; if (l < 60) dark++;
+      sat += (mx - mn); n++;
+    }
+    ink /= n; mid /= n; sat = sat / n / 255; white /= n; dark /= n;
+    let c;
+    if (white > .93 && ink < .02) c = 0;
+    else if (sat > .16 || mid > .42 || white < .25) c = 2;
+    else c = 1;
+    cls[cy * gx + cx] = c;
+  }
+  // 잡음 제거: 이웃 8칸 중 5칸 이상이 같은 분류면 그 분류로 통일
+  const sm = cls.slice();
+  for (let y = 1; y < gy - 1; y++) for (let x = 1; x < gx - 1; x++) {
+    const cnt = [0, 0, 0]; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (dx || dy) cnt[cls[(y+dy) * gx + x + dx]]++;
+    const k = cnt.indexOf(Math.max(...cnt)); if (cnt[k] >= 5) sm[y * gx + x] = k;
+  }
+  // 연결 성분 → 이미지·그래픽 / 빈 공간 덩어리
+  const seen = new Uint8Array(gx * gy), blocks = [];
+  for (let s0 = 0; s0 < gx * gy; s0++) {
+    if (seen[s0] || sm[s0] === 1) continue;
+    const k = sm[s0], st = [s0]; seen[s0] = 1; let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1, cnt = 0;
+    while (st.length) {
+      const q = st.pop(), qx = q % gx, qy = (q / gx) | 0; cnt++;
+      x0 = Math.min(x0, qx); x1 = Math.max(x1, qx); y0 = Math.min(y0, qy); y1 = Math.max(y1, qy);
+      [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx, dy]) => { const nx = qx + dx, ny = qy + dy; if (nx < 0 || ny < 0 || nx >= gx || ny >= gy) return; const ni = ny * gx + nx; if (!seen[ni] && sm[ni] === k) { seen[ni] = 1; st.push(ni); } });
+    }
+    const minCells = k === 2 ? 6 : 12;
+    if (cnt >= minCells) blocks.push({kind: k === 2 ? 'img' : 'blank', x: x0 / gx * 100, y: y0 / gy * 100, w: (x1 - x0 + 1) / gx * 100, h: (y1 - y0 + 1) / gy * 100, cells: cnt});
+  }
+  const out = {gx, gy, sm, blocks, pwMm, phMm, cellMm2: (pwMm / gx) * (phMm / gy)};
+  fineCache[key] = out; return out;
+}
+function fineRegionStats(res, rect){
+  const [rx, ry, rw, rh] = rect, c = [0, 0, 0];
+  for (let y = 0; y < res.gy; y++) for (let x = 0; x < res.gx; x++) {
+    const px = (x + .5) / res.gx * 100, py = (y + .5) / res.gy * 100;
+    if (px >= rx && px <= rx + rw && py >= ry && py <= ry + rh) c[res.sm[y * res.gx + x]]++;
+  }
+  const t = c[0] + c[1] + c[2] || 1;
+  return {blank: c[0] / t, text: c[1] / t, img: c[2] / t, textMm2: c[1] * res.cellMm2};
+}
+async function fineDecorate(detailId, id, kind){
+  const el = document.getElementById(detailId); if (!el || !id) return;
+  const wrap = el.querySelector('.thumb-wrap'); if (!wrap) return;
+  const col = wrap.parentElement; col.querySelectorAll('.fine-panel').forEach(n => n.remove());
+  wrap.querySelectorAll('.fine-rect').forEach(n => n.remove());
+  const panel = document.createElement('div'); panel.className = 'fine-panel';
+  panel.innerHTML = `<button type="button" class="draw-btn${fineOn ? ' on' : ''}" onclick="fineToggle()">${fineOn ? '영역 정밀 분석 끄기' : '🔬 영역 정밀 분석'}</button> <span class="draw-hint">글자 없는 영역(이미지·그래픽·빈 공간)까지 칸 단위로 구분하고, 기사별 글자 밀도를 점검해요</span>`;
+  wrap.parentNode.insertBefore(panel, wrap.nextSibling);
+  if (!fineOn) return;
+  const item = [...GALLERY_DATA, ...INSIDE_SAMPLE_DATA].find(g => g.id === id); if (!item) return;
+  const pw = kind === 'g' ? 362 : 392, ph = kind === 'g' ? 500 : 531.44;
+  const im = wrap.querySelector('img');
+  panel.insertAdjacentHTML('beforeend', '<div class="fine-body">분석 중…</div>');
+  let res;
+  try { res = await fineAnalyze(id, im.src, pw, ph); } catch (_e) { panel.querySelector('.fine-body').textContent = '이미지를 분석하지 못했어요'; return; }
+  if (!fineOn) return;
+  res.blocks.forEach(b => {
+    const d = document.createElement('div'); d.className = 'fine-rect ' + b.kind;
+    d.style.cssText = `position:absolute;left:${b.x}%;top:${b.y}%;width:${b.w}%;height:${b.h}%;pointer-events:none;box-sizing:border-box;border:1px solid ${b.kind === 'img' ? 'rgba(160,40,160,.9)' : 'rgba(90,90,90,.7)'};background:${b.kind === 'img' ? 'rgba(160,40,160,.16)' : 'repeating-linear-gradient(45deg,rgba(120,120,120,.18) 0 4px,transparent 4px 8px)'}`;
+    wrap.appendChild(d);
+  });
+  const imgs = res.blocks.filter(b => b.kind === 'img'), blanks = res.blocks.filter(b => b.kind === 'blank');
+  const mmOf = b => `${Math.round(b.w / 100 * pw)}×${Math.round(b.h / 100 * ph)}mm`;
+  let rows = '';
+  const rects = kind === 'i' ? (INSIDE_REGION_RECTS[id] || []) : [];
+  if (kind === 'i') {
+    const arts = INSIDE_ARTICLES[id] || [];
+    rows = rects.map((r, i) => {
+      const st = fineRegionStats(res, r), a = arts[i] ? mdApplyArticle(id, i, arts[i]) : null;
+      const dens = a && st.textMm2 ? a.bodyChars / st.textMm2 : 0;       // 글자 영역 1mm²당 글자수
+      const warn = dens && (dens < 0.035 || dens > 0.085) ? ` <b class="fine-warn">⚠ 밀도 ${dens.toFixed(3)} · 글자수 또는 영역 재확인</b>` : (dens ? ` · 밀도 ${dens.toFixed(3)}` : '');
+      return `<div class="fine-row">${i + 1}번 기사 영역: 글자 ${Math.round(st.text * 100)}% · 이미지·그래픽 ${Math.round(st.img * 100)}% · 빈 공간 ${Math.round(st.blank * 100)}%${warn}</div>`;
+    }).join('');
+  }
+  panel.querySelector('.fine-body').innerHTML = `<div class="fine-row"><span class="fine-dot img"></span>글자 없는 이미지·그래픽 ${imgs.length}곳: ${imgs.slice(0, 8).map(mmOf).join(', ') || '없음'}</div>
+    <div class="fine-row"><span class="fine-dot blank"></span>빈 공간(여백) ${blanks.length}곳${blanks.length ? ': ' + blanks.slice(0, 5).map(mmOf).join(', ') : ''}</div>${rows}
+    <div class="fine-row fine-note">자동 분류라 ±1칸(약 6mm) 오차가 있어요. 밀도 = 본문 글자수 ÷ 글자 영역 면적(mm²), 보통 0.035~0.085.</div>`;
+}
+(() => {
+  const g2 = renderGalleryDetail, i2 = renderInsideDetail;
+  renderGalleryDetail = function(){ g2(); fineDecorate('galleryDetail', gallerySelected, 'g'); };
+  renderInsideDetail = function(){ i2(); fineDecorate('insideGalleryDetail', insideSelected, 'i'); };
 })();
 
 loadUserInside();
