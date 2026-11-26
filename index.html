@@ -510,7 +510,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 19:20</div>
+    <div class="ver-stamp">버전 2026.11.26 19:40</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -2399,7 +2399,7 @@ function wingMain(auto){
   var ID = 'jopan-wing', old = document.getElementById(ID);
   if (old) { if (!auto) { var ob = old.querySelector('[data-open]'); if (ob) ob.click(); } return; }
   var hm = (location.hash.match(/jopan=([^&]+)/) || [])[1] || '', guide = parseInt(decodeURIComponent(hm).split('|')[0], 10) || 0;
-  function cnt(t){ t = String(t).replace(/[\r\n\t ]+/g, ' ').replace(/ {2,}/g, ' ').trim(); return {sp: t.length, no: t.replace(/\s/g, '').length}; }
+  function cnt(t){ t = String(t).replace(/[\r\n]+/g, '').replace(/[\t\u00a0]+/g, ' ').replace(/ {2,}/g, ' ').trim(); return {sp: t.length, no: t.replace(/\s/g, '').length}; }
   function bodyText(){
     var sels = ['#article_body', '.article_body', '#articleBody', '.article-body', '#news_body_id', '[itemprop="articleBody"]', '.news_text', '.view_cont', '.article-view-content', '#newsct_article'];
     for (var i = 0; i < sels.length; i++) { var e = document.querySelector(sels[i]); if (e && e.innerText && e.innerText.length > 200) return {t: e.innerText, how: sels[i]}; }
@@ -2468,6 +2468,53 @@ function articleGuideChars(kind, itemId, region){
   } catch (_e) { /* 무시 */ }
   return 0;
 }
+
+/* ===== 원문 글자수 체크 팝업: 크롬 읽기 모드(또는 기사 본문)를 복사해 붙여넣으면 바로 센다 ===== */
+function counterPageHtml(title, guide){
+  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>원문 글자수 체크</title><style>
+  body{margin:0;font:13px/1.55 -apple-system,"Malgun Gothic",sans-serif;background:#f4f6f9;color:#1c2733}
+  header{background:#0b2a4a;color:#fff;padding:12px 14px}header b{font-size:15px}header div{font-size:11.5px;color:#b9c7d5;margin-top:3px}
+  main{padding:12px 14px}textarea{width:100%;height:190px;box-sizing:border-box;border:1px solid #b8c4d0;border-radius:6px;padding:8px;font:12.5px/1.5 inherit;resize:vertical}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0;font-size:12px}.row input[type=number]{width:60px;padding:2px 4px}
+  button{padding:6px 11px;border:1px solid #9fb0c2;background:#fff;border-radius:5px;cursor:pointer;font-size:12px}button.p{background:#0b2a4a;color:#fff;border-color:#0b2a4a}
+  .big{font-size:26px;font-weight:800}.card{background:#fff;border:1px solid #d5dde6;border-radius:8px;padding:10px 12px;margin-top:8px}
+  .diff{margin-top:8px;padding:8px 10px;border-radius:6px;font-weight:700;color:#fff;background:#6b7785}.ok{background:#1c6b43}.bad{background:#a23b2a}
+  ol{margin:6px 0 0 18px;padding:0;font-size:11.5px;color:#4a5866}
+  </style></head><body><header><b>📋 원문 글자수 체크</b><div id="t"></div></header><main>
+  <ol><li>헬스조선 기사 페이지에서 <b>읽기 모드</b>를 켭니다 (주소창 오른쪽 「읽기 모드」)</li><li>본문을 <b>Ctrl+A → Ctrl+C</b> 로 복사</li><li>아래 칸에 <b>Ctrl+V</b> (또는 「붙여넣기」 버튼)</li></ol>
+  <div class="row"><button class="p" id="pb">클립보드에서 붙여넣기</button><button id="cl">지우기</button></div>
+  <textarea id="ta" placeholder="여기에 기사 본문을 붙여넣으세요"></textarea>
+  <div class="row"><label>앞에서 제외할 줄 <input type="number" id="hd" min="0" value="1"></label><label>뒤에서 제외할 줄 <input type="number" id="tl" min="0" value="0"></label></div>
+  <div class="row"><label>조판가이드 글자수 <input type="number" id="g" min="0" style="width:80px" value="${guide || ''}"> 자</label></div>
+  <div class="card"><div>공백 포함 <span class="big" id="sp">0</span> 자</div><div>공백 제외 <b id="no">0</b>자 · 원고지 <b id="sh">0</b>매 · 문단 <b id="pc">0</b>개</div><div id="df" class="diff" style="display:none"></div></div>
+  <div style="margin-top:8px;font-size:11px;color:#6b7785">줄바꿈은 글자수에서 제외하고, 공백은 포함해서 셉니다(조판가이드와 같은 기준). 읽기 모드 글에 제목·기자·날짜 줄이 앞에 붙으면 「앞에서 제외할 줄」을 늘리세요.</div></main>
+  <script>
+  document.getElementById('t').textContent=${JSON.stringify(title || '')};
+  var ta=document.getElementById('ta');
+  function calc(){var raw=ta.value.replace(/\\r/g,''),lines=raw.split('\\n').filter(function(l){return l.trim()});
+   var h=Math.max(0,parseInt(document.getElementById('hd').value,10)||0),t=Math.max(0,parseInt(document.getElementById('tl').value,10)||0);
+   var use=lines.slice(h,Math.max(h,lines.length-t));var txt=use.map(function(l){return l.replace(/[\\t\\u00a0]+/g,' ').replace(/ {2,}/g,' ').trim()}).join('');
+   var sp=txt.length,no=txt.replace(/\\s/g,'').length,g=parseInt(document.getElementById('g').value,10)||0;
+   document.getElementById('sp').textContent=sp.toLocaleString();document.getElementById('no').textContent=no.toLocaleString();
+   document.getElementById('sh').textContent=(Math.round(sp/200*10)/10);document.getElementById('pc').textContent=use.length;
+   var d=document.getElementById('df');if(g&&sp){var df=sp-g,pc=Math.round(df/g*1000)/10;d.style.display='block';d.className='diff '+(Math.abs(pc)<=5?'ok':'bad');
+    d.textContent='조판 '+g.toLocaleString()+'자 대비 '+(df>=0?'+':'')+df.toLocaleString()+'자 ('+(pc>=0?'+':'')+pc+'%)'}else d.style.display='none'}
+  ['input','change'].forEach(function(e){document.body.addEventListener(e,calc)});
+  document.getElementById('pb').onclick=function(){if(navigator.clipboard&&navigator.clipboard.readText){navigator.clipboard.readText().then(function(t){ta.value=t;calc()}).catch(function(){ta.focus();alert('클립보드를 읽을 수 없어요. 아래 칸을 클릭하고 Ctrl+V 로 붙여넣어 주세요.')})}else{ta.focus()}};
+  document.getElementById('cl').onclick=function(){ta.value='';calc();ta.focus()};
+  ta.focus();
+  <\/script></body></html>`;
+}
+function openCounter(evt, kind, itemId, region){
+  if (evt) { evt.stopPropagation(); evt.preventDefault(); }
+  const el = evt && evt.currentTarget && evt.currentTarget.closest ? evt.currentTarget.closest('.title-wrap') : null;
+  const title = el ? (el.querySelector('.title-link') || el).innerText.replace(/[“”"‘’↗✎🔗📋]/g, '').trim() : '';
+  const guide = articleGuideChars(kind, itemId, region);
+  const w = 400, h = Math.min(720, screen.availHeight - 80), left = Math.max(0, screen.availWidth - w - 20), top = 40;
+  const win = window.open('', 'jopanCounter', `popup=yes,width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
+  if (!win) { showToast('팝업이 차단됐어요. 주소창의 팝업 허용을 눌러주세요'); return; }
+  win.document.open(); win.document.write(counterPageHtml(title, guide)); win.document.close();
+}
 function openArticle(evt, kind, itemId, region){
   if (evt) { evt.stopPropagation(); evt.preventDefault(); }
   const key = itemId + '::' + region;
@@ -2527,7 +2574,7 @@ function linkedTitle(kind, itemId, region, editableHtml){
     .replace('title="클릭해서 수정"', 'title="클릭하면 헬스조선 기사가 팝업으로 열려요"')
     .replace('onclick="event.stopPropagation()"', `onclick="openArticle(event,'${kind}','${itemId}','${region}')"`)
     .replace(/onblur="/, 'onblur="this.contentEditable=\'false\';');
-  return `<span class="title-wrap">${html}<button type="button" class="title-tool" title="제목 글자 수정" onclick="editTitleInline(event)">✎</button><button type="button" class="title-tool${hasUrl ? ' on' : ''}" title="${hasUrl ? '기사 주소 지정됨 (눌러서 변경)' : '정확한 기사 주소 지정'}" onclick="setArticleUrl(event,'${itemId}','${region}')">🔗</button></span>`;
+  return `<span class="title-wrap">${html}<button type="button" class="title-tool" title="제목 글자 수정" onclick="editTitleInline(event)">✎</button><button type="button" class="title-tool" title="원문 글자수 체크 (읽기 모드 본문 복사 → 붙여넣기)" onclick="openCounter(event,'${kind}','${itemId}','${region}')">📋</button><button type="button" class="title-tool${hasUrl ? ' on' : ''}" title="${hasUrl ? '기사 주소 지정됨 (눌러서 변경)' : '정확한 기사 주소 지정'}" onclick="setArticleUrl(event,'${itemId}','${region}')">🔗</button></span>`;
 }
 /* 확대 보기 */
 const THUMB_SIZES = [380, 520, 680];
