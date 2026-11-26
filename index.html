@@ -510,7 +510,7 @@
     <div class="eyebrow">EDITORIAL PRODUCTION TOOL</div>
     <div class="title-row"><h1>조판 가이드</h1><button type="button" id="adminUploadBtn" class="admin-btn" title="PDF 업로드 (비밀번호 필요)" aria-label="PDF 업로드 (비밀번호 필요)" onclick="openAdminGate()"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button></div>
     <div class="sub">신문 지면의 광고 규격과 편집 그리드를 한 화면에서 확인하세요.</div>
-    <div class="ver-stamp">버전 2026.11.26 18:40</div>
+    <div class="ver-stamp">버전 2026.11.26 19:00</div>
     <button type="button" class="wing-install-btn" onclick="openWingHelp()" title="기사 팝업에서 원문 글자수를 재는 도구">📏 원문 글자수 도구</button>
   </div>
   <div class="meta">
@@ -2010,17 +2010,32 @@ function setInsideAnalysisState(message, isError=false){
   el.textContent = message; el.className = 'analysis-state show' + (isError ? ' error' : '');
 }
 
-/* 업로드 기록 저장: 용량이 모자라면 오래된 것부터 줄여 저장하고, 못 담은 개수를 알린다 */
+/* 업로드 기록 저장: 브라우저 저장소(IndexedDB)에 담아 200건 이상도 저장. 실패하면 localStorage에 줄여서 저장 */
 function persistCapped(key, list, max){
-  let n = Math.min(list.length, max || 60);
-  for (; n >= 0; n--) {
-    try { localStorage.setItem(key, JSON.stringify(list.slice(0, n))); break; } catch (_e) { /* 줄여서 다시 시도 */ }
-  }
-  const lost = list.length - Math.max(n, 0);
-  if (lost > 0 && typeof showToast === 'function') showToast(`저장 공간이 부족해 오래된 업로드 ${lost}건은 이번 세션에서만 보여요 (원본 PDF는 다시 올려 주세요)`);
-  return lost;
+  const snapshot = JSON.parse(JSON.stringify(list));
+  idbPut('rec:' + key, snapshot).then(() => { try { localStorage.removeItem(key); } catch (_e) { /* 무시 */ } }).catch(() => {
+    let n = Math.min(list.length, 25);
+    for (; n >= 0; n--) { try { localStorage.setItem(key, JSON.stringify(list.slice(0, n))); break; } catch (_e) { /* 줄여서 다시 시도 */ } }
+    const lost = list.length - Math.max(n, 0);
+    if (lost > 0 && typeof showToast === 'function') showToast(`저장 공간이 부족해 업로드 ${lost}건은 이번 세션에서만 보여요`);
+  });
 }
-function persistUserInside(){ persistCapped(USER_INSIDE_KEY, userInside, 60); }
+async function loadRecsFromIdb(){
+  try {
+    const gl = await idbGet('rec:' + USER_GALLERY_KEY), il = await idbGet('rec:' + USER_INSIDE_KEY);
+    let changed = false;
+    if (Array.isArray(gl)) {
+      for (let k = GALLERY_DATA.length - 1; k >= 0; k--) if (String(GALLERY_DATA[k].id).startsWith('upload-')) GALLERY_DATA.splice(k, 1);
+      [...gl].reverse().forEach(it => GALLERY_DATA.unshift(it)); changed = true;
+    } else if (GALLERY_DATA.some(g => String(g.id).startsWith('upload-'))) { regionPersistAll(); }
+    if (Array.isArray(il)) {
+      for (let k = INSIDE_SAMPLE_DATA.length - 1; k >= 0; k--) if (String(INSIDE_SAMPLE_DATA[k].id).startsWith('uploadin-')) INSIDE_SAMPLE_DATA.splice(k, 1);
+      userInside = il; [...il].reverse().forEach(registerUserInside); changed = true;
+    } else if (userInside.length) { persistUserInside(); }
+    if (changed) { renderGallery(); renderInsideGallery(); if (typeof refreshUploadDates === 'function') refreshUploadDates(); }
+  } catch (_e) { /* 기본 갤러리는 유지 */ }
+}
+function persistUserInside(){ persistCapped(USER_INSIDE_KEY, userInside); }
 function registerUserInside(rec){
   INSIDE_SAMPLE_DATA.unshift(rec.item);
   INSIDE_ARTICLES[rec.item.id] = rec.articles;
@@ -3540,7 +3555,7 @@ async function analyzePdfUpload(file){
     item.fileName = file.name; await saveSourceFile(item.id, file);
     GALLERY_DATA.unshift(item);
     const uploads = GALLERY_DATA.filter(entry=>String(entry.id).startsWith('upload-'));
-    persistCapped(USER_GALLERY_KEY, uploads, 60);
+    persistCapped(USER_GALLERY_KEY, uploads);
     gallerySelected = item.id;
     renderGallery(); renderGalleryDetail();
     setAnalysisState(`분석 완료: ${usedOcr ? '한글 OCR 교정 · ' : ''}제목 ${charCount(detectedTitle)}자, 본문 ${charCount(bodyText).toLocaleString()}자, 이미지 ${visualCount(visualPairs(detectedImages))}장. 좌→우 실제 좌표 순서로 갤러리에 추가했습니다.`);
@@ -3617,7 +3632,7 @@ function regionPersistAll(){
   try { localStorage.setItem(REGION_OVERRIDE_KEY, JSON.stringify(regionOverrides)); } catch (_e) { /* 무시 */ }
   mdPersist();
   const ups = GALLERY_DATA.filter(e => String(e.id).startsWith('upload-'));
-  persistCapped(USER_GALLERY_KEY, ups, 60);
+  persistCapped(USER_GALLERY_KEY, ups);
 }
 function regionRestore(){
   const s = regionSnap; if (!s) return;
@@ -4263,6 +4278,7 @@ async function fineDecorate(detailId, id, kind){
 })();
 
 loadUserInside();
+loadRecsFromIdb();
 renderGallery();
 renderInsideGallery();
 mdCalcInit();
